@@ -15,7 +15,7 @@
     <!-- $$$$$$$$$ Barra de navegación $$$$$$$$$ -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light shadow p-3 mb-5 bg-body rounded"> <!--Le da a la barra de navegacion el formato de expansión (por responsiva) el color, tema, y pone una sombra para diferenciarlo del fondo-->
         <div class="container-fluid"><!--Un contenedor que hace que el contenido ocupe toda la barra (fluido)-->
-            <a class="navbar-brand" href="#">Udemy</a><!--El logotipo de la pagina-->
+            <a class="navbar-brand" href="index.html">Udemy</a><!--El logotipo de la pagina-->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button><!--Este boton se activa cuando la pagina es muy pequeña (responsividad)-->
@@ -38,8 +38,10 @@
                 <div class="navbar-nav mb-2 mb-lg-0">
                     <a class="nav-link" href="#">Clases</a>
                     <a class="nav-link" href="#">Cursos</a>
-                    <button class="btn btn-outline-primary">Iniciar sesión</button>
-                    <button class="btn btn-primary">Registrate</button>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="iniciarsesion.html"><button class="btn btn-outline-primary">Iniciar sesión</button></a>
+                        <a href="registrarte.html"><button class="btn btn-primary">Registrate</button></a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -85,7 +87,7 @@
         <h4>Enseñamos lo que quieres aprender</h4>
     </div>
     <hr>
-    <div class="container-fluid">
+    <div class="container-fluid" style="padding-bottom: 10rem;">
         <div class="row">
             <div class="col-4">
                 <p><a href="">Sobre nosotros</a></p>
@@ -117,7 +119,7 @@
             </div>
         </div>
     </div>
-    <div class="conatiner"><p></p></div>
-    <div class="container"><p></p></div>
+
+    
 </body> 
 </html>
