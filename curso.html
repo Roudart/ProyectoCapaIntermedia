@@ -171,7 +171,6 @@
                                 <div class="row">
                                     <div class="col mx-auto">
                                         <h1>Reseñas</h1>
-                                        
                                     </div>
                                 </div>
                             </div>
@@ -198,6 +197,44 @@
                                         <li class="list-group-item">Acceso de por vida</li>
                                     </ul>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="container-fluid">
+                            <div class="row mb-5">
+                                <div class="col-2">
+                                    <a href="perfil.html">
+                                        <img src="https://banner2.kisspng.com/20180615/rtc/kisspng-avatar-user-profile-male-logo-profile-icon-5b238cb002ed52.870627731529056432012.jpg" 
+                                        class="img rounded-circle img-fluid" alt=". . .">
+                                    </a>
+                                </div>
+                                <div class="col-8 lh-1 align-middle">
+                                    <div class="form-floating">
+                                        <textarea class="form-control" placeholder="Dejanos un comentario" id="commentInput" style="height: 100px"></textarea>
+                                        <label for="commentInput">Comentario</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="container-fluid" id="BarraComentarios">
+                                <div class="row mb-5 shadow-sm" id="ComentarioReseña">
+                                    <div class="col">
+                                        <a href="perfil.html">
+                                            <img src="https://banner2.kisspng.com/20180615/rtc/kisspng-avatar-user-profile-male-logo-profile-icon-5b238cb002ed52.870627731529056432012.jpg" 
+                                            class="img rounded-circle img-fluid" alt=". . .">
+                                        </a>
+                                    </div>
+                                    <div class="col-11 lh-1">
+                                        <div class="col mx-auto">
+                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vitae commodo dui. Nunc commodo lacus venenatis libero finibus vestibulum. Curabitur ac aliquet nisl. Phasellus enim metus, ultrices non rutrum at, mollis in sapien. Morbi elementum aliquam hendrerit. In enim magna, rhoncus sodales efficitur ac, tempus quis metus. Cras fermentum malesuada ullamcorper.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <script>
+                                    for(var i=0; i<7; i++){
+                                        var carta = document.getElementById("ComentarioReseña");
+                                        var cln = carta.cloneNode(true);
+                                        document.getElementById("BarraComentarios").appendChild(cln);
+                                    }
+                                </script>
                             </div>
                         </div>
                     </div>
