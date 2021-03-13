@@ -47,58 +47,61 @@
             </div>
         </nav>
         <!-- $$$$$$$$$ Barra de navegación $$$$$$$$$ -->
-
-        <div class="container">
+        <h1 class="text-center">Resultados...</h1>
+        <div class="container mt-5">
             <div class="row">
                 <div class="col">
-
-                </div>
-                <div class="col-10">
-                    <h1>Cursos de ...</h1>
-                    <ul class="nav nav-tabs" role="tablist">
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link active" id="tab-cursos-populares" data-bs-toggle="tab" data-bs-target="#popular" type="button" role="tab" aria-controls="true">Los mas populares</button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="tab-cursos-calificados" data-bs-toggle="tab" data-bs-target="#calificado" type="button" role="tab" aria-controls="true">Los mas populares</button>
-                        </li>
-                    </ul>
-
-                    <div class="row" id="listaPopulares">
-                        <div class="col-sm-3" id="cartaPopulares">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="tab-content" id="myTabContent">
-                                        <div class="tab-pane fade show active" id="popular" role="tabpanel" aria-labelledby="tab-cursos-populares">
-                                            <div class="card bg-dark text-white">
-                                                <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmiro.medium.com%2Fmax%2F12032%2F0*Q8DDPKbl1Jek0i0a&f=1&nofb=1" 
-                                                class="card-img" alt="...">
-                                                <div class="card-img-overlay">
-                                                    <h5 class="card-title">Python</h5>
-                                                    <p class="card-text">Aprende todo sobre python</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="tab-pane fade" id="calificado" role="tabpanel" aria-labelledby="tab-cursos-calificados">Aqui van otros cursos</div>
-                                    </div>
+                    <div class="tab-content" id="nav-tabContent">
+                        <div class="tab-pane fade show active" id="list-1" role="tabpanel" aria-labelledby="list-1-list">
+                            <div class="row shadow-sm rounded" id="TarjetaCurso">
+                                <div class="col-2">
+                                    <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.nsha.org%2Fwp-content%2Fuploads%2F2017%2F06%2Fcomputer-coding-600x600.jpg&f=1&nofb=1" 
+                                    class="img rounded-circle img-fluid" alt="...">
+                                </div>
+                                <div class="col-10">
+                                    <h1>Programación de Python</h1>
+                                    <p>Esta es una descripción generica de lo que va a decir en la descripción del curso</p>
+                                    <a href="curso.html" class="btn btn-secondary">Ver mas...</a>
                                 </div>
                             </div>
+                            <script>
+                                for(var i=0; i<6; i++){
+                                    var carta = document.getElementById("TarjetaCurso");
+                                    var cln = carta.cloneNode(true);
+                                    document.getElementById("list-1").appendChild(cln);
+                                }
+                            </script>
                         </div>
-
-                        <script>
-                            for(var i=0; i<6; i++){
-                            var carta = document.getElementById("cartaPopulares");
-                            var cln = carta.cloneNode(true);
-                            document.getElementById("listaPopulares").appendChild(cln);
-                            }
-
-                        </script>
-
+                        <div class="tab-pane fade" id="list-2" role="tabpanel" aria-labelledby="list-2-list">
+                            <script>
+                                for(var i=0; i<7; i++){
+                                    var carta = document.getElementById("TarjetaCurso");
+                                    var cln = carta.cloneNode(true);
+                                    document.getElementById("list-2").appendChild(cln);
+                                }
+                            </script>
+                        </div>
+                        <div class="tab-pane fade" id="list-3" role="tabpanel" aria-labelledby="list-3-list">
+                            <script>
+                                for(var i=0; i<7; i++){
+                                    var carta = document.getElementById("TarjetaCurso");
+                                    var cln = carta.cloneNode(true);
+                                    document.getElementById("list-3").appendChild(cln);
+                                }
+                            </script>
+                        </div>
                     </div>
-
-                </div>
-                <div class="col">
-
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination justify-content-center list-group list-group-horizontal" id="list-tab" role="tablist">
+                            <li class="page-item disabled"><a class="page-link list-group-item list-group-item-action" href="" tabindex="-1" aria-disabled="true">Anterior</a></li>
+                            <li class="page-item"><a class="page-link list-group-item list-group-item-action" id="list-1-list" data-bs-toggle="list" href="#list-1" role="tab" aria-controls="1" href="">1</a></li>
+                            <li class="page-item"><a class="page-link list-group-item list-group-item-action" id="list-2-list" data-bs-toggle="list" href="#list-2" role="tab" aria-controls="2" href="">2</a></li>
+                            <li class="page-item"><a class="page-link list-group-item list-group-item-action" id="list-3-list" data-bs-toggle="list" href="#list-3" role="tab" aria-controls="3" href="">3</a></li>
+                            <li class="page-item">
+                              <a class="page-link list-group-item list-group-item-action" href="#">Siguiente</a>
+                            </li>
+                        </ul>
+                    </nav>
                 </div>
             </div>
         </div>
