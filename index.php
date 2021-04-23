@@ -1,3 +1,8 @@
+<?php
+        include 'conexionPHP.php';
+?>
+
+
 <!DOCTYPE html>
 <html lang="es">
 <head>

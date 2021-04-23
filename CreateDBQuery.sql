@@ -3,13 +3,14 @@ CREATE SCHEMA IF NOT EXISTS ShademyDB;
 USE ShademyDB;
 CREATE TABLE IF NOT EXISTS Usuario(
 	IdUsuario INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    TipoUsuario ENUM ('Admin', 'Maestro', 'Estudiante') DEFAULT 'Estudiante',
     Nombre VARCHAR(40) NOT NULL,
     ApellidoPaterno VARCHAR(60) NOT NULL,
     ApellidoMaterno VARCHAR(60) NOT NULL,
     Apodo VARCHAR(30) NOT NULL,
     CorreoElectronico VARCHAR(60) NOT NULL,
     Contraseña VARCHAR(30) NOT NULL,
-    Imagen VARCHAR(256) NOT NULL,
+    Imagen VARCHAR(256) NULL,
     Biografía VARCHAR(255)
 );
 
@@ -69,3 +70,19 @@ CREATE TABLE IF NOT EXISTS CursoCategoria(
     FOREIGN KEY FK_CursoCategoriaCurso (IdCurso) REFERENCES Curso(IdCurso),
     FOREIGN KEY FK_CursoCategoriaCategoria (IdCategoria) REFERENCES Categoria(IdCategoria)
 );
+
+DROP PROCEDURE IF EXISTS SaludoDB;
+DELIMITER $$
+CREATE PROCEDURE SaludoDB()
+BEGIN
+		SELECT "Hola Mundo soy una base de datos de MYSQL";
+END $$
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS TraerUsuariosManager;
+DELIMITER $$
+CREATE PROCEDURE TraerUsuariosManager()
+BEGIN
+SELECT IdUsuario, TipoUsuario, CONCAT_WS(' ', Nombre, ApellidoPaterno, ApellidoMaterno) AS NombreCompleto FROM USUARIO;
+END $$
+DELIMITER ;
