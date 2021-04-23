@@ -5,12 +5,16 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registrate</title>
-    <link rel="icon" href="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Flearndashcom.lightningbasecdn.com%2Fwp-content%2Fuploads%2Fudemy-logo.png&f=1&nofb=1">
+
+    <link rel="icon" href="src/icon.jpg">
+
     <!--Incluimos la biblioteca de free Bootstrap-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
     <!--Incluimos el js necesario para el funcionamiento de bootstrap-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+
     <script src="Js/valid.js"></script>
+
 </head>
 <body>
         <!-- $$$$$$$$$ Barra de navegación $$$$$$$$$ -->
@@ -62,23 +66,31 @@
                     <form action="">
                         <div class="row mb-3">
                             <div class="col-sm-12">
+
                                 <input type="text" class="form-control" placeholder="Nombre" id="nomReg">
+
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-sm-12">
+
                                 <input type="email" class="form-control" placeholder="Correo Electronico" id="correoReg">
+
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-sm-12">
+
                                 <input type="password" class="form-control" placeholder="Contraseña" id="contraReg">
+
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-sm-12">
                                 <div class="d-grid gap-2">
+
                                     <button onclick="validarRegistro()" class="btn btn-danger btn-lg">Regístrate</button>
+
                                 </div>
                             </div>
                         </div>

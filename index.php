@@ -1,3 +1,10 @@
+
+<?php
+        include 'conexionPHP.php';
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -5,7 +12,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shademy</title>
-    <link rel="icon" href="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Flearndashcom.lightningbasecdn.com%2Fwp-content%2Fuploads%2Fudemy-logo.png&f=1&nofb=1">
+
+    <link rel="icon" href="src/icon.jpg">
+
     <!--Incluimos la biblioteca de free Bootstrap-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
     <!--Incluimos el js necesario para el funcionamiento de bootstrap-->
@@ -81,21 +90,54 @@
         <hr>
     </div>
 
-    <div class="container mt-3">
+
+    <h1 class="text-center">Cursos mas populares...</h1>
+
+    <div class="container mt-5">
+
         <div class="row">
             <div class="col">
                 <div class="tab-content" id="nav-tabContent">
                     <div class="tab-pane fade show active" id="list-1" role="tabpanel" aria-labelledby="list-1-list">
-                        <div class="col-8">
-                            <ul>
-                                <li>
-                                    
-                                </li>
-                            </ul>
+
+                        <div class="row shadow-sm rounded" id="TarjetaCurso">
+                            <div class="col-2">
+                                <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.nsha.org%2Fwp-content%2Fuploads%2F2017%2F06%2Fcomputer-coding-600x600.jpg&f=1&nofb=1" 
+                                class="img rounded-circle img-fluid" alt="...">
+                            </div>
+                            <div class="col-10">
+                                <h1>Programación de Python</h1>
+                                <p>Esta es una descripción generica de lo que va a decir en la descripción del curso</p>
+                                <a href="curso.html" class="btn btn-secondary">Ver mas...</a>
+                            </div>
                         </div>
-                </div>
-                    <div class="tab-pane fade" id="list-2" role="tabpanel" aria-labelledby="list-2-list"><h1>como</h1></div>
-                    <div class="tab-pane fade" id="list-3" role="tabpanel" aria-labelledby="list-3-list"><h1>estas</h1></div>
+                        <script>
+                            for(var i=0; i<6; i++){
+                                var carta = document.getElementById("TarjetaCurso");
+                                var cln = carta.cloneNode(true);
+                                document.getElementById("list-1").appendChild(cln);
+                            }
+                        </script>
+                    </div>
+                    <div class="tab-pane fade" id="list-2" role="tabpanel" aria-labelledby="list-2-list">
+                        <script>
+                            for(var i=0; i<7; i++){
+                                var carta = document.getElementById("TarjetaCurso");
+                                var cln = carta.cloneNode(true);
+                                document.getElementById("list-2").appendChild(cln);
+                            }
+                        </script>
+                    </div>
+                    <div class="tab-pane fade" id="list-3" role="tabpanel" aria-labelledby="list-3-list">
+                        <script>
+                            for(var i=0; i<7; i++){
+                                var carta = document.getElementById("TarjetaCurso");
+                                var cln = carta.cloneNode(true);
+                                document.getElementById("list-3").appendChild(cln);
+                            }
+                        </script>
+                    </div>
+
                 </div>
                 <nav aria-label="Page navigation">
                     <ul class="pagination justify-content-center list-group list-group-horizontal" id="list-tab" role="tablist">
