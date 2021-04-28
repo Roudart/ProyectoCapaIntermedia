@@ -63,25 +63,46 @@
                        Inscribete y obten 30% de descuento 
                     </h1>
                     <hr>
-                    <form action="">
+                    <form action = "registrarUsuario.php" method = "post">
                         <div class="row mb-3">
                             <div class="col-sm-12">
 
-                                <input type="text" class="form-control" placeholder="Nombre" id="nomReg">
+                                <input type="text" class="form-control" placeholder="Nombre" id="nomReg" name="nomReg">
 
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-sm-12">
 
-                                <input type="email" class="form-control" placeholder="Correo Electronico" id="correoReg">
+                                <input type="text" class="form-control" placeholder="Apellido paterno" id="ApePReg" name="ApePReg">
 
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-sm-12">
 
-                                <input type="password" class="form-control" placeholder="Contraseña" id="contraReg">
+                                <input type="text" class="form-control" placeholder="Apellido materno" id="ApeMReg" name="ApeMReg">
+
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-sm-12">
+
+                                <input type="text" class="form-control" placeholder="Apodo" id="apoReg" name="apoReg">
+
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-sm-12">
+
+                                <input type="email" class="form-control" placeholder="Correo Electronico" id="correoReg" name="correoReg">
+
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-sm-12">
+
+                                <input type="password" class="form-control" placeholder="Contraseña" id="contraReg" name="contraReg">
 
                             </div>
                         </div>
