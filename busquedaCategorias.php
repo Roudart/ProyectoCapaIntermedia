@@ -5,7 +5,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Categoria</title>
-    <link rel="icon" href="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Flearndashcom.lightningbasecdn.com%2Fwp-content%2Fuploads%2Fudemy-logo.png&f=1&nofb=1">
+
+
+    <link rel="icon" href="src/icon.jpg">
+
+
     <!--Incluimos la biblioteca de free Bootstrap-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
     <!--Incluimos el js necesario para el funcionamiento de bootstrap-->
@@ -47,6 +51,7 @@
             </div>
         </nav>
         <!-- $$$$$$$$$ Barra de navegación $$$$$$$$$ -->
+
         <h1 class="text-center">Resultados...</h1>
         <div class="container mt-5">
             <div class="row">
@@ -102,6 +107,7 @@
                             </li>
                         </ul>
                     </nav>
+
                 </div>
             </div>
         </div>

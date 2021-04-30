@@ -1,3 +1,18 @@
+
+
+<?php
+    include 'conexionPHP.php';
+
+    $connet = mysqli_connect($serverName, $userName, $password, $dataBase);
+    if ($connet -> connect_errno) {
+        echo "Failed to connect to MySQL: " . $connet -> connect_error;
+        exit();
+      }
+
+    
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,7 +20,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Diego Omar Gallegos Maldonado</title>
-    <link rel="icon" href="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Flearndashcom.lightningbasecdn.com%2Fwp-content%2Fuploads%2Fudemy-logo.png&f=1&nofb=1">
+
+
+    <link rel="icon" href="src/icon.jpg">
+    <script src="Js/perfil.js"></script>
+
+
     <!--Incluimos la biblioteca de free Bootstrap-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
     <!--Incluimos el js necesario para el funcionamiento de bootstrap-->
@@ -64,6 +84,11 @@
                             <div class="list-group" id="list-tab" role="tablist"><!--Lista de botones-->
                                 <a class="list-group-item list-group-item-action list-group-item-light active" id="list-profile-list" data-bs-toggle="list" href="#list-profile" role="tab" aria-controls="profile">Perfil</a>
                                 <a class="list-group-item list-group-item-action list-group-item-light" id="list-bootcamp-list" data-bs-toggle="list" href="#list-bootcamp" role="tab" aria-controls="bootcamp">Cursos</a>
+
+
+                                <a class="list-group-item list-group-item-action list-group-item-light" id="list-manager-list" data-bs-toggle="list" href="#list-manager" role="tab" aria-controls="manager">Manejar Usuarios</a>
+
+
                                 <a class="list-group-item list-group-item-action list-group-item-light" id="list-close-list" data-bs-toggle="list" href="#list-close" role="tab" aria-controls="closeuser">Cerrar cuenta</a>
                             </div>
                         </div>
@@ -175,6 +200,71 @@
                                 </div>
                             </div>
                         </div>
+
+
+
+                        <div class="tab-pane fade" id="list-manager" role="tabpanel" aria-labelledby="list-manager-list"><!--El item del boton de la lista -- Manager -->
+                            <div class="row align-items-start">
+                                <div class="row justify-content-center">
+                                    <div class="col-10">
+                                        <h4 class="text-center">Administrador</h4>
+                                        <p class="text-center">Manejo de usuarios</p>
+                                    </div>
+                                </div>
+                                <hr>
+                                <?php
+                                    $ArregloUsuarios = BuscarUsuariosManager();
+                                    $i=0;
+                                    foreach($ArregloUsuarios as $User){
+                                        //echo $ArregloUsuarios[0][$i]; ID
+                                        //echo $ArregloUsuarios[1][$i]; TIPO DE USUARIO
+                                        //echo $ArregloUsuarios[2][$i]; NOMBRE COMPLETO
+                                    echo '<div class="row justify-content-center" id="TarjetaUsuario'; echo $User[0]; echo '"><!--Tarjeta del usuario-->
+                                        <div class="col-8 mb-3">
+                                            <div class="card">
+                                                <div class="card-header">'; echo $User[2]; echo '</div>
+                                                <div class="card-body">
+                                                    <div class="row mb-5">
+                                                        <div class="col-4 mt-3">
+                                                            <a href="#" class="link" style="text-decoration: none;">
+                                                            <img src="https://banner2.kisspng.com/20180615/rtc/kisspng-avatar-user-profile-male-logo-profile-icon-5b238cb002ed52.870627731529056432012.jpg" 
+                                                                class="img rounded-circle img-thumbnail" alt=". . .">
+                                                            </a>
+                                                        </div>
+                                                        <div class="col-8 justify-content-center">
+                                                            <div class="d-grid gap-3">
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input" onClick="ActualizarUsuario(3,'; echo $User[0]; echo ')" type="radio" name="RadioTipoUsuario'; echo $i; echo '" id="RadioEstudiante'; echo $User[0]; echo '"';
+                                                                    if($User[1] == 'Estudiante') echo 'checked>'; else echo '>';
+                                                                    echo '<label class="form-check-label" for="RadioEstudiante">Estudiante</label>
+                                                                </div>
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input" onClick="ActualizarUsuario(2,'; echo $User[0]; echo ')" type="radio" name="RadioTipoUsuario'; echo $i; echo '" id="RadioMaestro'; echo $User[0]; echo '"';
+                                                                    if($User[1] == 'Maestro') echo 'checked>'; else echo '>';
+                                                                    echo '<label class="form-check-label" for="RadioMaestro">Maestro</label>
+                                                                </div>
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input" onClick="ActualizarUsuario(1,'; echo $User[0]; echo ')" type="radio" name="RadioTipoUsuario'; echo $i; echo '" id="RadioAdmin'; echo $User[0]; echo '"';
+                                                                    if($User[1] == 'Admin') echo 'checked>'; else echo '>';
+                                                                    echo '<label class="form-check-label" for="RadioAdmin">Administrador</label>
+                                                                </div>
+                                                                <hr>
+                                                                <button type="button" onClick="EliminarUsuario(TarjetaUsuario'; echo $User[0]; echo ','; echo $User[0]; echo ')" class="btn btn-danger btn-lg">Dar de baja</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>';
+                                    $i++;
+                                    }
+                                    unset($User);
+                                ?>
+                            </div>
+                        </div>
+
+
 
                         <div class="tab-pane fade" id="list-close" role="tabpanel" aria-labelledby="list-close-list"><!--El item del boton de la lista -- CLOSE -->
                             <div class="row align-items-start">

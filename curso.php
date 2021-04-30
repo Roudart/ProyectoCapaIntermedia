@@ -5,7 +5,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Curso</title>
-    <link rel="icon" href="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Flearndashcom.lightningbasecdn.com%2Fwp-content%2Fuploads%2Fudemy-logo.png&f=1&nofb=1">
+
+
+    <link rel="icon" href="src/icon.jpg">
+
+
     <!--Incluimos la biblioteca de free Bootstrap-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
     <!--Incluimos el js necesario para el funcionamiento de bootstrap-->
@@ -171,6 +175,7 @@
                                 <div class="row">
                                     <div class="col mx-auto">
                                         <h1>Reseñas</h1>
+
                                     </div>
                                 </div>
                             </div>
@@ -199,6 +204,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="container-fluid">
                             <div class="row mb-5">
                                 <div class="col-2">
@@ -237,6 +243,7 @@
                                 </script>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
