@@ -1,4 +1,5 @@
 
+
 <?php
     include 'conexionPHP.php';
 
@@ -20,8 +21,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Diego Omar Gallegos Maldonado</title>
 
+
     <link rel="icon" href="src/icon.jpg">
     <script src="Js/perfil.js"></script>
+
 
     <!--Incluimos la biblioteca de free Bootstrap-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
@@ -82,7 +85,9 @@
                                 <a class="list-group-item list-group-item-action list-group-item-light active" id="list-profile-list" data-bs-toggle="list" href="#list-profile" role="tab" aria-controls="profile">Perfil</a>
                                 <a class="list-group-item list-group-item-action list-group-item-light" id="list-bootcamp-list" data-bs-toggle="list" href="#list-bootcamp" role="tab" aria-controls="bootcamp">Cursos</a>
 
+
                                 <a class="list-group-item list-group-item-action list-group-item-light" id="list-manager-list" data-bs-toggle="list" href="#list-manager" role="tab" aria-controls="manager">Manejar Usuarios</a>
+
 
                                 <a class="list-group-item list-group-item-action list-group-item-light" id="list-close-list" data-bs-toggle="list" href="#list-close" role="tab" aria-controls="closeuser">Cerrar cuenta</a>
                             </div>
@@ -197,6 +202,7 @@
                         </div>
 
 
+
                         <div class="tab-pane fade" id="list-manager" role="tabpanel" aria-labelledby="list-manager-list"><!--El item del boton de la lista -- Manager -->
                             <div class="row align-items-start">
                                 <div class="row justify-content-center">
@@ -259,6 +265,7 @@
                         </div>
 
 
+
                         <div class="tab-pane fade" id="list-close" role="tabpanel" aria-labelledby="list-close-list"><!--El item del boton de la lista -- CLOSE -->
                             <div class="row align-items-start">
                                 <div class="row justify-content-center">
@@ -292,6 +299,7 @@
                                               </div>
                                             </div>
                                         </div>
+
 
                                     </div>
                                 </div>
