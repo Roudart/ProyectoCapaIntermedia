@@ -21,6 +21,7 @@
     <title>Diego Omar Gallegos Maldonado</title>
 
     <link rel="icon" href="src/icon.jpg">
+    <script src="Js/perfil.js"></script>
 
     <!--Incluimos la biblioteca de free Bootstrap-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
@@ -207,15 +208,15 @@
                                 <hr>
                                 <?php
                                     $ArregloUsuarios = BuscarUsuariosManager();
-                                    $NumUsuarios =sizeof($ArregloUsuarios);
-                                    for($i = 0; $i < $NumUsuarios; $i++){
+                                    $i=0;
+                                    foreach($ArregloUsuarios as $User){
                                         //echo $ArregloUsuarios[0][$i]; ID
                                         //echo $ArregloUsuarios[1][$i]; TIPO DE USUARIO
                                         //echo $ArregloUsuarios[2][$i]; NOMBRE COMPLETO
-                                    echo '<div class="row justify-content-center"><!--Tarjeta del usuario-->
+                                    echo '<div class="row justify-content-center" id="TarjetaUsuario'; echo $User[0]; echo '"><!--Tarjeta del usuario-->
                                         <div class="col-8 mb-3">
                                             <div class="card">
-                                                <div class="card-header">'; echo $ArregloUsuarios[2][$i]; echo '</div>
+                                                <div class="card-header">'; echo $User[2]; echo '</div>
                                                 <div class="card-body">
                                                     <div class="row mb-5">
                                                         <div class="col-4 mt-3">
@@ -227,22 +228,22 @@
                                                         <div class="col-8 justify-content-center">
                                                             <div class="d-grid gap-3">
                                                                 <div class="form-check">
-                                                                    <input class="form-check-input" type="radio" name="RadioTipoUsuario'; echo $i; echo '" id="RadioEstudiante'; echo $ArregloUsuarios[0][$i]; echo '"';
-                                                                    if($ArregloUsuarios[1][$i] == 'Estudiante') echo 'checked>'; else echo '>';
+                                                                    <input class="form-check-input" onClick="ActualizarUsuario(3,'; echo $User[0]; echo ')" type="radio" name="RadioTipoUsuario'; echo $i; echo '" id="RadioEstudiante'; echo $User[0]; echo '"';
+                                                                    if($User[1] == 'Estudiante') echo 'checked>'; else echo '>';
                                                                     echo '<label class="form-check-label" for="RadioEstudiante">Estudiante</label>
                                                                 </div>
                                                                 <div class="form-check">
-                                                                    <input class="form-check-input" type="radio" name="RadioTipoUsuario'; echo $i; echo '" id="RadioMaestro'; echo $ArregloUsuarios[0][$i]; echo '"';
-                                                                    if($ArregloUsuarios[1][$i] == 'Maestro') echo 'checked>'; else echo '>';
+                                                                    <input class="form-check-input" onClick="ActualizarUsuario(2,'; echo $User[0]; echo ')" type="radio" name="RadioTipoUsuario'; echo $i; echo '" id="RadioMaestro'; echo $User[0]; echo '"';
+                                                                    if($User[1] == 'Maestro') echo 'checked>'; else echo '>';
                                                                     echo '<label class="form-check-label" for="RadioMaestro">Maestro</label>
                                                                 </div>
                                                                 <div class="form-check">
-                                                                    <input class="form-check-input" type="radio" name="RadioTipoUsuario'; echo $i; echo '" id="RadioAdmin'; echo $ArregloUsuarios[0][$i]; echo '"';
-                                                                    if($ArregloUsuarios[1][$i] == 'Admin') echo 'checked>'; else echo '>';
+                                                                    <input class="form-check-input" onClick="ActualizarUsuario(1,'; echo $User[0]; echo ')" type="radio" name="RadioTipoUsuario'; echo $i; echo '" id="RadioAdmin'; echo $User[0]; echo '"';
+                                                                    if($User[1] == 'Admin') echo 'checked>'; else echo '>';
                                                                     echo '<label class="form-check-label" for="RadioAdmin">Administrador</label>
                                                                 </div>
                                                                 <hr>
-                                                                <button type="button" class="btn btn-danger btn-lg">Dar de baja</button>
+                                                                <button type="button" onClick="EliminarUsuario(TarjetaUsuario'; echo $User[0]; echo ','; echo $User[0]; echo ')" class="btn btn-danger btn-lg">Dar de baja</button>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -250,7 +251,9 @@
                                             </div>
                                         </div>
                                     </div>';
+                                    $i++;
                                     }
+                                    unset($User);
                                 ?>
                             </div>
                         </div>

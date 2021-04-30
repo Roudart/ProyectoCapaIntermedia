@@ -63,7 +63,7 @@
                        Inscribete y obten 30% de descuento 
                     </h1>
                     <hr>
-                    <form action="">
+                    <form>
                         <div class="row mb-3">
                             <div class="col-sm-12">
 
