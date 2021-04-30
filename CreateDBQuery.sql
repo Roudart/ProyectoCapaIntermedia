@@ -79,6 +79,21 @@ BEGIN
 END $$
 DELIMITER ;
 
+DROP PROCEDURE IF EXISTS RegistrarUsuario;
+DELIMITER $$
+CREATE PROCEDURE RegistrarUsuario(
+    regNombre VARCHAR(40),
+    regApellidoPaterno VARCHAR(60),
+    regApellidoMaterno VARCHAR(60),
+    regApodo VARCHAR(30),
+    regCorreoElectronico VARCHAR(60),
+    regContraseña VARCHAR(30))
+BEGIN	
+        INSERT INTO Usuario (Nombre, ApellidoPaterno, ApellidoMaterno, Apodo, CorreoElectronico, Contraseña) 
+        values (regNombre, regApellidoPaterno, regApellidoMaterno, regApodo, regCorreoElectronico, regContraseña);
+END $$
+DELIMITER ;
+
 DROP PROCEDURE IF EXISTS TraerUsuariosManager;
 DELIMITER $$
 CREATE PROCEDURE TraerUsuariosManager()
