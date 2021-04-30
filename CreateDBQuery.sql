@@ -98,6 +98,22 @@ DROP PROCEDURE IF EXISTS TraerUsuariosManager;
 DELIMITER $$
 CREATE PROCEDURE TraerUsuariosManager()
 BEGIN
-SELECT IdUsuario, TipoUsuario, CONCAT_WS(' ', Nombre, ApellidoPaterno, ApellidoMaterno) AS NombreCompleto FROM USUARIO;
+        SELECT IdUsuario, TipoUsuario, CONCAT_WS(' ', Nombre, ApellidoPaterno, ApellidoMaterno) AS NombreCompleto FROM USUARIO;
 END $$
 DELIMITER ;
+
+DROP PROCEDURE IF EXISTS DeleteUser;
+DELIMITER $$
+CREATE PROCEDURE DeleteUser(id INT)
+BEGIN
+	    DELETE FROM Usuario WHERE IdUsuario = id;
+END $$
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS CambiarTipoUsuario;
+DELIMITER $$
+CREATE PROCEDURE CambiarTipoUsuario(IN id INT,IN Tipo int) /*(INDICE DE USUARIO, (INT)1 - "ADMIN" (INT)2 - "MAESTRO" (INT)3 - "ESTUDIANTE")*/
+BEGIN
+	    UPDATE usuario SET TipoUsuario = Tipo WHERE IdUsuario = id;
+END $$
+DELIMITER $$

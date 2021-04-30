@@ -10,16 +10,19 @@
         exit();
       }
       
-      $sqlQuery = "call SaludoDB;";
+      $sqlQuery = "SELECT * FROM usuario;";
       $result = mysqli_query($connet, $sqlQuery);
       if (!$result) {
         echo("Error description: " . $connet -> error);
       }else{
-        while($newRow = mysqli_fetch_array($result))
-        echo($newRow["Hola Mundo soy una base de datos de MYSQL"]);
+        while($newRow = mysqli_fetch_array($result)){
+          echo $newRow["Nombre"];
+          echo $newRow["TipoUsuario"];
       }
+    }
+      
 
-      $connet -> close();
+    $connet -> close();
 
 
       function BuscarUsuariosManager(){
@@ -41,9 +44,9 @@
               mysqli_close($connet);
                 $i = 0;
                 while($newRow = mysqli_fetch_array($result)){
-                    $ArregloUsuarios[0][$i] = $newRow["IdUsuario"];
-                    $ArregloUsuarios[1][$i] = $newRow["TipoUsuario"];
-                    $ArregloUsuarios[2][$i] = $newRow["NombreCompleto"];
+                    $ArregloUsuarios[$i][0] = $newRow["IdUsuario"];
+                    $ArregloUsuarios[$i][1] = $newRow["TipoUsuario"];
+                    $ArregloUsuarios[$i][2] = $newRow["NombreCompleto"];
                     $i++;
                 }
                 return $ArregloUsuarios;
