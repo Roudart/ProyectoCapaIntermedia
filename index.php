@@ -3,8 +3,12 @@
 <?php
         include 'conexionPHP.php';
         $connection = new Conexion();
-        session_start();
-        echo $_SESSION["IDUser"]
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+            if(isset($_SESSION["IDUser"]))
+                echo $_SESSION["IDUser"];
+         }
+        
 ?>
 
 
@@ -53,10 +57,22 @@
                 <div class="navbar-nav mb-2 mb-lg-0">
                     <a class="nav-link" href="#">Clases</a>
                     <a class="nav-link" href="#">Cursos</a>
-                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                        <a href="iniciarsesion.html"><button class="btn btn-outline-primary">Iniciar sesión</button></a>
-                        <a href="registrarte.html"><button class="btn btn-primary">Registrate</button></a>
-                    </div>
+                    <?php if(!isset($_SESSION["IDUser"])){echo
+                    '<div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="iniciarsesion.php"><button class="btn btn-outline-danger">Iniciar sesión</button></a>
+                        <a href="registrarte.php"><button class="btn btn-danger">Registrate</button></a>
+                    </div>';
+                    }else{echo
+                        '<div class="dropdown">
+                        <a class="navbar-brand" data-bs-toggle="dropdown" role="button" id="dropDownSesion" href="#" onclick=""  width="32px" height="45px" style="margin-left: 7px; margin-right: 0px" >  
+                            <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcdn.onlinewebfonts.com%2Fsvg%2Fimg_411076.png&f=1&nofb=1" alt ="profilepic" class="perfile" style= "width:40px; height:40px; border-radius:40px; border:1px solid #666;">
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropDownSesion">
+                            <a class="dropdown-item" href="">Perfil</a>
+                            <a class="dropdown-item" href="cerrarSesion.php" id="cerrarsesion">Cerrar Sesión</a>
+                        </div>
+                    </div>';
+                    }?>
                 </div>
             </div>
         </div>

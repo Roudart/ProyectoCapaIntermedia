@@ -67,18 +67,18 @@
                        ¡Inicia sesion para obtener todos los beneficios!
                     </h3>
                     <hr>
-                    <form action="">
+                    <form action="iniciarUsuario.php" method="POST">
                         <div class="row mb-3">
                             <div class="col-sm-12">
 
-                                <input type="email" class="form-control" placeholder="Correo Electronico" id="correoIni">
+                                <input type="email" class="form-control" placeholder="Correo Electronico" name="correoIni" id="correoIni">
 
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-sm-12">
 
-                                <input type="password" class="form-control" placeholder="Contraseña" id="contraIni">
+                                <input type="password" class="form-control" placeholder="Contraseña" name="contraIni" id="contraIni">
 
                             </div>
                         </div>

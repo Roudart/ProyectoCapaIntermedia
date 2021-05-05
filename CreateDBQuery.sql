@@ -95,6 +95,14 @@ BEGIN
 END $$
 DELIMITER ;
 
+DROP PROCEDURE IF EXISTS IniciarSesion;
+DELIMITER $$
+CREATE PROCEDURE IniciarSesion(Correo VARCHAR(40), Pass VARCHAR(40))
+BEGIN
+	SELECT IdUsuario FROM Usuario WHERE CorreoElectronico = Correo AND Contraseña = Pass LIMIT 1;
+END $$
+DELIMITER ;
+
 DROP PROCEDURE IF EXISTS TraerUsuariosManager;
 DELIMITER $$
 CREATE PROCEDURE TraerUsuariosManager()
