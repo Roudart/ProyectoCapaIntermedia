@@ -10,8 +10,9 @@
       $Apod = $_POST["apoReg"];
       $Correo = $_POST["correoReg"];
       $Contra = $_POST["contraReg"];
+      $ImageURL = $_POST["ImagePath"];
 
-      $sqlQuery = "call RegistrarUsuario('$Nombre','$ApeP','$ApeM','$Apod','$Correo','$Contra')";
+      $sqlQuery = "call RegistrarUsuario('$Nombre','$ApeP','$ApeM','$Apod','$Correo','$Contra','$ImageURL')";
       $result = mysqli_query($connection->connet, $sqlQuery);
       if ($result) {
         echo("funcionó");

@@ -87,10 +87,11 @@ CREATE PROCEDURE RegistrarUsuario(
     regApellidoMaterno VARCHAR(60),
     regApodo VARCHAR(30),
     regCorreoElectronico VARCHAR(60),
-    regContraseña VARCHAR(30))
+    regContraseña VARCHAR(30),
+    regImagen VARCHAR(256))
 BEGIN	
-        INSERT INTO Usuario (Nombre, ApellidoPaterno, ApellidoMaterno, Apodo, CorreoElectronico, Contraseña) 
-        values (regNombre, regApellidoPaterno, regApellidoMaterno, regApodo, regCorreoElectronico, regContraseña);
+        INSERT INTO Usuario (Nombre, ApellidoPaterno, ApellidoMaterno, Apodo, CorreoElectronico, Contraseña, Imagen) 
+        values (regNombre, regApellidoPaterno, regApellidoMaterno, regApodo, regCorreoElectronico, regContraseña, regImagen);
         SELECT IdUsuario FROM Usuario ORDER BY IdUsuario DESC limit 1;
 END $$
 DELIMITER ;
