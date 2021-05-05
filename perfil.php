@@ -3,12 +3,8 @@
 <?php
     include 'conexionPHP.php';
 
-    $connet = mysqli_connect($serverName, $userName, $password, $dataBase);
-    if ($connet -> connect_errno) {
-        echo "Failed to connect to MySQL: " . $connet -> connect_error;
-        exit();
-      }
-
+    $connection = new Conexion();
+    
     
 ?>
 
@@ -213,7 +209,7 @@
                                 </div>
                                 <hr>
                                 <?php
-                                    $ArregloUsuarios = BuscarUsuariosManager();
+                                    $ArregloUsuarios = $connection->BuscarUsuariosManager();
                                     $i=0;
                                     foreach($ArregloUsuarios as $User){
                                         //echo $ArregloUsuarios[0][$i]; ID

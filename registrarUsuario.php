@@ -1,14 +1,8 @@
 <?php
-      $serverName     = "localhost";
-      $dataBase       = "shademydb";
-      $userName       = "root";
-      $password       = "m41sql";
+      include 'conexionPHP.php';
+      header("Content-Type: text/plain");
 
-      $connet = mysqli_connect($serverName, $userName, $password, $dataBase);
-      if ($connet -> connect_errno) {
-        echo "Failed to connect to MySQL: " . $connet -> connect_error;
-        exit();
-      }
+      $connection = new Conexion();
 
       $Nombre = $_POST["nomReg"];
       $ApeP = $_POST["ApePReg"];
@@ -18,9 +12,13 @@
       $Contra = $_POST["contraReg"];
 
       $sqlQuery = "call RegistrarUsuario('$Nombre','$ApeP','$ApeM','$Apod','$Correo','$Contra')";
-      $result = mysqli_query($connet, $sqlQuery);
+      $result = mysqli_query($connection->connet, $sqlQuery);
       if ($result) {
         echo("funcionó");
+        session_start();
+        while($newRow = mysqli_fetch_array($result)){
+          $_SESSION["IDUser"] = $newRow["IdUsuario"];}
+        header("Location: index.php");
       }else{
         echo("valió queso");
       }

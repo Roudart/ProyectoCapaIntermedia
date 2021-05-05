@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS Usuario(
     CorreoElectronico VARCHAR(60) NOT NULL,
     Contraseña VARCHAR(30) NOT NULL,
     Imagen VARCHAR(256) NULL,
-    Biografía VARCHAR(255)
+    Biografía VARCHAR(255) NULL
 );
 
 CREATE TABLE IF NOT EXISTS Curso(
@@ -91,6 +91,7 @@ CREATE PROCEDURE RegistrarUsuario(
 BEGIN	
         INSERT INTO Usuario (Nombre, ApellidoPaterno, ApellidoMaterno, Apodo, CorreoElectronico, Contraseña) 
         values (regNombre, regApellidoPaterno, regApellidoMaterno, regApodo, regCorreoElectronico, regContraseña);
+        SELECT IdUsuario FROM Usuario ORDER BY IdUsuario DESC limit 1;
 END $$
 DELIMITER ;
 

@@ -2,6 +2,9 @@
 
 <?php
         include 'conexionPHP.php';
+        $connection = new Conexion();
+        session_start();
+        echo $_SESSION["IDUser"]
 ?>
 
 

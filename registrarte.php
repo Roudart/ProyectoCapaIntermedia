@@ -67,7 +67,7 @@
                     </h1>
                     <hr>
 
-                    <form action = "registrarUsuario.php" method = "post">
+                    <form action = "registrarUsuario.php" method = "post" name="SignInForm">
 
                         <div class="row mb-3">
                             <div class="col-sm-12">
@@ -116,7 +116,7 @@
                             <div class="col-sm-12">
                                 <div class="d-grid gap-2">
 
-                                    <button onclick="validarRegistro()" class="btn btn-danger btn-lg">Regístrate</button>
+                                    <button onclick="validarRegistro()" type="submit" class="btn btn-danger btn-lg">Regístrate</button>
 
                                 </div>
                             </div>

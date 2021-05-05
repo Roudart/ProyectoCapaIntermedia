@@ -65,9 +65,9 @@ function validarRegistro() {
     
     console.log("contra"); 
     
-
+    document.forms["SignInForm"].submit();
     alert("se ha registrado exitosamente");
-
+    return true;
 }
 
 function validarInicio() {
