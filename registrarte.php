@@ -6,12 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registrate</title>
 
+
     <link rel="icon" href="src/icon.jpg">
+
 
     <!--Incluimos la biblioteca de free Bootstrap-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
     <!--Incluimos el js necesario para el funcionamiento de bootstrap-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+
 
     <script src="Js/valid.js"></script>
 
@@ -55,53 +58,85 @@
 
         <div class="container">
             <div class="row">
-                <div class="col-4">
-
-                </div>
-                <div class="col-4 text-center">
+                <div class="col-6 mx-auto">
                     <h1>
                        Inscribete y obten 30% de descuento 
                     </h1>
                     <hr>
-                    <form action="">
+
+                    <form action = "registrarUsuario.php" method = "post" name="SignInForm">
+                    
+                        <div class="row mb-3">
+                            <div class="col-6 mx-auto">
+                                <label for="fileButton">
+                                    <img id="blah" src="https://banner2.kisspng.com/20180615/rtc/kisspng-avatar-user-profile-male-logo-profile-icon-5b238cb002ed52.870627731529056432012.jpg"
+                                    class="img rounded-circle img-fluid" alt=". . .">
+                                </label>
+                                <input type="file" value="upload" id="fileButton" onChange="PreviewImage();" accept="image/*" style="display: none;">
+                            </div>
+                        </div>
+
                         <div class="row mb-3">
                             <div class="col-sm-12">
 
-                                <input type="text" class="form-control" placeholder="Nombre" id="nomReg">
+                                <input type="text" class="form-control" placeholder="Nombre" id="nomReg" name="nomReg">
+
 
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-sm-12">
 
-                                <input type="email" class="form-control" placeholder="Correo Electronico" id="correoReg">
+                                <input type="text" class="form-control" placeholder="Apellido paterno" id="ApePReg" name="ApePReg">
 
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-sm-12">
 
-                                <input type="password" class="form-control" placeholder="Contraseña" id="contraReg">
+                                <input type="text" class="form-control" placeholder="Apellido materno" id="ApeMReg" name="ApeMReg">
 
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-sm-12">
+
+                                <input type="text" class="form-control" placeholder="Apodo" id="apoReg" name="apoReg">
+
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-sm-12">
+
+                                <input type="email" class="form-control" placeholder="Correo Electronico" id="correoReg" name="correoReg">
+
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-sm-12">
+
+                                <input type="password" class="form-control" placeholder="Contraseña" id="contraReg" name="contraReg">
+
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-sm-6 mx-auto">
                                 <div class="d-grid gap-2">
 
-                                    <button onclick="validarRegistro()" class="btn btn-danger btn-lg">Regístrate</button>
+                                    <button onclick="validarRegistro()" type="button" class="btn btn-danger btn-lg">Regístrate</button>
 
                                 </div>
                             </div>
                         </div>
                     </form>
                     <hr>
-                    <h6>
-                        ¿Ya tienes cuenta? <a href="">Inicia sesión</a> 
-                    </h6>
-                </div>
-                <div class="col-4">
-
+                        <div class="row mb-3">
+                            <div class="col-sm-12">
+                                <h6 class="mx-auto col-6">
+                                    ¿Ya tienes cuenta? <a href="">Inicia sesión</a> 
+                                </h6>
+                            </div>
+                        </div>
                 </div>
             </div>
         </div>
@@ -145,5 +180,122 @@
         </div>
     </div>
 
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-app.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+    https://firebase.google.com/docs/web/setup#available-libraries -->
+
+
+<!-- Insert these scripts at the bottom of the HTML, but before you use any Firebase services -->
+
+<!-- If you enabled Analytics in your project, add the Firebase SDK for Analytics -->
+<script src="https://www.gstatic.com/firebasejs/8.4.0/firebase-storage.js"></script>
+
+
+
+<script>
+
+
+// Your web app's Firebase configuration
+var firebaseConfig = {
+    apiKey: "AIzaSyBVcqywOYtxfSReOqczaske3yqwaWAv1i8",
+    authDomain: "shademy-f9afe.firebaseapp.com",
+    projectId: "shademy-f9afe",
+    storageBucket: "shademy-f9afe.appspot.com",
+    messagingSenderId: "54990730142",
+    appId: "1:54990730142:web:2d201893eb624e75d21c8f"
+};
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+
+//Get elements form dom
+var fileButton = document.getElementById("fileButton");
+
+
+function PreviewImage() {
+        var oFReader = new FileReader();
+        oFReader.readAsDataURL(document.getElementById("fileButton").files[0]);
+
+        oFReader.onload = function (oFREvent) {
+            document.getElementById("blah").src = oFREvent.target.result;
+        };
+    };
+
+function UploadImage(){
+    //Get File
+    var e = document.getElementById("fileButton");
+    var file = e.files[0];
+    console.log(file.name);
+
+    //Create storage ref
+    var storageRef = firebase.storage().ref('fotos/' + file.name);
+
+    // Upload file
+    var task = storageRef.put(file);
+
+    task.on('state_changed', 
+    
+        function progress(snapshot){
+            var percentage = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            console.log(percentage);
+        },
+
+        function error(err){
+            alert("ERROR! NO SE PUDO CARGAR IMAGEN");
+        },
+
+        function complete(){
+            console.log("Imagen cargada!");
+            task.snapshot.ref.getDownloadURL().then(function (URL){
+                console.log(URL);
+                submitUser(URL);
+            });
+        }
+    );
+
+}
+
+function submitUser(URL){
+    var formUser = document.forms["SignInForm"];
+    var SN = document.createElement("input"); 
+    SN.setAttribute("type", "text"); 
+    SN.setAttribute("value", URL); 
+    SN.setAttribute("name", "ImagePath");//La estructura tiene el nombre
+    formUser.appendChild(SN);
+    formUser.submit();
+    alert("se ha registrado exitosamente");
+    return true;
+}
+
+// Listen for file selected
+// fileButton.addEventListener('change', function(e){
+//     //Get File
+//     var file = e.target.files[0];
+
+//     //Create storage ref
+//     var storageRef = firebase.storage().ref('fotos/' + file.name);
+
+//     // Upload file
+//     var task = storageRef.put(file);
+
+//     task.on('state_changed', 
+    
+//         function progress(snapshot){
+//             var percentage = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+//             console.log(percentage);
+//         },
+
+//         function error(err){
+
+//         },
+
+//         function complete(){
+
+//         }
+//     );
+
+// });
+</script>
 </body>
 </html>
