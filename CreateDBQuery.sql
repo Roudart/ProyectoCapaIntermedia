@@ -96,6 +96,17 @@ BEGIN
 END $$
 DELIMITER ;
 
+DROP PROCEDURE IF EXISTS BuscarUsuario;
+DELIMITER $$
+CREATE PROCEDURE BuscarUsuario(id INT)
+BEGIN
+    SELECT TipoUsuario, Nombre, ApellidoPaterno, ApellidoMaterno, Apodo, CorreoElectronico, Imagen
+    FROM Usuario
+    WHERE IdUsuario = id
+    LIMIT 1;
+END $$
+DELIMITER ;
+
 DROP PROCEDURE IF EXISTS IniciarSesion;
 DELIMITER $$
 CREATE PROCEDURE IniciarSesion(Correo VARCHAR(40), Pass VARCHAR(40))
@@ -127,3 +138,11 @@ BEGIN
 	    UPDATE usuario SET TipoUsuario = Tipo WHERE IdUsuario = id;
 END $$
 DELIMITER $$
+
+DROP PROCEDURE IF EXISTS BuscarFotoUsuario;
+DELIMITER $$
+CREATE PROCEDURE BuscarFotoUsuario(id INT)
+BEGIN	
+        SELECT Imagen FROM usuario WHERE IdUsuario = id LIMIT 1;
+END $$
+DELIMITER ;

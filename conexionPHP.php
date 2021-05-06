@@ -43,7 +43,6 @@ class Conexion{
       if (!$result) {
           echo("Error description: " . $this->connet -> error);
       }else{
-              mysqli_close($this->connet);
                 $i = 0;
                 while($newRow = mysqli_fetch_array($result)){
                     $ArregloUsuarios[$i][0] = $newRow["IdUsuario"];
@@ -52,6 +51,40 @@ class Conexion{
                     $i++;
                 }
                 return $ArregloUsuarios;
+        }
+      }
+
+      function BuscarUsuario($id){
+        $sql = "call BuscarUsuario($id);";
+        $result = mysqli_query($this->connet, $sql);
+        if(!$result){
+          echo("Error description: " . $this->connet->error);
+        }else{
+          while($newRow = mysqli_fetch_array($result)){
+            $Usuario["TipoUsuario"] =       $newRow["TipoUsuario"];
+            $Usuario["Nombre"] =            $newRow["Nombre"];
+            $Usuario["ApellidoPaterno"] =   $newRow["ApellidoPaterno"];
+            $Usuario["ApellidoMaterno"] =   $newRow["ApellidoMaterno"];
+            $Usuario["Apodo"] =             $newRow["Apodo"];
+            $Usuario["CorreoElectronico"] = $newRow["CorreoElectronico"];
+            $Usuario["Imagen"] =            $newRow["Imagen"];  
+          }
+          return $Usuario;
+        }
+      }
+
+      function BuscarFotoUsuario($id){
+        $sql = "call BuscarFotoUsuario(28);";
+        $result = mysqli_query($this->connet, $sql);
+        if(!$result){
+            echo("Error description: " . $this->connet ->error);
+        }else{
+            while($newRow = mysqli_fetch_array($result)){
+              $ImageURL = $newRow["Imagen"];
+            }
+            if(!isset($ImageURL) || $ImageURL === null)
+                return 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcdn.onlinewebfonts.com%2Fsvg%2Fimg_411076.png&f=1&nofb=1';
+            return $ImageURL;
         }
       }
 } 

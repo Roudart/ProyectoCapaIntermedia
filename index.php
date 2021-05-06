@@ -5,8 +5,6 @@
         $connection = new Conexion();
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
-            if(isset($_SESSION["IDUser"]))
-                echo $_SESSION["IDUser"];
          }
         
 ?>
@@ -34,7 +32,7 @@
     <!-- $$$$$$$$$ Barra de navegación $$$$$$$$$ -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light shadow p-3 mb-5 bg-body rounded"> <!--Le da a la barra de navegacion el formato de expansión (por responsiva) el color, tema, y pone una sombra para diferenciarlo del fondo-->
         <div class="container-fluid"><!--Un contenedor que hace que el contenido ocupe toda la barra (fluido)-->
-            <a class="navbar-brand" href="index.html">Shademy</a><!--El logotipo de la pagina-->
+            <a class="navbar-brand" href="index.php">Shademy</a><!--El logotipo de la pagina-->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button><!--Este boton se activa cuando la pagina es muy pequeña (responsividad)-->
@@ -65,10 +63,10 @@
                     }else{echo
                         '<div class="dropdown">
                         <a class="navbar-brand" data-bs-toggle="dropdown" role="button" id="dropDownSesion" href="#" onclick=""  width="32px" height="45px" style="margin-left: 7px; margin-right: 0px" >  
-                            <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcdn.onlinewebfonts.com%2Fsvg%2Fimg_411076.png&f=1&nofb=1" alt ="profilepic" class="perfile" style= "width:40px; height:40px; border-radius:40px; border:1px solid #666;">
+                            <img src="' . $connection->BuscarFotoUsuario($_SESSION["IDUser"]) . '" alt ="profilepic" class="perfile" style= "width:40px; height:40px; border-radius:40px; border:1px solid #666;">
                         </a>
                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropDownSesion">
-                            <a class="dropdown-item" href="">Perfil</a>
+                            <a class="dropdown-item" href="perfil.php">Perfil</a>
                             <a class="dropdown-item" href="cerrarSesion.php" id="cerrarsesion">Cerrar Sesión</a>
                         </div>
                     </div>';

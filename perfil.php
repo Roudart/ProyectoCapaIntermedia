@@ -4,7 +4,11 @@
     include 'conexionPHP.php';
 
     $connection = new Conexion();
-    
+    if (session_status() == PHP_SESSION_NONE) {
+        session_start();
+        if(isset($_SESSION["IDUser"]))
+            $Usuario = $connection->BuscarUsuario($_SESSION["IDUser"]);
+     }
     
 ?>
 
@@ -21,6 +25,14 @@
     <link rel="icon" href="src/icon.jpg">
     <script src="Js/perfil.js"></script>
 
+     <script>function ActivarInputCorreo(){
+         var InputCorreo = document.getElementById("InputCorreoPerfil");
+         if(InputCorreo.disabled){
+             InputCorreo.disabled = false;    
+         }else{
+             InputCorreo.disabled = true;
+         }
+     }</script>
 
     <!--Incluimos la biblioteca de free Bootstrap-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
@@ -31,7 +43,7 @@
     <!-- $$$$$$$$$ Barra de navegación $$$$$$$$$ -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light shadow p-3 mb-5 bg-body rounded"> <!--Le da a la barra de navegacion el formato de expansión (por responsiva) el color, tema, y pone una sombra para diferenciarlo del fondo-->
         <div class="container-fluid"><!--Un contenedor que hace que el contenido ocupe toda la barra (fluido)-->
-            <a class="navbar-brand" href="index.html">Shademy</a><!--El logotipo de la pagina-->
+            <a class="navbar-brand" href="index.php">Shademy</a><!--El logotipo de la pagina-->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button><!--Este boton se activa cuando la pagina es muy pequeña (responsividad)-->
@@ -70,9 +82,9 @@
             <div class="col-2 border">
                     <div class="row justify-content-center">
                         <div class="col mt-3">
-                            <img src="https://banner2.kisspng.com/20180615/rtc/kisspng-avatar-user-profile-male-logo-profile-icon-5b238cb002ed52.870627731529056432012.jpg" 
+                            <img src=<?php echo '"'. $Usuario["Imagen"] .'"';?> 
                             class="img rounded-circle img-fluid" alt=". . .">
-                            <p class="text-center"><strong>Diego Omar Gallegos Maldonado</strong></p>
+                            <p class="text-center"><strong><?php echo $Usuario["Nombre"]. " " . $Usuario["ApellidoPaterno"] ." " . $Usuario["ApellidoMaterno"];?></strong></p>
                         </div>
                     </div>
                     <div class="row justify-content-center mb-5">
@@ -81,9 +93,9 @@
                                 <a class="list-group-item list-group-item-action list-group-item-light active" id="list-profile-list" data-bs-toggle="list" href="#list-profile" role="tab" aria-controls="profile">Perfil</a>
                                 <a class="list-group-item list-group-item-action list-group-item-light" id="list-bootcamp-list" data-bs-toggle="list" href="#list-bootcamp" role="tab" aria-controls="bootcamp">Cursos</a>
 
-
-                                <a class="list-group-item list-group-item-action list-group-item-light" id="list-manager-list" data-bs-toggle="list" href="#list-manager" role="tab" aria-controls="manager">Manejar Usuarios</a>
-
+                                <?php if($Usuario["TipoUsuario"] == "Admin") echo '
+                                <a class="list-group-item list-group-item-action list-group-item-light" id="list-manager-list" data-bs-toggle="list" href="#list-manager" role="tab" aria-controls="manager">Manejar Usuarios</a>';
+                                ?>
 
                                 <a class="list-group-item list-group-item-action list-group-item-light" id="list-close-list" data-bs-toggle="list" href="#list-close" role="tab" aria-controls="closeuser">Cerrar cuenta</a>
                             </div>
@@ -109,13 +121,16 @@
                                     <div class="col-8">
                                         <p>Información básica:</p>
                                         <div class="mb-3">
-                                            <input type="text" class="form-control" id="inputname" placeholder="Diego Omar">
+                                            <input type="text" class="form-control" id="inputname" placeholder=<?php echo '"'. $Usuario["Nombre"].'"';?>>
                                         </div>
                                         <div class="mb-3">
-                                            <input type="text" class="form-control" id="inputlastname" placeholder="Gallegos Maldonado">
+                                            <input type="text" class="form-control" id="inputlastname" placeholder=<?php echo '"'. $Usuario["ApellidoPaterno"].'"';?>>
                                         </div>
                                         <div class="mb-3">
-                                            <input type="text" class="form-control" id="inputuser" placeholder="Roudart">
+                                            <input type="text" class="form-control" id="inputlastname2" placeholder=<?php echo '"'. $Usuario["ApellidoMaterno"].'"';?>>
+                                        </div>
+                                        <div class="mb-3">
+                                            <input type="text" class="form-control" id="inputuser" placeholder=<?php echo '"'. $Usuario["Apodo"].'"';?>>
                                         </div>
                                     </div>
                                 </div>
@@ -124,8 +139,8 @@
                                     <div class="col-8">
                                         <p>Correo electronico:</p>
                                         <div class="input-group mb-3">
-                                            <input type="mail" class="form-control" placeholder="diego3_gallegos@hotmail.com" aria-describedby="basic-addon1">
-                                            <span class="input-group-text" id="basic-addon1">
+                                            <input type="mail" id="InputCorreoPerfil" class="form-control" placeholder=<?php echo '"'. $Usuario["CorreoElectronico"].'"'; ?> aria-describedby="basic-addon1" disabled>
+                                            <span class="input-group-text" id="basic-addon1" onClick="ActivarInputCorreo();">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
                                                     <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
                                                   </svg>
@@ -209,7 +224,8 @@
                                 </div>
                                 <hr>
                                 <?php
-                                    $ArregloUsuarios = $connection->BuscarUsuariosManager();
+                                    $connection2 = new Conexion();
+                                    $ArregloUsuarios = $connection2->BuscarUsuariosManager();
                                     $i=0;
                                     foreach($ArregloUsuarios as $User){
                                         //echo $ArregloUsuarios[0][$i]; ID
