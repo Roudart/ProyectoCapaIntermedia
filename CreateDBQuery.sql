@@ -71,6 +71,31 @@ CREATE TABLE IF NOT EXISTS CursoCategoria(
     FOREIGN KEY FK_CursoCategoriaCategoria (IdCategoria) REFERENCES Categoria(IdCategoria)
 );
 
+CREATE TABLE IF NOT EXISTS Requisito(
+	IdRequisito INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    IdCurso INT NOT NULL,
+    Nombre VARCHAR(60) NOT NULL,
+    FOREIGN KEY FK_REQUISITOCURSO (IdCurso) REFERENCES Curso(IdCurso)
+);
+
+ALTER TABLE TEMA
+ADD NumTema INT NOT NULL
+AFTER Descripción;
+
+ALTER TABLE curso
+ADD Aprobado TINYINT NOT NULL DEFAULT 1
+AFTER Extras;
+
+ALTER TABLE curso
+ADD IdMaestro INT
+AFTER IdCurso;
+
+ALTER TABLE curso
+DROP COLUMN Extras;
+
+ALTER TABLE curso
+DROP COLUMN Requisitos;
+
 DROP PROCEDURE IF EXISTS SaludoDB;
 DELIMITER $$
 CREATE PROCEDURE SaludoDB()
@@ -144,5 +169,33 @@ DELIMITER $$
 CREATE PROCEDURE BuscarFotoUsuario(id INT)
 BEGIN	
         SELECT Imagen FROM usuario WHERE IdUsuario = id LIMIT 1;
+END $$
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS CrearCurso;
+DELIMITER $$
+CREATE PROCEDURE CrearCurso(Id INT, NombreCurso VARCHAR(60), Des VARCHAR(256), Costo DECIMAL(15,2))
+BEGIN
+	INSERT INTO curso (IdMaestro, Nombre, Descripción, Precio, Aprobado)
+    VALUES (Id, NombreCurso, Des, Costo, 0); 
+    SELECT IdCurso FROM Curso ORDER BY IdCurso DESC LIMIT 1;
+END $$
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS CrearTema;
+DELIMITER $$
+CREATE PROCEDURE CrearTema(NombreTema VARCHAR(256), Des VARCHAR(156), Num INT, Curso INT)
+BEGIN
+	INSERT INTO Tema (Nombre, Descripción, NumTema, IdCurso)
+    VALUES (NombreTema, Des, Num, Curso); 
+END $$
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS CrearRequisito;
+DELIMITER $$
+CREATE PROCEDURE CrearRequisito(Curso INT, NombreRequisito VARCHAR(100))
+BEGIN
+	INSERT INTO Requisito (IdCurso, Nombre)
+    VALUES (Curso, NombreRequisito); 
 END $$
 DELIMITER ;

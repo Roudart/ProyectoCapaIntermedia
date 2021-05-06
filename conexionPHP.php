@@ -74,7 +74,7 @@ class Conexion{
       }
 
       function BuscarFotoUsuario($id){
-        $sql = "call BuscarFotoUsuario(28);";
+        $sql = "call BuscarFotoUsuario($id);";
         $result = mysqli_query($this->connet, $sql);
         if(!$result){
             echo("Error description: " . $this->connet ->error);

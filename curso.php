@@ -9,6 +9,9 @@
 
     <link rel="icon" href="src/icon.jpg">
 
+    <div id="fb-root"></div>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/es_LA/sdk.js#xfbml=1&version=v10.0" nonce="nwvdRSaN"></script>
+
 
     <!--Incluimos la biblioteca de free Bootstrap-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
@@ -19,7 +22,7 @@
         <!-- $$$$$$$$$ Barra de navegación $$$$$$$$$ -->
         <nav class="navbar navbar-expand-lg navbar-light bg-light shadow p-3 mb-5 bg-body rounded"> <!--Le da a la barra de navegacion el formato de expansión (por responsiva) el color, tema, y pone una sombra para diferenciarlo del fondo-->
             <div class="container-fluid"><!--Un contenedor que hace que el contenido ocupe toda la barra (fluido)-->
-                <a class="navbar-brand" href="index.html">Shademy</a><!--El logotipo de la pagina-->
+                <a class="navbar-brand" href="index.php">Shademy</a><!--El logotipo de la pagina-->
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button><!--Este boton se activa cuando la pagina es muy pequeña (responsividad)-->
@@ -64,9 +67,12 @@
                                         <h5>Aprende a programar usando Progamación Orientada a Objetos y usando visual studio code</h5>
                                         <p>17,256 reviews y 20000 estudiantes cursados</p>
                                         <p>Impartido por <a href="">Alejandro Martinez Iñarritu</a></p>
-                                        <button class="btn btn-outline-danger">Lista de deseados</button>
-                                        <button class="btn btn-outline-danger">Compartir</button>
-                                    </div>
+                                        <button class="btn btn-outline-danger btn-sm">Lista de deseados</button>
+                                        <div class="row">
+                                            <div class="fb-share-button" data-href="https://google.com.mx" data-layout="button" data-size="large"><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">Compartir</a></div>
+                                        </div>
+                                            <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-size="large" data-text="¡Checa este curso de Shademy!" data-show-count="false">Tweet</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+                                    </div>                                
                                 </div>
                                 <div class="row-fluid">
                                     <div class="col">
