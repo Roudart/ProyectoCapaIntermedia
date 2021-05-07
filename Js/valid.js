@@ -64,10 +64,8 @@ function validarRegistro() {
     }
     
     console.log("contra"); 
-    
-
-    alert("se ha registrado exitosamente");
-
+    UploadImage();
+    return true;
 }
 
 function validarInicio() {

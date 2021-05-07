@@ -58,16 +58,23 @@
 
         <div class="container">
             <div class="row">
-                <div class="col-4">
-
-                </div>
-                <div class="col-4 text-center">
+                <div class="col-6 mx-auto">
                     <h1>
                        Inscribete y obten 30% de descuento 
                     </h1>
                     <hr>
 
-                    <form action = "registrarUsuario.php" method = "post">
+                    <form action = "registrarUsuario.php" method = "post" name="SignInForm">
+                    
+                        <div class="row mb-3">
+                            <div class="col-6 mx-auto">
+                                <label for="fileButton">
+                                    <img id="blah" src="https://banner2.kisspng.com/20180615/rtc/kisspng-avatar-user-profile-male-logo-profile-icon-5b238cb002ed52.870627731529056432012.jpg"
+                                    class="img rounded-circle img-fluid" alt=". . .">
+                                </label>
+                                <input type="file" value="upload" id="fileButton" onChange="PreviewImage();" accept="image/*" style="display: none;">
+                            </div>
+                        </div>
 
                         <div class="row mb-3">
                             <div class="col-sm-12">
@@ -113,22 +120,23 @@
                             </div>
                         </div>
                         <div class="row mb-3">
-                            <div class="col-sm-12">
+                            <div class="col-sm-6 mx-auto">
                                 <div class="d-grid gap-2">
 
-                                    <button onclick="validarRegistro()" class="btn btn-danger btn-lg">Regístrate</button>
+                                    <button onclick="validarRegistro()" type="button" class="btn btn-danger btn-lg">Regístrate</button>
 
                                 </div>
                             </div>
                         </div>
                     </form>
                     <hr>
-                    <h6>
-                        ¿Ya tienes cuenta? <a href="">Inicia sesión</a> 
-                    </h6>
-                </div>
-                <div class="col-4">
-
+                        <div class="row mb-3">
+                            <div class="col-sm-12">
+                                <h6 class="mx-auto col-6">
+                                    ¿Ya tienes cuenta? <a href="">Inicia sesión</a> 
+                                </h6>
+                            </div>
+                        </div>
                 </div>
             </div>
         </div>
@@ -172,5 +180,122 @@
         </div>
     </div>
 
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-app.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+    https://firebase.google.com/docs/web/setup#available-libraries -->
+
+
+<!-- Insert these scripts at the bottom of the HTML, but before you use any Firebase services -->
+
+<!-- If you enabled Analytics in your project, add the Firebase SDK for Analytics -->
+<script src="https://www.gstatic.com/firebasejs/8.4.0/firebase-storage.js"></script>
+
+
+
+<script>
+
+
+// Your web app's Firebase configuration
+var firebaseConfig = {
+    apiKey: "AIzaSyBVcqywOYtxfSReOqczaske3yqwaWAv1i8",
+    authDomain: "shademy-f9afe.firebaseapp.com",
+    projectId: "shademy-f9afe",
+    storageBucket: "shademy-f9afe.appspot.com",
+    messagingSenderId: "54990730142",
+    appId: "1:54990730142:web:2d201893eb624e75d21c8f"
+};
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+
+//Get elements form dom
+var fileButton = document.getElementById("fileButton");
+
+
+function PreviewImage() {
+        var oFReader = new FileReader();
+        oFReader.readAsDataURL(document.getElementById("fileButton").files[0]);
+
+        oFReader.onload = function (oFREvent) {
+            document.getElementById("blah").src = oFREvent.target.result;
+        };
+    };
+
+function UploadImage(){
+    //Get File
+    var e = document.getElementById("fileButton");
+    var file = e.files[0];
+    console.log(file.name);
+
+    //Create storage ref
+    var storageRef = firebase.storage().ref('fotos/' + file.name);
+
+    // Upload file
+    var task = storageRef.put(file);
+
+    task.on('state_changed', 
+    
+        function progress(snapshot){
+            var percentage = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            console.log(percentage);
+        },
+
+        function error(err){
+            alert("ERROR! NO SE PUDO CARGAR IMAGEN");
+        },
+
+        function complete(){
+            console.log("Imagen cargada!");
+            task.snapshot.ref.getDownloadURL().then(function (URL){
+                console.log(URL);
+                submitUser(URL);
+            });
+        }
+    );
+
+}
+
+function submitUser(URL){
+    var formUser = document.forms["SignInForm"];
+    var SN = document.createElement("input"); 
+    SN.setAttribute("type", "text"); 
+    SN.setAttribute("value", URL); 
+    SN.setAttribute("name", "ImagePath");//La estructura tiene el nombre
+    formUser.appendChild(SN);
+    formUser.submit();
+    alert("se ha registrado exitosamente");
+    return true;
+}
+
+// Listen for file selected
+// fileButton.addEventListener('change', function(e){
+//     //Get File
+//     var file = e.target.files[0];
+
+//     //Create storage ref
+//     var storageRef = firebase.storage().ref('fotos/' + file.name);
+
+//     // Upload file
+//     var task = storageRef.put(file);
+
+//     task.on('state_changed', 
+    
+//         function progress(snapshot){
+//             var percentage = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+//             console.log(percentage);
+//         },
+
+//         function error(err){
+
+//         },
+
+//         function complete(){
+
+//         }
+//     );
+
+// });
+</script>
 </body>
 </html>
