@@ -1,6 +1,6 @@
 <?php
     include 'conexionPHP.php';
-    //header("Content-Type: text/plain");
+    header("Content-Type: text/plain");
     if (session_status() == PHP_SESSION_NONE) {
         session_start();
         if(isset($_SESSION["IDUser"]))
@@ -47,6 +47,22 @@
             if($result){
                 $i+=1;
                 echo 'Exito en crear Requisito';
+                continue;
+            }else{
+                break;
+            }
+            $i+=1;
+        }
+        $i=0;
+        while(isset($_POST["Selected".$i])){
+            echo 'Entramos a CrearCategoriaCurso';
+            $connection4 = new Conexion();
+            $NombreCategoria = $_POST["Selected".$i];
+            $sqlQuery = "call AgregarCategoriaCurso($Curso,'$NombreCategoria');";
+            $result = mysqli_query($connection4->connet, $sqlQuery);
+            if($result){
+                $i+=1;
+                echo 'Exito en crear CategoriaCurso';
                 continue;
             }else{
                 break;

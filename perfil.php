@@ -9,6 +9,10 @@
         if(isset($_SESSION["IDUser"]))
             $Usuario = $connection->BuscarUsuario($_SESSION["IDUser"]);
      }
+     if(isset($Usuario) && $Usuario["TipoUsuario"] == "Admin"){
+        $connection3 = new Conexion();
+        $Categoria = $connection3->TraerCategorias();
+     }
     
 ?>
 
@@ -25,6 +29,7 @@
     <link rel="icon" href="src/icon.jpg">
     <script src="Js/perfil.js"></script>
     <script src="Js/curso.js"></script>
+    <script src="Js/categoria.js"></script>
 
      <script>function ActivarInputCorreo(){
          var InputCorreo = document.getElementById("InputCorreoPerfil");
@@ -95,6 +100,8 @@
                                 <a class="list-group-item list-group-item-action list-group-item-light" id="list-bootcamp-list" data-bs-toggle="list" href="#list-bootcamp" role="tab" aria-controls="bootcamp">Cursos</a>
 
                                 <?php if($Usuario["TipoUsuario"] == "Admin") echo '
+                                <a class="list-group-item list-group-item-action list-group-item-light" id="list-categorias-list" data-bs-toggle="list" href="#list-categorias" role="tab" aria-controls="categorias">Crear categorias</a>
+
                                 <a class="list-group-item list-group-item-action list-group-item-light" id="list-manager-list" data-bs-toggle="list" href="#list-manager" role="tab" aria-controls="manager">Manejar Usuarios</a>';
                                 ?>
 
@@ -262,12 +269,15 @@
 
                                         <div class="col-8 mb-3" id="CategoriasDiv"> <!--$$$$$$$$$$  CATEGORIAS   $$$$$$$$$-->
                                             <label class="form-label" for="SelectCategoria"><h4>Categoria</h4></label>
-                                            <select class="form-select" id="SelectCategoria" onchange="AgregarSelected(this);">
-                                                <option selected>Elige...</option>
-                                                <option >Ciencia</option>
-                                                <option >Web</option>
-                                                <option >Programación</option>
-                                            </select>
+                                            <select class="form-select mb-3" id="SelectCategoria" onchange="AgregarSelected(this);">
+                                                <option selected>Elige...</option>';
+                                                if(isset($Categoria) && $Categoria != null){
+                                                    $sizeCategorias = sizeof($Categoria);
+                                                    for($i=0; $i<$sizeCategorias; $i++){
+                                                        echo '<option>'.$Categoria[$i]["Nombre"].'</option>';
+                                                    }
+                                                }
+                                            echo '</select>
                                         </div>
                                         <div class="row justify-content-center">
                                             <div class="col-4 mb-3">
@@ -289,6 +299,50 @@
                         </div>
 
 
+
+                        <div class="tab-pane fade" id="list-categorias" role="tabpanel" aria-labelledby="list-categorias-list"> <!--El item del boton de la lista -- Categorias -->
+                            <div class="row align-item-start">
+                                <div class="row justify-content-center">
+                                    <div class="col-10 mt-3">
+                                        <h4 class="text-center">Administrador</h4>
+                                        <p class="text-center">Manejo de categorias</p>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row justify-content-center">
+                                    <div class="col-2 mb-3">
+                                        <div class="row justify-content-center" id="CategoriaNuevaDiv" name="CategoriaNuevaDiv">
+                                            <?php 
+                                                if(isset($Categoria) && $Categoria != null){
+                                                    $sizeCategorias = sizeof($Categoria);
+                                                    for($i=0; $i<$sizeCategorias; $i++){
+                                                        echo '<span id="Categoria'.$Categoria[$i]["IdCategoria"].'" name="Categoria'.$Categoria[$i]["IdCategoria"].'" class="badge rounded-pill mb-3" style="background: '. $Categoria[$i]["Color"] .';">'.$Categoria[$i]["Nombre"].'</span>';
+                                                    }
+                                                }?>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row justify-content-center">
+                                    <div class="col-8 mb-3"> <!--$$$$$$$$$$  Categoria   $$$$$$$$$-->
+                                        <form action="" id="formCrearCategoria" name="formCrearCategoria" method="">
+                                            <div class="row justity-content-center">
+                                                <label for="InputCategoria" class="form-label"><h4>Crear categoria</h4></label>
+                                                <div class="col-4 mb-3">
+                                                    <input name="InputCategoria" id="InputCategoria" type="text" class="form-control mb-3">
+                                                </div>
+                                                <div class="col-4 mb-3">
+                                                    <input type="color" class="form-control form-control-color" id="ColorInputCategoria"  name="ColorInputCategoria" value="#C93636" title="Color de categoria">
+                                                </div>
+                                                <div class="col-4 mb-3">
+                                                    <button type="button" id="BtnCreateCategoria"onClick="crearCategoria(this);" class="btn btn-outline-secondary">Crear categoria</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                         <div class="tab-pane fade" id="list-manager" role="tabpanel" aria-labelledby="list-manager-list"><!--El item del boton de la lista -- Manager -->
                             <div class="row align-items-start">

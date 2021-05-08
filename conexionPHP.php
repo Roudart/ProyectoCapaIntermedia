@@ -87,5 +87,36 @@ class Conexion{
             return $ImageURL;
         }
       }
+
+      function CrearCategoria($NombreCategoria, $ColorCategoria){
+        $sql = "call CrearCategoria('$NombreCategoria', '$ColorCategoria');";
+        $result = mysqli_query($this->connet, $sql);
+        if(!$result){
+          echo("Error description: " . $this->connet ->error);
+        }else{
+          while($newRow = mysqli_fetch_array($result)){
+              $IdCategoria = $newRow["IdCategoria"];
+          }
+          return '<p>'. $IdCategoria. '>';
+        }
+      }
+
+      function TraerCategorias(){
+        $sql = "SELECT IdCategoria, Nombre, Color FROM categoria ORDER BY IdCategoria ASC;";
+        $result = mysqli_query($this->connet, $sql);
+        if(!$result){
+          echo("Error description: " . $this->connet ->error);
+        }else{
+          $Categorias = array();
+          $i=0;
+          while($newRow = mysqli_fetch_array($result)){
+                $Categorias[$i]["IdCategoria"] = $newRow["IdCategoria"];
+                $Categorias[$i]["Nombre"] = $newRow["Nombre"];
+                $Categorias[$i]["Color"] = $newRow["Color"];
+                $i++;
+          }
+          return $Categorias;
+        }
+    }
 } 
 ?>
