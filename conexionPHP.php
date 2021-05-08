@@ -118,5 +118,30 @@ class Conexion{
           return $Categorias;
         }
     }
+
+    function EliminarUsuario($idUser){
+      $sql = "Call DeleteUser('$idUser')";
+      $result = mysqli_query($this->connet, $sql);
+      if($result){
+          echo "exito";
+      }
+      else
+      { 
+          echo "Algo salió mal";
+      }
+    }
+
+    function ActualizarTipoUsuario($idUser, $tipoUser){
+      $sql = "Call CambiarTipoUsuario('$idUser', '$tipoUser')";
+      $result = mysqli_query($this->connet, $sql);
+      if($result){
+          mysqli_close($connet);
+          echo "exito";
+      }
+      else
+      { 
+          echo "Algo salió mal";
+      }
+    }
 } 
 ?>
