@@ -6,8 +6,9 @@
     $connection = new Conexion();
     if (session_status() == PHP_SESSION_NONE) {
         session_start();
-        if(isset($_SESSION["IDUser"]))
+        if(isset($_SESSION["IDUser"])){
             $Usuario = $connection->BuscarUsuario($_SESSION["IDUser"]);
+        }
      }
      if(isset($Usuario) && $Usuario["TipoUsuario"] == "Admin"){
         $connection3 = new Conexion();
