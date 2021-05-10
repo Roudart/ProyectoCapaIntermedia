@@ -1,7 +1,7 @@
 <?php
 include 'conexionPHP.php';
 $Conexion = new Conexion();
-$IdCurso = 24;
+$IdCurso = $_GET["CursoId"];
 $Curso = $Conexion->TraerCurso($IdCurso);
 $Tema = $Conexion->TrearTemas($IdCurso);
 $Requisito = $Conexion->TraerRequisitos($IdCurso);

@@ -239,4 +239,22 @@ class Conexion
       return $Categoria;
     }
   }
+
+  function TraerCursos(){
+    $sql = "SELECT IdCurso, Nombre, Descripción FROM curso;";
+    $result = mysqli_query($this->connet, $sql);
+    if(!$result){
+      echo("Error description: ". $this->connet->error);
+    }else{
+      $Categoria = array();
+      $i = 0;
+      while($newRow = mysqli_fetch_array($result)){
+        $Categoria[$i]["IdCurso"] = $newRow["IdCurso"];
+        $Categoria[$i]["Nombre"] = $newRow["Nombre"];
+        $Categoria[$i]["Descripción"] = $newRow["Descripción"];
+        $i++;
+      }
+      return $Categoria;
+    }
+  }
 }
