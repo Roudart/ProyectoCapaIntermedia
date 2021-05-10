@@ -108,8 +108,11 @@ function EliminarTema(){
     if(TemasIndex>=1){
         console.log(TemasIndex);
         var Tema = document.getElementById("InputNombreTema" + TemasIndex);
+        var TemaTextArea = document.getElementById("TextAreaTema" + TemasIndex);
         console.log(Tema.id);
+        console.log(TemaTextArea.id);
         Tema.remove();
+        TemaTextArea.remove();
         TemasIndex-=1;
     }else{
         alert("Minimo debes tener un tema!");
