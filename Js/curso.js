@@ -4,13 +4,12 @@ var TemasIndex = 0;
  
 
 function AgregarSelected(e){
-    console.log(e.size);
     console.log(e.value);
     console.log(e.selectedIndex);
     var contenedor = document.getElementById("CategoriasDiv");
     var Categoria = document.createElement("INPUT");//Creamos el elemento tipo boton
-    Categoria.setAttribute("id", e.selectedIndex); //A ese objeto le ponemos un id autoincrementable provisional
-    Categoria.setAttribute("name",e.selectedIndex); //A ese objeto le ponemos un nombre autoincrementable provisional
+    Categoria.setAttribute("id", "Selected"+Selected); //A ese objeto le ponemos un id autoincrementable provisional
+    Categoria.setAttribute("name","Selected"+Selected); //A ese objeto le ponemos un nombre autoincrementable provisional
     Categoria.className += "form-control";//Se agregan las clases
     Categoria.className += " form-control-sm";
     Categoria.className += " mb-3";
@@ -20,6 +19,7 @@ function AgregarSelected(e){
     Categoria.readOnly = true;
     contenedor.appendChild(Categoria);
     e.remove(e.selectedIndex);
+    Selected+=1;
 }
 
 function QuitarSelected(e){
@@ -29,6 +29,7 @@ function QuitarSelected(e){
     opcion.text = e.value;
     select.appendChild(opcion);
     e.remove(e);
+    Selected-=1;
 }
 
 function CrearRequisito(){

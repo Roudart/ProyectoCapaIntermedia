@@ -199,3 +199,24 @@ BEGIN
     VALUES (Curso, NombreRequisito); 
 END $$
 DELIMITER ;
+
+DROP PROCEDURE IF EXISTS CrearCategoria;
+DELIMITER $$
+CREATE PROCEDURE CrearCategoria(NombreCategoria VARCHAR(30), ColorCategoria VARCHAR(20))
+BEGIN
+	INSERT INTO categoria (Nombre, Color) 
+	VALUES (NombreCategoria, ColorCategoria);
+    SELECT IdCategoria FROM categoria ORDER BY IdCategoria DESC LIMIT 1;
+END $$
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS AgregarCategoriaCurso;
+DELIMITER $$
+CREATE PROCEDURE AgregarCategoriaCurso(Curso INT, NombreCategoria VARCHAR(30))
+BEGIN
+	DECLARE IdCat INT unsigned;
+    SELECT IdCategoria INTO IdCat FROM categoria WHERE Nombre = NombreCategoria; 
+	INSERT INTO cursocategoria (IdCurso, IdCategoria)
+    VALUES (Curso, IdCat); 
+END $$
+DELIMITER ;
