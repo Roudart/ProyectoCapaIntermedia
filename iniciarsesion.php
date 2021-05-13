@@ -86,7 +86,7 @@
                             <div class="col-sm-12">
                                 <div class="d-grid gap-2">
 
-                                    <button onclick="validarInicio()" type="submit" class="btn btn-danger btn-lg">Iniciar Sesión</button >
+                                    <button onclick="validarInicio()" type="button" class="btn btn-danger btn-lg">Iniciar Sesión</button >
 
                                 </div>
                             </div>

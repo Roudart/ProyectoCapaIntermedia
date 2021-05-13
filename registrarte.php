@@ -72,7 +72,7 @@
                                     <img id="blah" src="https://banner2.kisspng.com/20180615/rtc/kisspng-avatar-user-profile-male-logo-profile-icon-5b238cb002ed52.870627731529056432012.jpg"
                                     class="img rounded-circle img-fluid" alt=". . .">
                                 </label>
-                                <input type="file" value="upload" id="fileButton" onChange="PreviewImage();" accept="image/*" style="display: none;">
+                                <input type="file" value="upload" id="fileButton" onChange="PreviewImage();" accept="image/jpeg, image/png, image/gif" style="display: none;">
                             </div>
                         </div>
 
@@ -214,6 +214,14 @@ var fileButton = document.getElementById("fileButton");
 
 
 function PreviewImage() {
+
+    var ImagenesPermitidas = ["image/jpeg", "image/png", "image/gif"];
+
+        if(ImagenesPermitidas.indexOf(document.getElementById("fileButton").files[0].type) == -1){
+        alert("El archivo escogido no es permitido \nutilice archivos tipo .jpeg, .png o .gif")
+        return false;
+        }
+
         var oFReader = new FileReader();
         oFReader.readAsDataURL(document.getElementById("fileButton").files[0]);
 
