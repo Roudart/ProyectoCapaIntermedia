@@ -237,7 +237,7 @@
                                                     <img id="blah" src="http://cdn.onlinewebfonts.com/svg/download_325422.png"
                                                     class="img rounded img-fluid" alt=". . .">
                                                 </label>
-                                                <input type="file" value="upload" id="fileButton2" onChange="PreviewImage();" accept="image/*" style="display: none;">
+                                                <input type="file" value="upload" id="fileButton2" onChange="PreviewImage();" accept="image/jpeg, image/png, image/gif" style="display: none;">
                                             </div>
                                         </div>
 
@@ -291,7 +291,7 @@
                                             </div>
                                         </div>
                                         <div class="d-grid gap-2 col-6 mx-auto mb-3">
-                                            <button type="submit" class="btn btn-danger btn-sm">Crear curso</button>
+                                            <button onclick="validarCurso();" type="button" class="btn btn-danger btn-sm">Crear curso</button>
                                         </div>
                                     </div>
                                 </form>
@@ -530,6 +530,13 @@ var fileButton = document.getElementById("fileButton2");
 
 
 function PreviewImage() {
+        var ImagenesPermitidas = ["image/jpeg", "image/png", "image/gif"];
+
+        if(ImagenesPermitidas.indexOf(document.getElementById("fileButton2").files[0].type) == -1){
+        alert("El archivo escogido no es permitido \nutilice archivos tipo .jpeg, .png o .gif")
+        return false;
+    }
+
         var oFReader = new FileReader();
         oFReader.readAsDataURL(document.getElementById("fileButton2").files[0]);
 

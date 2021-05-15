@@ -119,3 +119,98 @@ function EliminarTema(){
         alert("Minimo debes tener un tema!");
     }
 }
+
+function validarCurso(){
+
+    if( document.getElementById("fileButton2").value == ""){
+        alert("Debe seleccionar una imagen para el curso");
+        return false;
+    }
+
+    var ImagenesPermitidas = ["image/jpeg", "image/png", "image/gif"];
+    var laImagen = document.getElementById("fileButton2").files[0];
+
+        if(ImagenesPermitidas.indexOf(document.getElementById("fileButton2").files[0].type) == -1){
+        alert("El archivo escogido no es permitido \nutilice archivos tipo .jpeg, .png o .gif")
+        return false;
+    }
+
+    if ((document.getElementById("InputTitulo").value) === ''){
+        alert("El titulo está vacío");
+        return false;
+    }
+
+    console.log("Titulo");
+
+    if ((document.getElementById("InputDescripcion").value) === ''){
+        alert("La descripción está vacía");
+        return false;
+    }
+
+    console.log("Desc");
+
+    var forIndex = 0;
+    var todoLleno = true;
+    var mensaje = "Falta nombre en tema: ";
+    var mensaje2 = "Falta descripción en tema: ";
+
+    do {
+        if ((document.getElementById("InputNombreTema"+forIndex).value) === ''){
+            mensaje = (mensaje + forIndex + ", ");
+            //alert("El nombre del tema " + TemasIndex + " está vacío");
+            todoLleno = false;
+        }   
+    
+        console.log("InputNombreTema"+forIndex);
+
+        if ((document.getElementById("TextAreaTema"+forIndex).value) === ''){
+            mensaje2 = (mensaje2 + forIndex + ", ");
+            //alert("La descripción del tema " + TemasIndex + " está vacía");
+            todoLleno = false;
+        }   
+    
+        console.log("TextAreaTema"+forIndex);
+
+        forIndex++;
+    } while (forIndex < TemasIndex + 1);
+
+    if(todoLleno == false){
+        alert(mensaje + "\n" + mensaje2);
+         return false;
+     }
+
+     forIndex = 0;
+
+     mensaje = "Los siguintes requisitos están vacíos: ";
+
+     do {
+        if ((document.getElementById("InputRequisito"+forIndex).value) === ''){
+            mensaje = (mensaje + forIndex + ", ");
+            todoLleno = false;
+        }   
+    
+        console.log("InputRequisito"+forIndex);
+
+        forIndex++;
+    } while (forIndex < RequisitosIndex + 1);
+
+    if(todoLleno == false){
+        alert(mensaje);
+         return false;
+     }
+
+     var elemCategoria = document.getElementById("Selected0");
+
+     if(elemCategoria == null){
+         alert("El curso debe contar con al menos una categoría");
+         return false;
+     }
+     
+     if((document.getElementById("PrecioInput").value) <= 0){
+         alert("el curso no puede ser gratis");
+         return false;
+     }
+
+     document.getElementById("FormCrearCurso").submit();
+
+}

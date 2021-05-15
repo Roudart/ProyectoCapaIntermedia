@@ -17,6 +17,19 @@ function hayError() {
 
 function validarRegistro() {
 
+    if( document.getElementById("fileButton").value == ""){
+        alert("Debe seleccionar una imagen para su perfil");
+        return false;
+    }
+
+    var ImagenesPermitidas = ["image/jpeg", "image/png", "image/gif"];
+    var laImagen = document.getElementById("fileButton").files[0];
+
+        if(ImagenesPermitidas.indexOf(document.getElementById("fileButton").files[0].type) == -1){
+        alert("El archivo escogido no es permitido \nutilice archivos tipo .jpeg, .png o .gif")
+        return false;
+    }
+
     nombre = document.getElementById("nomReg").value;
     if (nombre == null || nombre.length == 0 || /\d/.test(nombre) || /^\s+$/.test(nombre)) {
         alert("agregue un nombre valido");
@@ -65,6 +78,7 @@ function validarRegistro() {
     
     console.log("contra"); 
     UploadImage();
+    document.getElementById("SignInForm").submit();
     return true;
 }
 
@@ -83,5 +97,6 @@ function validarInicio() {
     }
 
     alert("ha inicioado sesión");
+    //document.getElementById("SignInForm").submit();
 
 }
