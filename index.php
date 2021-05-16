@@ -132,15 +132,16 @@ $Curso = $connection->TraerCursos();
             <div class="col">
                 <div class="tab-content" id="nav-tabContent">
                     <div class="tab-pane fade show active" id="list-1" role="tabpanel" aria-labelledby="list-1-list">
-                        <?php if (!isset($Curso)) {
+                        <?php if (isset($Curso)) {
                             $sizeCursos = sizeof($Curso);
                             for ($i = 0; $i < $sizeCursos; $i++) {
                                 echo
                                 '<form action="curso.php" method="get">
                                 <div class="row shadow-sm rounded mb-5" id="TarjetaCurso">
                                 <div class="col-2">
-                                    <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.nsha.org%2Fwp-content%2Fuploads%2F2017%2F06%2Fcomputer-coding-600x600.jpg&f=1&nofb=1" 
-                                    class="img rounded-circle img-fluid" alt="...">
+                                    <img src="'; if($Curso[$i]["ImagenURL"] !== null){echo $Curso[$i]["ImagenURL"];}else 
+                                    {echo "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.nsha.org%2Fwp-content%2Fuploads%2F2017%2F06%2Fcomputer-coding-600x600.jpg&f=1&nofb=1";} echo '" 
+                                    class="img rounded-circle img-fluid" alt="..." style="max-width: 10vw; max-height: 10vw; min-width: 10vw; min-height: 10vw">
                                 </div>
                                 <div class="col-10">
                                     <h1>' . $Curso[$i]["Nombre"] . '</h1>

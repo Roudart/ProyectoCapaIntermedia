@@ -1,3 +1,21 @@
+<?php
+include 'conexionPHP.php';
+$Conexion = new Conexion();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+    if (isset($_SESSION["IDUser"])) {
+        $FotoUsuario = $Conexion->BuscarFotoUsuario($_SESSION["IDUser"]);
+    }
+}
+$ConexionCursos = new Conexion();
+if(isset($_GET["Categoria"])){
+    $Curso = $ConexionCursos->TraerCursosCategoria($_GET["Categoria"]);
+}
+    else
+    echo "Nada!";
+
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -19,7 +37,7 @@
         <!-- $$$$$$$$$ Barra de navegación $$$$$$$$$ -->
         <nav class="navbar navbar-expand-lg navbar-light bg-light shadow p-3 mb-5 bg-body rounded"> <!--Le da a la barra de navegacion el formato de expansión (por responsiva) el color, tema, y pone una sombra para diferenciarlo del fondo-->
             <div class="container-fluid"><!--Un contenedor que hace que el contenido ocupe toda la barra (fluido)-->
-                <a class="navbar-brand" href="index.html">Shademy</a><!--El logotipo de la pagina-->
+                <a class="navbar-brand" href="index.php">Shademy</a><!--El logotipo de la pagina-->
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button><!--Este boton se activa cuando la pagina es muy pequeña (responsividad)-->
@@ -43,8 +61,24 @@
                         <a class="nav-link" href="#">Clases</a>
                         <a class="nav-link" href="#">Cursos</a>
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                            <a href="iniciarsesion.html"><button class="btn btn-outline-primary">Iniciar sesión</button></a>
-                            <a href="registrarte.html"><button class="btn btn-primary">Registrate</button></a>
+                        <?php if (!isset($_SESSION["IDUser"])) {
+                        echo
+                        '<div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="iniciarsesion.php"><button class="btn btn-outline-danger">Iniciar sesión</button></a>
+                        <a href="registrarte.php"><button class="btn btn-danger">Registrate</button></a>
+                    </div>';
+                    } else {
+                        echo
+                        '<div class="dropdown">
+                        <a class="navbar-brand" data-bs-toggle="dropdown" role="button" id="dropDownSesion" href="#" onclick=""  width="32px" height="45px" style="margin-left: 7px; margin-right: 0px" >  
+                            <img src="' . $FotoUsuario . '" alt ="profilepic" class="perfile" style= "width:40px; height:40px; border-radius:40px; border:1px solid #666;">
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropDownSesion">
+                            <a class="dropdown-item" href="perfil.php">Perfil</a>
+                            <a class="dropdown-item" href="cerrarSesion.php" id="cerrarsesion">Cerrar Sesión</a>
+                        </div>
+                    </div>';
+                    } ?>
                         </div>
                     </div>
                 </div>
@@ -58,24 +92,30 @@
                 <div class="col">
                     <div class="tab-content" id="nav-tabContent">
                         <div class="tab-pane fade show active" id="list-1" role="tabpanel" aria-labelledby="list-1-list">
-                            <div class="row shadow-sm rounded" id="TarjetaCurso">
+                        <?php if (isset($Curso)) {
+                            $sizeCursos = sizeof($Curso);
+                            for ($i = 0; $i < $sizeCursos; $i++) {
+                                echo
+                                '<form action="curso.php" method="get">
+                                <div class="row shadow-sm rounded mb-5" id="TarjetaCurso">
                                 <div class="col-2">
-                                    <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.nsha.org%2Fwp-content%2Fuploads%2F2017%2F06%2Fcomputer-coding-600x600.jpg&f=1&nofb=1" 
-                                    class="img rounded-circle img-fluid" alt="...">
+                                    <img src="'; if($Curso[$i]["ImagenURL"] !== null){echo $Curso[$i]["ImagenURL"];}else 
+                                    {echo "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.nsha.org%2Fwp-content%2Fuploads%2F2017%2F06%2Fcomputer-coding-600x600.jpg&f=1&nofb=1";} echo '" 
+                                    class="img rounded-circle img-fluid" alt="..." style="max-width: 10vw; max-height: 10vw; min-width: 10vw; min-height: 10vw">
                                 </div>
                                 <div class="col-10">
-                                    <h1>Programación de Python</h1>
-                                    <p>Esta es una descripción generica de lo que va a decir en la descripción del curso</p>
-                                    <a href="curso.html" class="btn btn-secondary">Ver mas...</a>
+                                    <h1>' . $Curso[$i]["Nombre"] . '</h1>
+                                    <p>' . $Curso[$i]["Descripción"] . '</p>
+                                    <input type="text" id="CursoId" name="CursoId" value="' . $Curso[$i]["IdCurso"] . '"  hidden>
+                                    <button type="submit" id ="LinkCurso' . $Curso[$i]["IdCurso"] . '" class="btn btn-secondary">Ver mas...</button>
                                 </div>
                             </div>
-                            <script>
-                                for(var i=0; i<6; i++){
-                                    var carta = document.getElementById("TarjetaCurso");
-                                    var cln = carta.cloneNode(true);
-                                    document.getElementById("list-1").appendChild(cln);
-                                }
-                            </script>
+                            </form>
+                            ';
+                            }
+                        }else{
+                            echo '<div class="col text-center mb-4"><h5>Al parecer no existen cursos</h5></div>';
+                        } ?>
                         </div>
                         <div class="tab-pane fade" id="list-2" role="tabpanel" aria-labelledby="list-2-list">
                             <script>

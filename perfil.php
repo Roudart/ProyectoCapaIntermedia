@@ -291,7 +291,7 @@
                                             </div>
                                         </div>
                                         <div class="d-grid gap-2 col-6 mx-auto mb-3">
-                                            <button onclick="validarCurso();" type="button" class="btn btn-danger btn-sm">Crear curso</button>
+                                            <button onclick="UploadImage();" type="button" class="btn btn-danger btn-sm">Crear curso</button>
                                         </div>
                                     </div>
                                 </form>
@@ -547,6 +547,9 @@ function PreviewImage() {
 
 function UploadImage(){
     //Get File
+    if(!validarCurso()){
+        return false;
+    }
     var e = document.getElementById("fileButton2");
     var file = e.files[0];
     console.log(file.name);
@@ -580,14 +583,14 @@ function UploadImage(){
 }
 
 function submitUser(URL){
-    var formUser = document.forms["SignInForm"];
+    var formUser = document.forms["FormCrearCurso"];
     var SN = document.createElement("input"); 
     SN.setAttribute("type", "text"); 
     SN.setAttribute("value", URL); 
     SN.setAttribute("name", "ImagePath");//La estructura tiene el nombre
     formUser.appendChild(SN);
     formUser.submit();
-    alert("se ha registrado exitosamente");
+    alert("Se ha creado el curso correctamente");
     return true;
 }
 </script>

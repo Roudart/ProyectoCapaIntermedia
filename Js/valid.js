@@ -97,6 +97,6 @@ function validarInicio() {
     }
 
     alert("ha inicioado sesión");
-    //document.getElementById("SignInForm").submit();
+    document.getElementById("SignInForm").submit();
 
 }

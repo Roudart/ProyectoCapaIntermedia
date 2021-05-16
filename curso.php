@@ -12,6 +12,8 @@ if (session_status() == PHP_SESSION_NONE) {
         $FotoUsuario = $Conexion->BuscarFotoUsuario($_SESSION["IDUser"]);
     }
 }
+$ConexionEstado = new Conexion();
+$EstadoCursoUsuario = $ConexionEstado->EstadoCursoUsuario($IdCurso, $_SESSION["IDUser"]);
 ?>
 
 
@@ -26,6 +28,7 @@ if (session_status() == PHP_SESSION_NONE) {
 
 
     <link rel="icon" href="src/icon.jpg">
+    <script src="Js/AgregarCurso.js"></script>
 
     <div id="fb-root"></div>
     <script async defer crossorigin="anonymous" src="https://connect.facebook.net/es_LA/sdk.js#xfbml=1&version=v10.0" nonce="nwvdRSaN"></script>
@@ -70,10 +73,24 @@ if (session_status() == PHP_SESSION_NONE) {
                 <div class="navbar-nav mb-2 mb-lg-0">
                     <a class="nav-link" href="#">Clases</a>
                     <a class="nav-link" href="#">Cursos</a>
-                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                        <a href="iniciarsesion.html"><button class="btn btn-outline-primary">Iniciar sesión</button></a>
-                        <a href="registrarte.html"><button class="btn btn-primary">Registrate</button></a>
-                    </div>
+                    <?php if (!isset($_SESSION["IDUser"])) {
+                        echo
+                        '<div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="iniciarsesion.php"><button class="btn btn-outline-danger">Iniciar sesión</button></a>
+                        <a href="registrarte.php"><button class="btn btn-danger">Registrate</button></a>
+                    </div>';
+                    } else {
+                        echo
+                        '<div class="dropdown">
+                        <a class="navbar-brand" data-bs-toggle="dropdown" role="button" id="dropDownSesion" href="#" onclick=""  width="32px" height="45px" style="margin-left: 7px; margin-right: 0px" >  
+                            <img src="' . $FotoUsuario . '" alt ="profilepic" class="perfile" style= "width:40px; height:40px; border-radius:40px; border:1px solid #666;">
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropDownSesion">
+                            <a class="dropdown-item" href="perfil.php">Perfil</a>
+                            <a class="dropdown-item" href="cerrarSesion.php" id="cerrarsesion">Cerrar Sesión</a>
+                        </div>
+                    </div>';
+                    } ?>
                 </div>
             </div>
         </div>
@@ -84,7 +101,7 @@ if (session_status() == PHP_SESSION_NONE) {
         <div class="row">
             <div class="col">
                 <div class="row">
-                    <div class="col-8">
+                    <div class="col-sm-8">
                         <div class="d-grid gap-3">
                             <div class="row-fluid">
                                 <div class="col">
@@ -93,7 +110,7 @@ if (session_status() == PHP_SESSION_NONE) {
                                     <p>17,256 reviews y 20000 estudiantes cursados</p>
                                     <p>Impartido por <a><?php if (isset($Curso)) echo $Curso["NombreMaestro"];
                                                         else echo 'Falta el nombre del maestro'; ?></a></p>
-                                    <button class="btn btn-outline-danger btn-sm">Lista de deseados</button>
+                                    <button class="btn btn<?php if (isset($EstadoCursoUsuario) && $EstadoCursoUsuario === 'Deseado') echo '-'; else echo '-outline-';?>danger btn-sm" onclick="AgregarCursoListaDeseados(<?php echo $IdCurso . ','; if(isset($_SESSION['IDUser'])) echo $_SESSION['IDUser']; else echo -1;?>);" id="BtnListaDeseados"><?php if (isset($EstadoCursoUsuario) && $EstadoCursoUsuario === 'Deseado') echo 'Deseado'; else echo 'Lista de desados';?></button>
                                     <div class="row mb-3 mt-3">
                                         <div class="fb-share-button" data-href="https://google.com.mx" data-layout="button" data-size="large"><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">Compartir</a></div>
                                     </div>
@@ -171,7 +188,8 @@ if (session_status() == PHP_SESSION_NONE) {
                                             <div class="col-4">
                                                 <a href="perfil.html">
                                                     <img src="<?php if (isset($Curso) && isset($Curso["Imagen"]) && $Curso["Imagen"] != null) echo $Curso["Imagen"];
-                                                                else echo 'https://banner2.kisspng.com/20180615/rtc/kisspng-avatar-user-profile-male-logo-profile-icon-5b238cb002ed52.870627731529056432012.jpg'; ?>" class="img rounded-circle img-fluid" alt=". . .">
+                                                                else echo 'https://banner2.kisspng.com/20180615/rtc/kisspng-avatar-user-profile-male-logo-profile-icon-5b238cb002ed52.870627731529056432012.jpg'; ?>" 
+                                                                class="img rounded-circle img-fluid" alt=". . ." style="max-width: 12vw; max-height: 12vw; min-width: 12vw; min-height:12vw;">
                                                 </a>
                                             </div>
                                             <div class="col-8 lh-1">
@@ -192,10 +210,12 @@ if (session_status() == PHP_SESSION_NONE) {
                                     <?php if(isset($Categoria)){
                                         $sizeCategoria = sizeof($Categoria);
                                         for($i=0; $i<$sizeCategoria; $i++){
-                                            echo '<button type="button" class="btn" id="Curso'.$Categoria[$i]["IdCategoria"].'" name= "Curso'.$Categoria[$i]["IdCategoria"].'"
-                                            style="background: '.$Categoria[$i]["Color"].'; color: white;">'. $Categoria[$i]["Nombre"] .'</button>';
+                                            echo '<form action="busquedaCategorias.php" method="GET">
+                                            <button type="submit" class="btn" id="Curso'.$Categoria[$i]["IdCategoria"].'" name= "Curso'.$Categoria[$i]["IdCategoria"].'"
+                                            style="background: '.$Categoria[$i]["Color"].'; color: white;">'. $Categoria[$i]["Nombre"] .'</button>
+                                            <input value="'.$Categoria[$i]["IdCategoria"].'" id="Categoria" name="Categoria" hidden></form>';
                                         }
-                                    }?>
+                                    }else{echo '<h4>D: Por alguna razón no tiene categorias<h4>';}?>
                                     </div>
                                 </div>
                             </div>
@@ -209,9 +229,10 @@ if (session_status() == PHP_SESSION_NONE) {
 
                         <!--Lista izquierda-->
                     </div>
-                    <div class="col-4">
+                    <div class="col-sm-4">
                         <div class="card shadow-lg">
-                            <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmiro.medium.com%2Fmax%2F12032%2F0*Q8DDPKbl1Jek0i0a&f=1&nofb=1" alt="imagen" class="card-img-top">
+                            <img src="<?php if(isset($Curso) && isset($Curso["ImagenURL"]) && $Curso["ImagenURL"]!==null) echo $Curso["ImagenURL"];
+                            else echo 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmiro.medium.com%2Fmax%2F12032%2F0*Q8DDPKbl1Jek0i0a&f=1&nofb=1';?>" alt="imagen" class="card-img-top">
                             <div class="card-body">
                                 <h4 class="card-title">$<?php if (isset($Curso)) echo $Curso["Precio"];
                                                         else echo '000.00'; ?></h4>

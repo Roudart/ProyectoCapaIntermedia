@@ -96,6 +96,10 @@ DROP COLUMN Extras;
 ALTER TABLE curso
 DROP COLUMN Requisitos;
 
+ALTER TABLE curso
+ADD ImagenURL VARCHAR(255) NULL
+AFTER Aprobado;
+
 DROP PROCEDURE IF EXISTS SaludoDB;
 DELIMITER $$
 CREATE PROCEDURE SaludoDB()
@@ -174,10 +178,10 @@ DELIMITER ;
 
 DROP PROCEDURE IF EXISTS CrearCurso;
 DELIMITER $$
-CREATE PROCEDURE CrearCurso(Id INT, NombreCurso VARCHAR(60), Des VARCHAR(256), Costo DECIMAL(15,2))
+CREATE PROCEDURE CrearCurso(Id INT, NombreCurso VARCHAR(60), Des VARCHAR(256), Costo DECIMAL(15,2), Imagen VARCHAR(256))
 BEGIN
-	INSERT INTO curso (IdMaestro, Nombre, Descripción, Precio, Aprobado)
-    VALUES (Id, NombreCurso, Des, Costo, 0); 
+	INSERT INTO curso (IdMaestro, Nombre, Descripción, Precio, Aprobado, ImagenURL)
+    VALUES (Id, NombreCurso, Des, Costo, 0, Imagen); 
     SELECT IdCurso FROM Curso ORDER BY IdCurso DESC LIMIT 1;
 END $$
 DELIMITER ;
@@ -218,5 +222,41 @@ BEGIN
     SELECT IdCategoria INTO IdCat FROM categoria WHERE Nombre = NombreCategoria; 
 	INSERT INTO cursocategoria (IdCurso, IdCategoria)
     VALUES (Curso, IdCat); 
+END $$
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS AgregarCursoUsuario;
+DELIMITER $$
+CREATE PROCEDURE AgregarCursoUsuario(Curso INT, Usuario INT, CursoEstado INT) /*  INDICE ESTADO, (INT)1 - "Deseado", (INT)2 - "Impartiendo", (INT)3 - "Cursando", (INT)4 - "Cursado" */
+BEGIN
+	DECLARE CursoDeseadoId INT DEFAULT -1;
+	DECLARE UsuarioId INT;
+    DECLARE CursoId INT;
+    DECLARE EstadoCurso INT;
+	SELECT IdCursoDeseado, IdCurso, IdUsuario, Estado INTO CursoDeseadoId, CursoId, UsuarioId, EstadoCurso FROM usuariocurso WHERE IdCurso = Curso AND IdUsuario = Usuario LIMIT 1;
+    IF CursoDeseadoId > -1 THEN /* EN CASO DE ENCONTRAR UNA RELACION ENTRE EL ESTUDIANTE Y EL CURSO */
+		IF CursoDeseadoId > -1 AND EstadoCurso = CursoEstado THEN  /* EN CASO DE QUE SE ENCUENTRA UN RESULTADO Y CON EL MISMO ESTADO SE DEBE ELIMINAR*/
+			DELETE FROM usuariocurso WHERE IdCursoDeseado = CursoDeseadoId;
+			SELECT "Eliminado" AS Respuesta;
+			ELSE /* EN CASO DE QUE TENGA OTRO ESTADO AL QUE YA TIENE, SE ACTUALIZA CON NUEVO ESTADO */
+			UPDATE usuariocurso SET Estado = CursoEstado WHERE IdCursoDeseado = CursoDeseadoId;
+            SELECT "Actualizado" AS Respuesta;
+		END IF;
+		ELSE /* SI NO HAY NINGUN REGISTRO CON TAL RELACIÓN, SE CREA UN NUEVO REGISTRO*/
+        INSERT INTO usuariocurso (IdCurso, IdUsuario, Estado) VALUES (Curso, Usuario, CursoEstado);
+        SELECT "Insertado" AS Respuesta;
+    END IF;
+END $$
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS TraerCursosCategoria;
+DELIMITER $$
+CREATE PROCEDURE TraerCursosCategoria(Categoria INT)
+BEGIN
+	SELECT C.IdCurso, C.Nombre, C.Descripción, C.ImagenURL FROM curso AS C
+    INNER JOIN cursocategoria AS CC
+    ON C.IdCurso = CC.IdCurso
+    WHERE CC.IdCategoria = Categoria
+    ORDER BY RAND();
 END $$
 DELIMITER ;
