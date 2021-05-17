@@ -19,7 +19,16 @@ $Curso = $connection->TraerCursos();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shademy</title>
 
+    <style>
+        .zoom {
+            transition: transform .5s;
+            margin: 0 auto;
+        }
 
+        .zoom:hover {
+            transform: scale(1.02);
+        }
+    </style>
 
 
     <link rel="icon" href="src/icon.jpg">
@@ -137,10 +146,15 @@ $Curso = $connection->TraerCursos();
                             for ($i = 0; $i < $sizeCursos; $i++) {
                                 echo
                                 '<form action="curso.php" method="get">
-                                <div class="row shadow-sm rounded mb-5" id="TarjetaCurso">
+                                <div class="row shadow-sm rounded mb-5 zoom" id="TarjetaCurso">
                                 <div class="col-2">
-                                    <img src="'; if($Curso[$i]["ImagenURL"] !== null){echo $Curso[$i]["ImagenURL"];}else 
-                                    {echo "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.nsha.org%2Fwp-content%2Fuploads%2F2017%2F06%2Fcomputer-coding-600x600.jpg&f=1&nofb=1";} echo '" 
+                                    <img src="';
+                                if ($Curso[$i]["ImagenURL"] !== null) {
+                                    echo $Curso[$i]["ImagenURL"];
+                                } else {
+                                    echo "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.nsha.org%2Fwp-content%2Fuploads%2F2017%2F06%2Fcomputer-coding-600x600.jpg&f=1&nofb=1";
+                                }
+                                echo '" 
                                     class="img rounded-circle img-fluid" alt="..." style="max-width: 10vw; max-height: 10vw; min-width: 10vw; min-height: 10vw">
                                 </div>
                                 <div class="col-10">
@@ -153,7 +167,7 @@ $Curso = $connection->TraerCursos();
                             </form>
                             ';
                             }
-                        }else{
+                        } else {
                             echo '<div class="col text-center mb-4"><h5>Al parecer no existen cursos</h5></div>';
                         } ?>
 

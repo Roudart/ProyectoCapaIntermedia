@@ -279,6 +279,25 @@ class Conexion
     }
   }
 
+  function TraerCursosPendientes($IdUsuario){
+    $sql = "CALL TraerCursosPendientes($IdUsuario);";
+    $result = mysqli_query($this->connet, $sql);
+    if($result){
+      $CursoPendiente = array();
+      $i = 0;
+      while($newRow = mysqli_fetch_array($result)){
+        $CursoPendiente[$i]["IdCurso"] = $newRow["IdCurso"];
+        $CursoPendiente[$i]["Nombre"] = $newRow["Nombre"];
+        $CursoPendiente[$i]["Estado"] = $newRow["Estado"];
+        $CursoPendiente[$i]["Avance"] = $newRow["Avance"];
+        $i++;
+      }
+      return $CursoPendiente;
+    }else{
+      echo "Error description: ". $this->connet->error;
+    }
+  }
+
   function AgregarCursoUsuario($IdCurso, $IdUsuario, $Estado){
     $sql = "call AgregarCursoUsuario($IdCurso,$IdUsuario,$Estado);";
     $result = mysqli_query($this->connet, $sql);

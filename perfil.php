@@ -1,20 +1,48 @@
-
-
 <?php
-    include 'conexionPHP.php';
+include 'conexionPHP.php';
+$connection = new Conexion();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+    if(isset($_SESSION["IDUser"])){
+        $Usuario = $connection->BuscarUsuario($_SESSION["IDUser"]);
+    }
+}
+if(isset($Usuario) && $Usuario["TipoUsuario"] == "Admin"){
+    $connection3 = new Conexion();
+    $Categoria = $connection3->TraerCategorias();
+}
 
-    $connection = new Conexion();
-    if (session_status() == PHP_SESSION_NONE) {
-        session_start();
-        if(isset($_SESSION["IDUser"])){
-            $Usuario = $connection->BuscarUsuario($_SESSION["IDUser"]);
+$Conexion = new Conexion();
+$CursoPendiente = $Conexion->TraerCursosPendientes($_SESSION["IDUser"]);
+if(isset($CursoPendiente)){
+    $sizeCursoPendiente = sizeof($CursoPendiente);
+    for($i=0; $i<$sizeCursoPendiente; $i++){
+        switch($CursoPendiente[$i]["Estado"]){
+            case 'Deseado':{
+                $CursoPendiente[$i]["Color"] = 'secondary';
+                break;
+            }
+            case 'Impartiendo':{
+                $CursoPendiente[$i]["Color"] = 'info';
+                break;
+            }
+            case 'Cursando':{
+                $CursoPendiente[$i]["Color"] = 'warning';
+                break;
+            }
+            case 'Cursado':{
+                $CursoPendiente[$i]["Color"] = 'success';
+                break;
+            }
+            default:{
+                $CursoPendiente[$i]["Color"] = 'light';
+                break;
+            }
+
         }
-     }
-     if(isset($Usuario) && $Usuario["TipoUsuario"] == "Admin"){
-        $connection3 = new Conexion();
-        $Categoria = $connection3->TraerCategorias();
-     }
-    
+    }
+
+}
 ?>
 
 
@@ -194,6 +222,24 @@
                                 </div>
                                 <hr>
                                 <div class="row justify-content-center"><!--Tarjeta del curso-->
+                                <?php if(isset($CursoPendiente)){
+                                    for($i=0; $i<$sizeCursoPendiente; $i++){
+                                        echo '
+                                    <div class="col-8 mb-3">
+                                        <div class="card">
+                                            <div class="card-header">'.$CursoPendiente[$i]["Nombre"].'</div>
+                                            <div class="card-body">
+                                                <div class="progress">
+                                                    <div class="progress-bar progress-bar-striped bg-'.$CursoPendiente[$i]["Color"].'" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">';
+                                                    if($CursoPendiente[$i]["Estado"] === 'Deseado') echo $CursoPendiente[$i]["Estado"]; else echo $CursoPendiente[$i]["Avance"]; echo'</div>
+                                                </div>
+                                            </div>
+                                            <a href="curso.php?CursoId='.$CursoPendiente[$i]["IdCurso"].'" class="stretched-link"></a><!--Este link te lleva al curso-->
+                                        </div>
+                                    </div>';}
+                                    }else{
+                                        echo '<h4>Al parecer no tienes cursos pendientes</h4>';
+                                    }?>
                                     <div class="col-8 mb-3">
                                         <div class="card">
                                             <div class="card-header">Clase de Python</div>

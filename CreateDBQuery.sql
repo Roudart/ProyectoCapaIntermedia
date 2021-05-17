@@ -78,6 +78,17 @@ CREATE TABLE IF NOT EXISTS Requisito(
     FOREIGN KEY FK_REQUISITOCURSO (IdCurso) REFERENCES Curso(IdCurso)
 );
 
+CREATE TABLE IF NOT EXISTS TemaVisto(
+	IdTemaVisto INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    IdUsuario INT NOT NULL,
+    IdCurso INT NOT NULL,
+    IdTema INT NOT NULL,
+    Visto TINYINT NOT NULL DEFAULT 0,
+    FOREIGN KEY FK_TEMAVISTO_USUARIO (IdUsuario) REFERENCES usuario(IdUsuario),
+	FOREIGN KEY FK_TEMAVISTO_CURSO (IdCurso) REFERENCES tema(IdCurso)
+);
+
+
 ALTER TABLE TEMA
 ADD NumTema INT NOT NULL
 AFTER Descripción;
@@ -225,6 +236,14 @@ BEGIN
 END $$
 DELIMITER ;
 
+DROP PROCEDURE IF EXISTS AgregarVistasTema;
+DELIMITER $$
+CREATE PROCEDURE AgregarVistasTema(IdUsuario INT,IdCurso INT, IdTema INT)
+BEGIN
+		INSERT INTO temavisto (IdUsuario, IdCurso, IdTema, Visto) VALUES (IdUsuario, IdCurso, IdTema, 0);
+END $$
+DELIMITER ;
+
 DROP PROCEDURE IF EXISTS AgregarCursoUsuario;
 DELIMITER $$
 CREATE PROCEDURE AgregarCursoUsuario(Curso INT, Usuario INT, CursoEstado INT) /*  INDICE ESTADO, (INT)1 - "Deseado", (INT)2 - "Impartiendo", (INT)3 - "Cursando", (INT)4 - "Cursado" */
@@ -233,19 +252,28 @@ BEGIN
 	DECLARE UsuarioId INT;
     DECLARE CursoId INT;
     DECLARE EstadoCurso INT;
+    DECLARE NumeroTemas INT;
+    DECLARE x INT DEFAULT 0;
 	SELECT IdCursoDeseado, IdCurso, IdUsuario, Estado INTO CursoDeseadoId, CursoId, UsuarioId, EstadoCurso FROM usuariocurso WHERE IdCurso = Curso AND IdUsuario = Usuario LIMIT 1;
     IF CursoDeseadoId > -1 THEN /* EN CASO DE ENCONTRAR UNA RELACION ENTRE EL ESTUDIANTE Y EL CURSO */
 		IF CursoDeseadoId > -1 AND EstadoCurso = CursoEstado THEN  /* EN CASO DE QUE SE ENCUENTRA UN RESULTADO Y CON EL MISMO ESTADO SE DEBE ELIMINAR*/
 			DELETE FROM usuariocurso WHERE IdCursoDeseado = CursoDeseadoId;
 			SELECT "Eliminado" AS Respuesta;
-			ELSE /* EN CASO DE QUE TENGA OTRO ESTADO AL QUE YA TIENE, SE ACTUALIZA CON NUEVO ESTADO */
-			UPDATE usuariocurso SET Estado = CursoEstado WHERE IdCursoDeseado = CursoDeseadoId;
+		ELSE 
+			UPDATE usuariocurso SET Estado = CursoEstado WHERE IdCursoDeseado = CursoDeseadoId;/* EN CASO DE QUE TENGA OTRO ESTADO AL QUE YA TIENE, SE ACTUALIZA CON NUEVO ESTADO */
             SELECT "Actualizado" AS Respuesta;
 		END IF;
 		ELSE /* SI NO HAY NINGUN REGISTRO CON TAL RELACIÓN, SE CREA UN NUEVO REGISTRO*/
         INSERT INTO usuariocurso (IdCurso, IdUsuario, Estado) VALUES (Curso, Usuario, CursoEstado);
         SELECT "Insertado" AS Respuesta;
     END IF;
+    IF CursoEstado = 3 THEN /* SI SE VA A CURSAR, HAY QUE CREAR LAS TABLAS DE LOS TEMAS QUE VA A VER */
+		SELECT COUNT(NumTema) INTO NumeroTemas FROM tema WHERE IdCurso = Curso;
+		WHILE x < NumeroTemas DO
+			CALL AgregarVistasTema(Usuario, Curso,x+1);
+            SET x = x+1;
+		END WHILE;
+	END IF;
 END $$
 DELIMITER ;
 
@@ -258,5 +286,19 @@ BEGIN
     ON C.IdCurso = CC.IdCurso
     WHERE CC.IdCategoria = Categoria
     ORDER BY RAND();
+END $$
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS TraerCursosPendientes; /* PENDIENTE - INCOMPLETO PERO FUNCIONA - POR FAVOR CORRER */
+DELIMITER $$
+CREATE PROCEDURE TraerCursosPendientes(Usuario INT)
+BEGIN
+	SELECT C.IdCurso, C.Nombre, UC.Estado, IF(UC.Estado = 'Deseado',0, 100/COUNT(T.IdTema)) AS Avance FROM usuariocurso AS UC
+	INNER JOIN curso AS C
+	ON UC.IdCurso = C.IdCurso
+    INNER JOIN tema as T
+    ON T.IdCurso = UC.IdCurso
+	WHERE UC.IdUsuario = Usuario
+    GROUP BY UC.IdCurso;
 END $$
 DELIMITER ;

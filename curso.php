@@ -110,7 +110,7 @@ $EstadoCursoUsuario = $ConexionEstado->EstadoCursoUsuario($IdCurso, $_SESSION["I
                                     <p>17,256 reviews y 20000 estudiantes cursados</p>
                                     <p>Impartido por <a><?php if (isset($Curso)) echo $Curso["NombreMaestro"];
                                                         else echo 'Falta el nombre del maestro'; ?></a></p>
-                                    <button class="btn btn<?php if (isset($EstadoCursoUsuario) && $EstadoCursoUsuario === 'Deseado') echo '-'; else echo '-outline-';?>danger btn-sm" onclick="AgregarCursoListaDeseados(<?php echo $IdCurso . ','; if(isset($_SESSION['IDUser'])) echo $_SESSION['IDUser']; else echo -1;?>);" id="BtnListaDeseados"><?php if (isset($EstadoCursoUsuario) && $EstadoCursoUsuario === 'Deseado') echo 'Deseado'; else echo 'Lista de desados';?></button>
+                                    <button class="btn btn<?php if (isset($EstadoCursoUsuario) && $EstadoCursoUsuario === 'Deseado') echo '-'; else echo '-outline-';?>danger btn-sm" <?php if(isset($EstadoCursoUsuario) && ($EstadoCursoUsuario === 'Cursando' || $EstadoCursoUsuario === 'Cursado')) echo 'hidden';?> onclick="AgregarCursoListaDeseados(<?php echo $IdCurso . ','; if(isset($_SESSION['IDUser'])) echo $_SESSION['IDUser']; else echo -1;?>);" id="BtnListaDeseados"><?php if (isset($EstadoCursoUsuario) && $EstadoCursoUsuario === 'Deseado') echo 'Deseado'; else echo 'Lista de desados';?></button>
                                     <div class="row mb-3 mt-3">
                                         <div class="fb-share-button" data-href="https://google.com.mx" data-layout="button" data-size="large"><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">Compartir</a></div>
                                     </div>
@@ -236,11 +236,14 @@ $EstadoCursoUsuario = $ConexionEstado->EstadoCursoUsuario($IdCurso, $_SESSION["I
                             <div class="card-body">
                                 <h4 class="card-title">$<?php if (isset($Curso)) echo $Curso["Precio"];
                                                         else echo '000.00'; ?></h4>
+                                <?php if(isset($EstadoCursoUsuario) && ($EstadoCursoUsuario === 'Cursando' || $EstadoCursoUsuario === 'Cursado')) echo '<strong>Ya lo tienes</strong>'; else{
+                                echo '
                                 <div class="d-grid gap-2">
-                                    <button class="btn btn-outline-danger">Comprar ahora</button>
+                                    <button class="btn btn-outline-danger" onclick="AgregarCursoCompra(' . $IdCurso . ','; if(isset($_SESSION['IDUser'])) echo $_SESSION['IDUser'].'"'; else echo -1; echo ')">Comprar ahora</button>
                                     <button class="btn btn-outline-secondary">Agregar al carrito</button>
                                 </div>
-                                <hr>
+                                <hr>';
+                                }?>
                                 <p class="card-text">Este curso incluye: </p>
                                 <ul class="list-group list-group-flush">
                                     <li class="list-group-item">20 horas de video</li>
