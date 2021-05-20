@@ -53,5 +53,4 @@ function AgregarCursoCompra(IdCurso, idUsuario){
     }else{
         console.log("Bueno, espero lo hagas luego");
     }
-
 }

@@ -337,7 +337,9 @@ if(isset($CursoPendiente)){
                                             </div>
                                         </div>
                                         <div class="d-grid gap-2 col-6 mx-auto mb-3">
-                                            <button onclick="UploadImage();" type="button" class="btn btn-danger btn-sm">Crear curso</button>
+                                            <button onclick="UploadImage();" type="button" id="btnSubmitCurso" name="btnSubmitCurso" class="btn btn-danger btn-sm">
+                                            
+                                            Crear curso</button>
                                         </div>
                                     </div>
                                 </form>
@@ -592,10 +594,22 @@ function PreviewImage() {
     };
 
 function UploadImage(){
+
     //Get File
     if(!validarCurso()){
         return false;
     }
+
+    var BtnSubmitCurso = document.getElementById("btnSubmitCurso");
+        BtnSubmitCurso.disabled = true;
+        BtnSubmitCurso.innerHTML = "";
+        var spinner = document.createElement("span");
+        spinner.className = "spinner-border spinner-border-sm";
+        spinner.role = "status";
+        spinner.setAttribute("aria-hidden", "true");
+        BtnSubmitCurso.appendChild(spinner);
+        BtnSubmitCurso.innerHTML += " Cargando . . .";
+
     var e = document.getElementById("fileButton2");
     var file = e.files[0];
     console.log(file.name);

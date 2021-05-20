@@ -30,7 +30,7 @@ $Curso = $connection->TraerCursos();
         }
     </style>
 
-
+    <script src="Js/index.js"></script>
     <link rel="icon" href="src/icon.jpg">
 
 
@@ -104,25 +104,31 @@ $Curso = $connection->TraerCursos();
     <div class="container" style="padding-top: 10%;">
         <div class="row">
             <div class="col-lg-4 text-center">
-                <svg class="bd-placeholder-img rounded-circle" width="140" height="140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 140x140" preserveAspectRatio="xMidYMid slice" focusable="false">
-                    <title>Imagen 1</title>
-                    <rect width="100%" height="100%" fill="#777"></rect>
-                </svg>
-                <h3>Mas de 130,000 cursos</h3>
+                <form action="MasVendidos.php" method="get" id="formMasVendidos" name="formMasVendidos">
+                    <svg class="bd-placeholder-img rounded-circle" width="140" height="140" xmlns="https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fauxinfor.com%2Fweb%2Fimg%2Ficono03_externalizacion_ventas.png&f=1&nofb=1" role="img" aria-label="Placeholder: 140x140" preserveAspectRatio="xMidYMid slice" focusable="false" onclick="MasVendidos();">
+                        <title>Cursos mas vendidos</title>
+                        <rect width="100%" height="100%" fill="#777"></rect>
+                    </svg>
+                </form>
+                <h3>Los cursos mas vendidos</h3>
             </div>
             <div class="col-lg-4 text-center">
-                <svg class="bd-placeholder-img rounded-circle" width="140" height="140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 140x140" preserveAspectRatio="xMidYMid slice" focusable="false">
-                    <title>Imagen 2</title>
-                    <rect width="100%" height="100%" fill="#777"></rect>
-                </svg>
-                <h3>Instructores calificados</h3>
+                <form action="MasRecientes.php" method="get" id="formMasRecientes" name="formMasRecientes">
+                    <svg class="bd-placeholder-img rounded-circle" width="140" height="140" xmlns="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse2.mm.bing.net%2Fth%3Fid%3DOIP.VlYWRRbHzaXJaMnfmt0LTgHaHa%26pid%3DApi&f=1" role="img" aria-label="Placeholder: 140x140" preserveAspectRatio="xMidYMid slice" focusable="false" onclick="MasRecientes();">
+                        <title>Cursos nuevos</title>
+                        <rect width="100%" height="100%" fill="#777"></rect>
+                    </svg>
+                </form>
+                <h3>Nuevos cursos cada día</h3>
             </div>
             <div class="col-lg-4 text-center">
-                <svg class="bd-placeholder-img rounded-circle" width="140" height="140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 140x140" preserveAspectRatio="xMidYMid slice" focusable="false">
-                    <title>Imagen 3</title>
-                    <rect width="100%" height="100%" fill="#777"></rect>
-                </svg>
-                <h3>Diplomas internacionales</h3>
+                <form action="MejorCalificados.php" method="get" id="formMejorCalificados" name="formMejorCalificados">
+                    <svg class="bd-placeholder-img rounded-circle" width="140" height="140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 140x140" preserveAspectRatio="xMidYMid slice" focusable="false" onclick="MejorCalificados();">
+                        <title>Mejor calificados</title>
+                        <rect width="100%" height="100%" fill="#777"></rect>
+                    </svg>
+                </form>
+                <h3>¡Lo mejor de lo mejor!</h3>
             </div>
         </div>
     </div>

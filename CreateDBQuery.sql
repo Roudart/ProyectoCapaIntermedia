@@ -111,6 +111,12 @@ ALTER TABLE curso
 ADD ImagenURL VARCHAR(255) NULL
 AFTER Aprobado;
 
+ALTER TABLE curso
+ADD FechaCreada DATETIME NOT NULL DEFAULT NOW();
+
+ALTER TABLE usuariocurso
+ADD Calificacion TINYINT NULL;
+
 DROP PROCEDURE IF EXISTS SaludoDB;
 DELIMITER $$
 CREATE PROCEDURE SaludoDB()
@@ -300,5 +306,66 @@ BEGIN
     ON T.IdCurso = UC.IdCurso
 	WHERE UC.IdUsuario = Usuario
     GROUP BY UC.IdCurso;
+END $$
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS MasVendidos;
+DELIMITER $$
+CREATE PROCEDURE MasVendidos()
+BEGIN
+SELECT COUNT(C.IdCurso) AS Compras, C.IdCurso, C.Nombre, C.Descripción, C.Precio, C.ImagenURL, UC.Estado, SUM(C.Precio) AS TotalVentas FROM curso AS C
+INNER JOIN usuariocurso AS UC ON C.IdCurso = UC.IdCurso WHERE UC.Estado != "Deseado" GROUP BY C.IdCurso ORDER BY Compras DESC;
+END $$
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS MasRecientes;
+DELIMITER $$
+CREATE PROCEDURE MasRecientes()
+BEGIN
+SELECT IdCurso, Nombre, Descripción, ImagenURL, 
+IF (
+/*DIAS*/
+DATEDIFF(NOW(), FechaCreada) != 0, CONCAT_WS(" ",TIMESTAMPDIFF(DAY, FechaCreada, NOW()), "días"), 
+	IF(
+    /*HORAS*/
+    TIMESTAMPDIFF(HOUR, FechaCreada, NOW()) > 1, CONCAT_WS(" ",TIMESTAMPDIFF(HOUR, FechaCreada, NOW()), "horas"), 
+		IF (
+        /*MINUTOS*/
+		TIMESTAMPDIFF(MINUTE, FechaCreada, NOW()) != 0 ,CONCAT_WS(" ", TIMESTAMPDIFF(MINUTE, FechaCreada, NOW()), "minutos"), CONCAT_WS(" ", TIMESTAMPDIFF(SECOND, FechaCreada, NOW()), "segundos")
+        )
+    )
+)
+AS Hace FROM curso ORDER BY FechaCreada DESC;
+END $$
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS MejorCalificados;
+DELIMITER $$
+CREATE PROCEDURE MejorCalificados()
+BEGIN
+SELECT C.IdCurso, C.Nombre, C.Descripción, C.Precio, C.ImagenURL, SUM(UC.Calificacion) AS SUMA, COUNT(C.IdCurso) AS CUENTA, CAST(SUM(UC.Calificacion)/COUNT(C.IdCurso) AS DECIMAL(4,1)) AS Promedio FROM curso AS C
+INNER JOIN usuariocurso AS UC ON C.IdCurso = UC.IdCurso
+GROUP BY C.IdCurso
+ORDER BY Promedio DESC;
+END $$
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS CalificarCurso;
+DELIMITER $$
+CREATE PROCEDURE CalificarCurso(Curso INT, Usuario INT, Rating TINYINT)
+BEGIN
+	DECLARE Existe BOOLEAN;
+	SELECT IdCursoDeseado INTO Existe FROM usuariocurso WHERE IdCurso = Curso AND IdUsuario = Usuario;
+    IF Existe THEN UPDATE usuariocurso SET Calificacion = Rating WHERE IdCurso = Curso AND IdUsuario = Usuario;
+    ELSE SELECT 'No hay relación' AS Respuesta;
+    END IF;
+END $$
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS CalificacionUsuarioCurso;
+DELIMITER $$
+CREATE PROCEDURE CalificacionUsuarioCurso(Curso INT, Usuario INT)
+BEGIN
+SELECT Calificacion FROM usuariocurso WHERE IdCurso = Curso AND IdUsuario = Usuario LIMIT 1;
 END $$
 DELIMITER ;

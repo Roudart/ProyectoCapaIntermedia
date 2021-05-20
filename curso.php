@@ -3,6 +3,7 @@ include 'conexionPHP.php';
 $Conexion = new Conexion();
 $IdCurso = $_GET["CursoId"];
 $Curso = $Conexion->TraerCurso($IdCurso);
+$Calificacion = 0;
 $Tema = $Conexion->TrearTemas($IdCurso);
 $Requisito = $Conexion->TraerRequisitos($IdCurso);
 $Categoria = $Conexion->TraerCategoriasCurso($IdCurso);
@@ -10,10 +11,12 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
     if (isset($_SESSION["IDUser"])) {
         $FotoUsuario = $Conexion->BuscarFotoUsuario($_SESSION["IDUser"]);
+        $ConexionEstado = new Conexion();
+        $EstadoCursoUsuario = $ConexionEstado->EstadoCursoUsuario($IdCurso, $_SESSION["IDUser"]);
+        $ConexionCalificacion = new Conexion();
+        $Calificacion = $ConexionCalificacion->CalificacionUsuarioCurso($Curso["IdCurso"], $_SESSION["IDUser"]);
     }
 }
-$ConexionEstado = new Conexion();
-$EstadoCursoUsuario = $ConexionEstado->EstadoCursoUsuario($IdCurso, $_SESSION["IDUser"]);
 ?>
 
 
@@ -28,10 +31,16 @@ $EstadoCursoUsuario = $ConexionEstado->EstadoCursoUsuario($IdCurso, $_SESSION["I
 
 
     <link rel="icon" href="src/icon.jpg">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="Js/AgregarCurso.js"></script>
 
     <div id="fb-root"></div>
     <script async defer crossorigin="anonymous" src="https://connect.facebook.net/es_LA/sdk.js#xfbml=1&version=v10.0" nonce="nwvdRSaN"></script>
+    <style>
+        .checked {
+            color: orange;
+        }
+    </style>
 
 
     <!--Incluimos la biblioteca de free Bootstrap-->
@@ -110,7 +119,11 @@ $EstadoCursoUsuario = $ConexionEstado->EstadoCursoUsuario($IdCurso, $_SESSION["I
                                     <p>17,256 reviews y 20000 estudiantes cursados</p>
                                     <p>Impartido por <a><?php if (isset($Curso)) echo $Curso["NombreMaestro"];
                                                         else echo 'Falta el nombre del maestro'; ?></a></p>
-                                    <button class="btn btn<?php if (isset($EstadoCursoUsuario) && $EstadoCursoUsuario === 'Deseado') echo '-'; else echo '-outline-';?>danger btn-sm" <?php if(isset($EstadoCursoUsuario) && ($EstadoCursoUsuario === 'Cursando' || $EstadoCursoUsuario === 'Cursado')) echo 'hidden';?> onclick="AgregarCursoListaDeseados(<?php echo $IdCurso . ','; if(isset($_SESSION['IDUser'])) echo $_SESSION['IDUser']; else echo -1;?>);" id="BtnListaDeseados"><?php if (isset($EstadoCursoUsuario) && $EstadoCursoUsuario === 'Deseado') echo 'Deseado'; else echo 'Lista de desados';?></button>
+                                    <button class="btn btn<?php if (isset($EstadoCursoUsuario) && $EstadoCursoUsuario === 'Deseado') echo '-';
+                                                            else echo '-outline-'; ?>danger btn-sm" <?php if (isset($EstadoCursoUsuario) && ($EstadoCursoUsuario === 'Cursando' || $EstadoCursoUsuario === 'Cursado')) echo 'hidden'; ?> onclick="AgregarCursoListaDeseados(<?php echo $IdCurso . ',';
+                                                                                                                                                                                                                                                                            if (isset($_SESSION['IDUser'])) echo $_SESSION['IDUser'];
+                                                                                                                                                                                                                                                                            else echo -1; ?>);" id="BtnListaDeseados"><?php if (isset($EstadoCursoUsuario) && $EstadoCursoUsuario === 'Deseado') echo 'Deseado';
+                                                                                                                                                                                                                                                                                                                                                                                                        else echo 'Lista de desados'; ?></button>
                                     <div class="row mb-3 mt-3">
                                         <div class="fb-share-button" data-href="https://google.com.mx" data-layout="button" data-size="large"><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">Compartir</a></div>
                                     </div>
@@ -177,6 +190,17 @@ $EstadoCursoUsuario = $ConexionEstado->EstadoCursoUsuario($IdCurso, $_SESSION["I
                                         else echo 'Descripción de la noticia falta'; ?></p>
                                 </div>
                             </div>
+                            
+                            <div class="row mt-3 mb-3">
+                            <h3>Califica este curso</h3>
+                                <?php $SemiC = "'";?>
+                                <span class="<?php if($Calificacion[0]<1) echo 'fa fa-star col-auto'; else echo 'fa fa-star col-auto checked';?>" id="Star1" name="Star1" onmouseleave="CleanStars();" onclick="Calificar(this, <?php if(isset($_SESSION['IDUser'])) echo $_SESSION['IDUser']; else echo -1;?>, <?php echo $Curso['IdCurso'];?> ,<?php if(isset($EstadoCursoUsuario)) echo $SemiC.$EstadoCursoUsuario.$SemiC; else echo $SemiC.'Ninguno'.$SemiC; ?>);"></span>
+                                <span class="<?php if($Calificacion[0]<2) echo 'fa fa-star col-auto'; else echo 'fa fa-star col-auto checked';?>" id="Star2" name="Star2" onmouseleave="CleanStars();" onclick="Calificar(this, <?php if(isset($_SESSION['IDUser'])) echo $_SESSION['IDUser']; else echo -1;?>, <?php echo $Curso['IdCurso'];?> ,<?php if(isset($EstadoCursoUsuario)) echo $SemiC.$EstadoCursoUsuario.$SemiC; else echo $SemiC.'Ninguno'.$SemiC; ?>);"></span>
+                                <span class="<?php if($Calificacion[0]<3) echo 'fa fa-star col-auto'; else echo 'fa fa-star col-auto checked';?>" id="Star3" name="Star3" onmouseleave="CleanStars();" onclick="Calificar(this, <?php if(isset($_SESSION['IDUser'])) echo $_SESSION['IDUser']; else echo -1;?>, <?php echo $Curso['IdCurso'];?> ,<?php if(isset($EstadoCursoUsuario)) echo $SemiC.$EstadoCursoUsuario.$SemiC; else echo $SemiC.'Ninguno'.$SemiC; ?>);"></span>
+                                <span class="<?php if($Calificacion[0]<4) echo 'fa fa-star col-auto'; else echo 'fa fa-star col-auto checked';?>" id="Star4" name="Star4" onmouseleave="CleanStars();" onclick="Calificar(this, <?php if(isset($_SESSION['IDUser'])) echo $_SESSION['IDUser']; else echo -1;?>, <?php echo $Curso['IdCurso'];?> ,<?php if(isset($EstadoCursoUsuario)) echo $SemiC.$EstadoCursoUsuario.$SemiC; else echo $SemiC.'Ninguno'.$SemiC; ?>);"></span>
+                                <span class="<?php if($Calificacion[0]<5) echo 'fa fa-star col-auto'; else echo 'fa fa-star col-auto checked';?>" id="Star5" name="Star5" onmouseleave="CleanStars();" onclick="Calificar(this, <?php if(isset($_SESSION['IDUser'])) echo $_SESSION['IDUser']; else echo -1;?>, <?php echo $Curso['IdCurso'];?> ,<?php if(isset($EstadoCursoUsuario)) echo $SemiC.$EstadoCursoUsuario.$SemiC; else echo $SemiC.'Ninguno'.$SemiC; ?>);"></span>
+                            </div>
+                            <script src="Js/StarSystem.js"></script>
                             <div class="row">
                                 <div class="col mx-auto">
                                     <h1>Instructor</h1>
@@ -188,8 +212,7 @@ $EstadoCursoUsuario = $ConexionEstado->EstadoCursoUsuario($IdCurso, $_SESSION["I
                                             <div class="col-4">
                                                 <a href="perfil.html">
                                                     <img src="<?php if (isset($Curso) && isset($Curso["Imagen"]) && $Curso["Imagen"] != null) echo $Curso["Imagen"];
-                                                                else echo 'https://banner2.kisspng.com/20180615/rtc/kisspng-avatar-user-profile-male-logo-profile-icon-5b238cb002ed52.870627731529056432012.jpg'; ?>" 
-                                                                class="img rounded-circle img-fluid" alt=". . ." style="max-width: 12vw; max-height: 12vw; min-width: 12vw; min-height:12vw;">
+                                                                else echo 'https://banner2.kisspng.com/20180615/rtc/kisspng-avatar-user-profile-male-logo-profile-icon-5b238cb002ed52.870627731529056432012.jpg'; ?>" class="img rounded-circle img-fluid" alt=". . ." style="max-width: 12vw; max-height: 12vw; min-width: 12vw; min-height:12vw;">
                                                 </a>
                                             </div>
                                             <div class="col-8 lh-1">
@@ -207,15 +230,17 @@ $EstadoCursoUsuario = $ConexionEstado->EstadoCursoUsuario($IdCurso, $_SESSION["I
                                         Mismas categorias
                                     </h1>
                                     <div class="btn-group" role="group">
-                                    <?php if(isset($Categoria)){
-                                        $sizeCategoria = sizeof($Categoria);
-                                        for($i=0; $i<$sizeCategoria; $i++){
-                                            echo '<form action="busquedaCategorias.php" method="GET">
-                                            <button type="submit" class="btn" id="Curso'.$Categoria[$i]["IdCategoria"].'" name= "Curso'.$Categoria[$i]["IdCategoria"].'"
-                                            style="background: '.$Categoria[$i]["Color"].'; color: white;">'. $Categoria[$i]["Nombre"] .'</button>
-                                            <input value="'.$Categoria[$i]["IdCategoria"].'" id="Categoria" name="Categoria" hidden></form>';
-                                        }
-                                    }else{echo '<h4>D: Por alguna razón no tiene categorias<h4>';}?>
+                                        <?php if (isset($Categoria)) {
+                                            $sizeCategoria = sizeof($Categoria);
+                                            for ($i = 0; $i < $sizeCategoria; $i++) {
+                                                echo '<form action="busquedaCategorias.php" method="GET">
+                                            <button type="submit" class="btn" id="Curso' . $Categoria[$i]["IdCategoria"] . '" name= "Curso' . $Categoria[$i]["IdCategoria"] . '"
+                                            style="background: ' . $Categoria[$i]["Color"] . '; color: white;">' . $Categoria[$i]["Nombre"] . '</button>
+                                            <input value="' . $Categoria[$i]["IdCategoria"] . '" id="Categoria" name="Categoria" hidden></form>';
+                                            }
+                                        } else {
+                                            echo '<h4>D: Por alguna razón no tiene categorias<h4>';
+                                        } ?>
                                     </div>
                                 </div>
                             </div>
@@ -231,19 +256,23 @@ $EstadoCursoUsuario = $ConexionEstado->EstadoCursoUsuario($IdCurso, $_SESSION["I
                     </div>
                     <div class="col-sm-4">
                         <div class="card shadow-lg">
-                            <img src="<?php if(isset($Curso) && isset($Curso["ImagenURL"]) && $Curso["ImagenURL"]!==null) echo $Curso["ImagenURL"];
-                            else echo 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmiro.medium.com%2Fmax%2F12032%2F0*Q8DDPKbl1Jek0i0a&f=1&nofb=1';?>" alt="imagen" class="card-img-top">
+                            <img src="<?php if (isset($Curso) && isset($Curso["ImagenURL"]) && $Curso["ImagenURL"] !== null) echo $Curso["ImagenURL"];
+                                        else echo 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmiro.medium.com%2Fmax%2F12032%2F0*Q8DDPKbl1Jek0i0a&f=1&nofb=1'; ?>" alt="imagen" class="card-img-top">
                             <div class="card-body">
                                 <h4 class="card-title">$<?php if (isset($Curso)) echo $Curso["Precio"];
                                                         else echo '000.00'; ?></h4>
-                                <?php if(isset($EstadoCursoUsuario) && ($EstadoCursoUsuario === 'Cursando' || $EstadoCursoUsuario === 'Cursado')) echo '<strong>Ya lo tienes</strong>'; else{
-                                echo '
+                                <?php if (isset($EstadoCursoUsuario) && ($EstadoCursoUsuario === 'Cursando' || $EstadoCursoUsuario === 'Cursado')) echo '<strong>Ya lo tienes</strong>';
+                                else {
+                                    echo '
                                 <div class="d-grid gap-2">
-                                    <button class="btn btn-outline-danger" onclick="AgregarCursoCompra(' . $IdCurso . ','; if(isset($_SESSION['IDUser'])) echo $_SESSION['IDUser'].'"'; else echo -1; echo ')">Comprar ahora</button>
+                                    <button class="btn btn-outline-danger" onclick="AgregarCursoCompra(' . $IdCurso . ',';
+                                    if (isset($_SESSION['IDUser'])) echo $_SESSION['IDUser'];
+                                    else echo -1;
+                                    echo ');">Comprar ahora</button>
                                     <button class="btn btn-outline-secondary">Agregar al carrito</button>
                                 </div>
                                 <hr>';
-                                }?>
+                                } ?>
                                 <p class="card-text">Este curso incluye: </p>
                                 <ul class="list-group list-group-flush">
                                     <li class="list-group-item">20 horas de video</li>

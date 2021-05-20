@@ -279,6 +279,69 @@ class Conexion
     }
   }
 
+  function MasVendidos(){
+    $sql = "CALL MasVendidos();";
+    $result = mysqli_query($this->connet, $sql);
+    if(!$result){
+      echo("Error description: ". $this->connet->error);
+    }else{
+      $Curso = array();
+      $i = 0;
+      while($newRow = mysqli_fetch_array($result)){
+        $Curso[$i]["Compras"] = $newRow["Compras"];
+        $Curso[$i]["IdCurso"] = $newRow["IdCurso"];
+        $Curso[$i]["Nombre"] = $newRow["Nombre"];
+        $Curso[$i]["Descripción"] = $newRow["Descripción"];
+        $Curso[$i]["Precio"] = $newRow["Precio"];
+        $Curso[$i]["ImagenURL"] = $newRow["ImagenURL"];
+        $Curso[$i]["Estado"] = $newRow["Estado"];
+        $Curso[$i]["TotalVentas"] = $newRow["TotalVentas"];
+        $i++;
+      }
+      return $Curso;
+    }
+  }
+  
+  function MasRecientes(){
+    $sql = "CALL MasRecientes();";
+    $result = mysqli_query($this->connet, $sql);
+    if(!$result){
+      echo("Error description: ". $this->connet->error);
+    }else{
+      $Curso = array();
+      $i = 0;
+      while($newRow = mysqli_fetch_array($result)){
+        $Curso[$i]["IdCurso"] = $newRow["IdCurso"];
+        $Curso[$i]["Nombre"] = $newRow["Nombre"];
+        $Curso[$i]["Descripción"] = $newRow["Descripción"];
+        $Curso[$i]["ImagenURL"] = $newRow["ImagenURL"];
+        $Curso[$i]["Hace"] = $newRow["Hace"];
+        $i++;
+      }
+      return $Curso;
+    }
+  }
+
+  function MejorCalificados(){
+    $sql = "CALL MejorCalificados();";
+    $result = mysqli_query($this->connet, $sql);
+    if(!$result){
+      echo("Error description: ". $this->connet->error);
+    }else{
+      $Curso = array();
+      $i = 0;
+      while($newRow = mysqli_fetch_array($result)){
+        $Curso[$i]["IdCurso"] = $newRow["IdCurso"];
+        $Curso[$i]["Nombre"] = $newRow["Nombre"];
+        $Curso[$i]["Descripción"] = $newRow["Descripción"];
+        $Curso[$i]["ImagenURL"] = $newRow["ImagenURL"];
+        $Curso[$i]["Promedio"] = $newRow["Promedio"];
+        $i++;
+      }
+      return $Curso;
+    }
+  }
+
   function TraerCursosPendientes($IdUsuario){
     $sql = "CALL TraerCursosPendientes($IdUsuario);";
     $result = mysqli_query($this->connet, $sql);
@@ -321,4 +384,31 @@ class Conexion
       return "Error description: ". $this->connet->error;
     }
   }
+
+  function CalificarCurso($Curso, $Usuario, $Calificacion){
+    $sql = "CALL CalificarCurso($Curso,$Usuario, $Calificacion);";
+    $result = mysqli_query($this->connet, $sql);
+    if($result){
+      return 0;
+    }else{
+      return "Error description: ". $this->connet->error;
+    }
+  }
+
+  function CalificacionUsuarioCurso($Curso,$Usuario){
+    $sql = "CALL CalificacionUsuarioCurso($Curso, $Usuario);";
+    $result = mysqli_query($this->connet, $sql);
+    if($result){
+      while($newRow = mysqli_fetch_array($result)){
+        $Respuesta = $newRow;
+      }
+      if($Respuesta != null)
+        return $Respuesta;
+      return $Respuesta;
+    }
+    else {
+      return "Error description: ". $this->connet->error;
+    }
+  }
+
 }
