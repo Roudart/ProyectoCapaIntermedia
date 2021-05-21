@@ -8,12 +8,7 @@ if (session_status() == PHP_SESSION_NONE) {
     }
 }
 $ConexionCursos = new Conexion();
-if(isset($_GET["Categoria"])){
-    $Curso = $ConexionCursos->TraerCursosCategoria($_GET["Categoria"]);
-}
-    else
-    echo "Nada!";
-
+$Curso = $ConexionCursos->MasVendidos();
 ?>
 
 <!DOCTYPE html>
@@ -23,9 +18,20 @@ if(isset($_GET["Categoria"])){
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Categoria</title>
-
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
     <link rel="icon" href="src/icon.jpg">
+
+    <style>
+        .zoom {
+            transition: transform .5s;
+            margin: 0 auto;
+        }
+
+        .zoom:hover {
+            transform: scale(1.02);
+        }
+    </style>
 
 
     <!--Incluimos la biblioteca de free Bootstrap-->
@@ -86,7 +92,7 @@ if(isset($_GET["Categoria"])){
         </nav>
         <!-- $$$$$$$$$ Barra de navegación $$$$$$$$$ -->
 
-        <h1 class="text-center">Resultados...</h1>
+        <h1 class="text-center">¡Los mas vendidos!</h1>
         <div class="container mt-5">
             <div class="row">
                 <div class="col">
@@ -97,7 +103,7 @@ if(isset($_GET["Categoria"])){
                             for ($i = 0; $i < $sizeCursos; $i++) {
                                 echo
                                 '<form action="curso.php" method="get">
-                                <div class="row shadow-sm rounded mb-5" id="TarjetaCurso">
+                                <div class="row shadow-sm rounded mb-5 zoom" id="TarjetaCurso">
                                 <div class="col-2">
                                     <img src="'; if($Curso[$i]["ImagenURL"] !== null){echo $Curso[$i]["ImagenURL"];}else 
                                     {echo "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.nsha.org%2Fwp-content%2Fuploads%2F2017%2F06%2Fcomputer-coding-600x600.jpg&f=1&nofb=1";} echo '" 
@@ -108,6 +114,8 @@ if(isset($_GET["Categoria"])){
                                     <p>' . $Curso[$i]["Descripción"] . '</p>
                                     <input type="text" id="CursoId" name="CursoId" value="' . $Curso[$i]["IdCurso"] . '"  hidden>
                                     <button type="submit" id ="LinkCurso' . $Curso[$i]["IdCurso"] . '" class="btn btn-secondary">Ver mas...</button>
+                                    <span class="w3-badge w3-large w3-green w3-padding">$'.$Curso[$i]["TotalVentas"].'</span>
+                                    <span class="w3-badge w3-large w3-green w3-padding">'.$Curso[$i]["Compras"].' compras</span>
                                 </div>
                             </div>
                             </form>

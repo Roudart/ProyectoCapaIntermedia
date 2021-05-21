@@ -19,9 +19,9 @@ $Curso = $connection->TraerCursos();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shademy</title>
 
+    <link rel="stylesheet" href="css/index.css">
 
-
-
+    <script src="Js/index.js"></script>
     <link rel="icon" href="src/icon.jpg">
 
 
@@ -48,7 +48,7 @@ $Curso = $connection->TraerCursos();
                 <div class="navbar-nav col mb-2 me-auto mb-lg-0">
                     <!--Le da formato de linea a lo que está dentro-->
                     <a class="nav-link" href="#">Categorias</a>
-                    <form class="navbar-form navbar-left" action="">
+                    <form class="navbar-form navbar-left" autocomplete="off" action="busquedaCurso.php" method="get">
                         <div class="input-group">
                             <div class="input-group-btn">
                                 <button class="btn btn-default">
@@ -57,7 +57,18 @@ $Curso = $connection->TraerCursos();
                                     </svg>
                                 </button>
                             </div>
-                            <input class="form-control rounded-pill" placeholder="¿Buscas algo?" type="text">
+                            <div class="autocomplete" style="width:300px;">
+                                <input id="InputBusquedaCurso" type="text" name="InputBusquedaCurso" class="form-control rounded-pill" placeholder="¿Buscas algo?" list="Cursos">
+                                <datalist id="Cursos">
+                                    <?php if (isset($Curso)) {
+                                        $sizeCursos = sizeof($Curso);
+                                        for ($i = 0; $i < $sizeCursos; $i++) {
+                                            echo '<script></script>';
+                                            $ShowCurso = $Curso[$i]["Nombre"];
+                                            echo '<option value="' . $ShowCurso . '"';
+                                        }}?>
+                                </datalist>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -95,25 +106,31 @@ $Curso = $connection->TraerCursos();
     <div class="container" style="padding-top: 10%;">
         <div class="row">
             <div class="col-lg-4 text-center">
-                <svg class="bd-placeholder-img rounded-circle" width="140" height="140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 140x140" preserveAspectRatio="xMidYMid slice" focusable="false">
-                    <title>Imagen 1</title>
-                    <rect width="100%" height="100%" fill="#777"></rect>
-                </svg>
-                <h3>Mas de 130,000 cursos</h3>
+                <form action="MasVendidos.php" method="get" id="formMasVendidos" name="formMasVendidos">
+                    <svg class="bd-placeholder-img rounded-circle" width="140" height="140" xmlns="https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fauxinfor.com%2Fweb%2Fimg%2Ficono03_externalizacion_ventas.png&f=1&nofb=1" role="img" aria-label="Placeholder: 140x140" preserveAspectRatio="xMidYMid slice" focusable="false" onclick="MasVendidos();">
+                        <title>Cursos mas vendidos</title>
+                        <rect width="100%" height="100%" fill="#777"></rect>
+                    </svg>
+                </form>
+                <h3>Los cursos mas vendidos</h3>
             </div>
             <div class="col-lg-4 text-center">
-                <svg class="bd-placeholder-img rounded-circle" width="140" height="140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 140x140" preserveAspectRatio="xMidYMid slice" focusable="false">
-                    <title>Imagen 2</title>
-                    <rect width="100%" height="100%" fill="#777"></rect>
-                </svg>
-                <h3>Instructores calificados</h3>
+                <form action="MasRecientes.php" method="get" id="formMasRecientes" name="formMasRecientes">
+                    <svg class="bd-placeholder-img rounded-circle" width="140" height="140" xmlns="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse2.mm.bing.net%2Fth%3Fid%3DOIP.VlYWRRbHzaXJaMnfmt0LTgHaHa%26pid%3DApi&f=1" role="img" aria-label="Placeholder: 140x140" preserveAspectRatio="xMidYMid slice" focusable="false" onclick="MasRecientes();">
+                        <title>Cursos nuevos</title>
+                        <rect width="100%" height="100%" fill="#777"></rect>
+                    </svg>
+                </form>
+                <h3>Nuevos cursos cada día</h3>
             </div>
             <div class="col-lg-4 text-center">
-                <svg class="bd-placeholder-img rounded-circle" width="140" height="140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 140x140" preserveAspectRatio="xMidYMid slice" focusable="false">
-                    <title>Imagen 3</title>
-                    <rect width="100%" height="100%" fill="#777"></rect>
-                </svg>
-                <h3>Diplomas internacionales</h3>
+                <form action="MejorCalificados.php" method="get" id="formMejorCalificados" name="formMejorCalificados">
+                    <svg class="bd-placeholder-img rounded-circle" width="140" height="140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 140x140" preserveAspectRatio="xMidYMid slice" focusable="false" onclick="MejorCalificados();">
+                        <title>Mejor calificados</title>
+                        <rect width="100%" height="100%" fill="#777"></rect>
+                    </svg>
+                </form>
+                <h3>¡Lo mejor de lo mejor!</h3>
             </div>
         </div>
     </div>
@@ -132,15 +149,20 @@ $Curso = $connection->TraerCursos();
             <div class="col">
                 <div class="tab-content" id="nav-tabContent">
                     <div class="tab-pane fade show active" id="list-1" role="tabpanel" aria-labelledby="list-1-list">
-                        <?php if (!isset($Curso)) {
-                            $sizeCursos = sizeof($Curso);
+                        <?php if (isset($Curso)) {
                             for ($i = 0; $i < $sizeCursos; $i++) {
                                 echo
                                 '<form action="curso.php" method="get">
-                                <div class="row shadow-sm rounded mb-5" id="TarjetaCurso">
+                                <div class="row shadow-sm rounded mb-5 zoom" id="TarjetaCurso">
                                 <div class="col-2">
-                                    <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.nsha.org%2Fwp-content%2Fuploads%2F2017%2F06%2Fcomputer-coding-600x600.jpg&f=1&nofb=1" 
-                                    class="img rounded-circle img-fluid" alt="...">
+                                    <img src="';
+                                if ($Curso[$i]["ImagenURL"] !== null) {
+                                    echo $Curso[$i]["ImagenURL"];
+                                } else {
+                                    echo "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.nsha.org%2Fwp-content%2Fuploads%2F2017%2F06%2Fcomputer-coding-600x600.jpg&f=1&nofb=1";
+                                }
+                                echo '" 
+                                    class="img rounded-circle img-fluid" alt="..." style="max-width: 10vw; max-height: 10vw; min-width: 10vw; min-height: 10vw">
                                 </div>
                                 <div class="col-10">
                                     <h1>' . $Curso[$i]["Nombre"] . '</h1>
@@ -152,7 +174,7 @@ $Curso = $connection->TraerCursos();
                             </form>
                             ';
                             }
-                        }else{
+                        } else {
                             echo '<div class="col text-center mb-4"><h5>Al parecer no existen cursos</h5></div>';
                         } ?>
 
@@ -180,7 +202,6 @@ $Curso = $connection->TraerCursos();
             </div>
         </div>
     </div>
-
     <!--FOOTER-->
     <hr>
     <div class="text-center">

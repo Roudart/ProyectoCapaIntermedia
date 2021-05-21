@@ -67,7 +67,7 @@
                        ¡Inicia sesion para obtener todos los beneficios!
                     </h3>
                     <hr>
-                    <form action="iniciarUsuario.php" method="POST">
+                    <form action="iniciarUsuario.php" id="SignInForm" method="POST">
                         <div class="row mb-3">
                             <div class="col-sm-12">
 

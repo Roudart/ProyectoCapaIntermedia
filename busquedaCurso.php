@@ -8,12 +8,11 @@ if (session_status() == PHP_SESSION_NONE) {
     }
 }
 $ConexionCursos = new Conexion();
-if(isset($_GET["Categoria"])){
-    $Curso = $ConexionCursos->TraerCursosCategoria($_GET["Categoria"]);
+if(isset($_GET["InputBusquedaCurso"])){
+    $Curso = $ConexionCursos->TraerCursoNombre($_GET["InputBusquedaCurso"]);
 }
     else
     echo "Nada!";
-
 ?>
 
 <!DOCTYPE html>
