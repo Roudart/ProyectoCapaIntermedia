@@ -19,16 +19,7 @@ $Curso = $connection->TraerCursos();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shademy</title>
 
-    <style>
-        .zoom {
-            transition: transform .5s;
-            margin: 0 auto;
-        }
-
-        .zoom:hover {
-            transform: scale(1.02);
-        }
-    </style>
+    <link rel="stylesheet" href="css/index.css">
 
     <script src="Js/index.js"></script>
     <link rel="icon" href="src/icon.jpg">
@@ -57,7 +48,7 @@ $Curso = $connection->TraerCursos();
                 <div class="navbar-nav col mb-2 me-auto mb-lg-0">
                     <!--Le da formato de linea a lo que está dentro-->
                     <a class="nav-link" href="#">Categorias</a>
-                    <form class="navbar-form navbar-left" action="">
+                    <form class="navbar-form navbar-left" autocomplete="off" action="busquedaCurso.php" method="get">
                         <div class="input-group">
                             <div class="input-group-btn">
                                 <button class="btn btn-default">
@@ -66,7 +57,18 @@ $Curso = $connection->TraerCursos();
                                     </svg>
                                 </button>
                             </div>
-                            <input class="form-control rounded-pill" placeholder="¿Buscas algo?" type="text">
+                            <div class="autocomplete" style="width:300px;">
+                                <input id="InputBusquedaCurso" type="text" name="InputBusquedaCurso" class="form-control rounded-pill" placeholder="¿Buscas algo?" list="Cursos">
+                                <datalist id="Cursos">
+                                    <?php if (isset($Curso)) {
+                                        $sizeCursos = sizeof($Curso);
+                                        for ($i = 0; $i < $sizeCursos; $i++) {
+                                            echo '<script></script>';
+                                            $ShowCurso = $Curso[$i]["Nombre"];
+                                            echo '<option value="' . $ShowCurso . '"';
+                                        }}?>
+                                </datalist>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -148,7 +150,6 @@ $Curso = $connection->TraerCursos();
                 <div class="tab-content" id="nav-tabContent">
                     <div class="tab-pane fade show active" id="list-1" role="tabpanel" aria-labelledby="list-1-list">
                         <?php if (isset($Curso)) {
-                            $sizeCursos = sizeof($Curso);
                             for ($i = 0; $i < $sizeCursos; $i++) {
                                 echo
                                 '<form action="curso.php" method="get">
@@ -201,7 +202,6 @@ $Curso = $connection->TraerCursos();
             </div>
         </div>
     </div>
-
     <!--FOOTER-->
     <hr>
     <div class="text-center">

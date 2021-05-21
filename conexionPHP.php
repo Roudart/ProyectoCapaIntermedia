@@ -279,6 +279,27 @@ class Conexion
     }
   }
 
+  function TraerCursoNombre($Busqueda){
+    $sql = "SELECT * FROM curso AS C
+    WHERE C.Nombre LIKE '%$Busqueda%'";
+    $result = mysqli_query($this->connet, $sql);
+    if(!$result){
+      echo("Error description: ". $this->connet->error);
+    }else{
+      $Curso = array();
+      $i = 0;
+      while($newRow = mysqli_fetch_array($result)){
+        $Curso[$i]["IdCurso"] = $newRow["IdCurso"];
+        $Curso[$i]["Nombre"] = $newRow["Nombre"];
+        $Curso[$i]["Descripción"] = $newRow["Descripción"];
+        $Curso[$i]["Precio"] = $newRow["Precio"];
+        $Curso[$i]["ImagenURL"] = $newRow["ImagenURL"];
+        $i++;
+      }
+      return $Curso;
+    }
+  }
+
   function MasVendidos(){
     $sql = "CALL MasVendidos();";
     $result = mysqli_query($this->connet, $sql);
@@ -402,9 +423,12 @@ class Conexion
       while($newRow = mysqli_fetch_array($result)){
         $Respuesta = $newRow;
       }
-      if($Respuesta != null)
-        return $Respuesta;
-      return $Respuesta;
+      if(isset($Respuesta)){
+        if($Respuesta != null)
+          return $Respuesta;
+        return null;
+      }
+      return null;
     }
     else {
       return "Error description: ". $this->connet->error;
