@@ -155,62 +155,60 @@ function validarCurso(){
     var mensaje2 = "Falta descripción en tema: ";
 
     do {
-        if ((document.getElementById("InputNombreTema"+forIndex).value) === ''){
+        if ((document.getElementById("InputNombreTema" + forIndex).value) === '') {
             mensaje = (mensaje + forIndex + ", ");
             //alert("El nombre del tema " + TemasIndex + " está vacío");
             todoLleno = false;
-        }   
-    
-        console.log("InputNombreTema"+forIndex);
+        }
 
-        if ((document.getElementById("TextAreaTema"+forIndex).value) === ''){
+        console.log("InputNombreTema" + forIndex);
+
+        if ((document.getElementById("TextAreaTema" + forIndex).value) === '') {
             mensaje2 = (mensaje2 + forIndex + ", ");
             //alert("La descripción del tema " + TemasIndex + " está vacía");
             todoLleno = false;
-        }   
-    
-        console.log("TextAreaTema"+forIndex);
+        }
+
+        console.log("TextAreaTema" + forIndex);
 
         forIndex++;
     } while (forIndex < TemasIndex + 1);
 
-    if(todoLleno == false){
+    if (todoLleno == false) {
         alert(mensaje + "\n" + mensaje2);
-         return false;
-     }
+        return false;
+    }
 
-     forIndex = 0;
+    forIndex = 0;
 
-     mensaje = "Los siguintes requisitos están vacíos: ";
+    mensaje = "Los siguintes requisitos están vacíos: ";
 
-     do {
-        if ((document.getElementById("InputRequisito"+forIndex).value) === ''){
+    do {
+        if ((document.getElementById("InputRequisito" + forIndex).value) === '') {
             mensaje = (mensaje + forIndex + ", ");
             todoLleno = false;
-        }   
-    
-        console.log("InputRequisito"+forIndex);
+        }
+
+        console.log("InputRequisito" + forIndex);
 
         forIndex++;
     } while (forIndex < RequisitosIndex + 1);
 
-    if(todoLleno == false){
+    if (todoLleno == false) {
         alert(mensaje);
-         return false;
-     }
+        return false;
+    }
 
-     var elemCategoria = document.getElementById("Selected0");
+    var elemCategoria = document.getElementById("Selected0");
 
-     if(elemCategoria == null){
-         alert("El curso debe contar con al menos una categoría");
-         return false;
-     }
-     
-     if((document.getElementById("PrecioInput").value) <= 0){
-         alert("el curso no puede ser gratis");
-         return false;
-     }
+    if (elemCategoria == null) {
+        alert("El curso debe contar con al menos una categoría");
+        return false;
+    }
 
-     document.getElementById("FormCrearCurso").submit();
-
+    if ((document.getElementById("PrecioInput").value) <= 0) {
+        alert("el curso no puede ser gratis");
+        return false;
+    }
+    return true;
 }

@@ -153,7 +153,7 @@ class Conexion
 
   function TraerCurso($id){
     $sql = 
-    "SELECT C.IdCurso, C.IdMaestro, C.Nombre, C.Descripción, C.Precio, C.Aprobado, 
+    "SELECT C.IdCurso, C.IdMaestro, C.Nombre, C.Descripción, C.Precio, C.Aprobado, C.ImagenURL,
     CONCAT_WS(' ', U.Nombre, U.ApellidoPaterno, U.ApellidoMaterno) AS NombreMaestro, 
     U.CorreoElectronico, U.Imagen 
     FROM curso as C
@@ -174,6 +174,7 @@ class Conexion
         $Curso["NombreMaestro"] = $newRow["NombreMaestro"];
         $Curso["CorreoElectronico"] = $newRow["CorreoElectronico"];
         $Curso["Imagen"] = $newRow["Imagen"];
+        $Curso["ImagenURL"] = $newRow["ImagenURL"];
       }
       return $Curso;
     }
@@ -241,20 +242,197 @@ class Conexion
   }
 
   function TraerCursos(){
-    $sql = "SELECT IdCurso, Nombre, Descripción FROM curso;";
+    $sql = "SELECT IdCurso, Nombre, Descripción, ImagenURL FROM curso;";
     $result = mysqli_query($this->connet, $sql);
     if(!$result){
       echo("Error description: ". $this->connet->error);
     }else{
-      $Categoria = array();
+      $Curso = array();
       $i = 0;
       while($newRow = mysqli_fetch_array($result)){
-        $Categoria[$i]["IdCurso"] = $newRow["IdCurso"];
-        $Categoria[$i]["Nombre"] = $newRow["Nombre"];
-        $Categoria[$i]["Descripción"] = $newRow["Descripción"];
+        $Curso[$i]["IdCurso"] = $newRow["IdCurso"];
+        $Curso[$i]["Nombre"] = $newRow["Nombre"];
+        $Curso[$i]["Descripción"] = $newRow["Descripción"];
+        $Curso[$i]["ImagenURL"] = $newRow["ImagenURL"];
         $i++;
       }
-      return $Categoria;
+      return $Curso;
     }
   }
+
+  function TraerCursosCategoria($IdCategoria){
+    $sql = "CALL TraerCursosCategoria($IdCategoria);";
+    $result = mysqli_query($this->connet, $sql);
+    if(!$result){
+      echo("Error description: ". $this->connet->error);
+    }else{
+      $Curso = array();
+      $i = 0;
+      while($newRow = mysqli_fetch_array($result)){
+        $Curso[$i]["IdCurso"] = $newRow["IdCurso"];
+        $Curso[$i]["Nombre"] = $newRow["Nombre"];
+        $Curso[$i]["Descripción"] = $newRow["Descripción"];
+        $Curso[$i]["ImagenURL"] = $newRow["ImagenURL"];
+        $i++;
+      }
+      return $Curso;
+    }
+  }
+
+  function TraerCursoNombre($Busqueda){
+    $sql = "SELECT * FROM curso AS C
+    WHERE C.Nombre LIKE '%$Busqueda%'";
+    $result = mysqli_query($this->connet, $sql);
+    if(!$result){
+      echo("Error description: ". $this->connet->error);
+    }else{
+      $Curso = array();
+      $i = 0;
+      while($newRow = mysqli_fetch_array($result)){
+        $Curso[$i]["IdCurso"] = $newRow["IdCurso"];
+        $Curso[$i]["Nombre"] = $newRow["Nombre"];
+        $Curso[$i]["Descripción"] = $newRow["Descripción"];
+        $Curso[$i]["Precio"] = $newRow["Precio"];
+        $Curso[$i]["ImagenURL"] = $newRow["ImagenURL"];
+        $i++;
+      }
+      return $Curso;
+    }
+  }
+
+  function MasVendidos(){
+    $sql = "CALL MasVendidos();";
+    $result = mysqli_query($this->connet, $sql);
+    if(!$result){
+      echo("Error description: ". $this->connet->error);
+    }else{
+      $Curso = array();
+      $i = 0;
+      while($newRow = mysqli_fetch_array($result)){
+        $Curso[$i]["Compras"] = $newRow["Compras"];
+        $Curso[$i]["IdCurso"] = $newRow["IdCurso"];
+        $Curso[$i]["Nombre"] = $newRow["Nombre"];
+        $Curso[$i]["Descripción"] = $newRow["Descripción"];
+        $Curso[$i]["Precio"] = $newRow["Precio"];
+        $Curso[$i]["ImagenURL"] = $newRow["ImagenURL"];
+        $Curso[$i]["Estado"] = $newRow["Estado"];
+        $Curso[$i]["TotalVentas"] = $newRow["TotalVentas"];
+        $i++;
+      }
+      return $Curso;
+    }
+  }
+  
+  function MasRecientes(){
+    $sql = "CALL MasRecientes();";
+    $result = mysqli_query($this->connet, $sql);
+    if(!$result){
+      echo("Error description: ". $this->connet->error);
+    }else{
+      $Curso = array();
+      $i = 0;
+      while($newRow = mysqli_fetch_array($result)){
+        $Curso[$i]["IdCurso"] = $newRow["IdCurso"];
+        $Curso[$i]["Nombre"] = $newRow["Nombre"];
+        $Curso[$i]["Descripción"] = $newRow["Descripción"];
+        $Curso[$i]["ImagenURL"] = $newRow["ImagenURL"];
+        $Curso[$i]["Hace"] = $newRow["Hace"];
+        $i++;
+      }
+      return $Curso;
+    }
+  }
+
+  function MejorCalificados(){
+    $sql = "CALL MejorCalificados();";
+    $result = mysqli_query($this->connet, $sql);
+    if(!$result){
+      echo("Error description: ". $this->connet->error);
+    }else{
+      $Curso = array();
+      $i = 0;
+      while($newRow = mysqli_fetch_array($result)){
+        $Curso[$i]["IdCurso"] = $newRow["IdCurso"];
+        $Curso[$i]["Nombre"] = $newRow["Nombre"];
+        $Curso[$i]["Descripción"] = $newRow["Descripción"];
+        $Curso[$i]["ImagenURL"] = $newRow["ImagenURL"];
+        $Curso[$i]["Promedio"] = $newRow["Promedio"];
+        $i++;
+      }
+      return $Curso;
+    }
+  }
+
+  function TraerCursosPendientes($IdUsuario){
+    $sql = "CALL TraerCursosPendientes($IdUsuario);";
+    $result = mysqli_query($this->connet, $sql);
+    if($result){
+      $CursoPendiente = array();
+      $i = 0;
+      while($newRow = mysqli_fetch_array($result)){
+        $CursoPendiente[$i]["IdCurso"] = $newRow["IdCurso"];
+        $CursoPendiente[$i]["Nombre"] = $newRow["Nombre"];
+        $CursoPendiente[$i]["Estado"] = $newRow["Estado"];
+        $CursoPendiente[$i]["Avance"] = $newRow["Avance"];
+        $i++;
+      }
+      return $CursoPendiente;
+    }else{
+      echo "Error description: ". $this->connet->error;
+    }
+  }
+
+  function AgregarCursoUsuario($IdCurso, $IdUsuario, $Estado){
+    $sql = "call AgregarCursoUsuario($IdCurso,$IdUsuario,$Estado);";
+    $result = mysqli_query($this->connet, $sql);
+    if($result){
+      $respuesta = mysqli_fetch_array($result);
+      return $respuesta["Respuesta"];
+    }else{
+      return 'Falla!';
+    }
+  }
+
+  function EstadoCursoUsuario($IdCurso, $IdUsuario){
+    $sql = "SELECT Estado FROM usuariocurso WHERE IdCurso = $IdCurso AND IdUsuario = $IdUsuario;";
+    $result = mysqli_query($this->connet, $sql);
+    if($result){
+      $respuesta = mysqli_fetch_array($result);
+      if(isset($respuesta))
+        return $respuesta["Estado"];
+      return null;
+    }else{
+      return "Error description: ". $this->connet->error;
+    }
+  }
+
+  function CalificarCurso($Curso, $Usuario, $Calificacion){
+    $sql = "CALL CalificarCurso($Curso,$Usuario, $Calificacion);";
+    $result = mysqli_query($this->connet, $sql);
+    if($result){
+      return 0;
+    }else{
+      return "Error description: ". $this->connet->error;
+    }
+  }
+
+  function CalificacionUsuarioCurso($Curso,$Usuario){
+    $sql = "CALL CalificacionUsuarioCurso($Curso, $Usuario);";
+    $result = mysqli_query($this->connet, $sql);
+    if($result){
+      while($newRow = mysqli_fetch_array($result)){
+        $Respuesta = $newRow;
+      }
+      if(isset($Respuesta)){
+        if($Respuesta != null)
+          return $Respuesta;
+        return null;
+      }
+      return null;
+    }
+    else {
+      return "Error description: ". $this->connet->error;
+    }
+  }
+
 }

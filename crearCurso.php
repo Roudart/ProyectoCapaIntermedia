@@ -12,8 +12,9 @@
     echo $Titulo = $_POST["InputTitulo"];
     echo $Desc = $_POST["InputDescripcion"];
     echo $Precio = $_POST["PrecioInput"];
+    echo $Image = $_POST["ImagePath"];
 
-    $sqlQuery = "call CrearCurso($idUsuario,'$Titulo','$Desc', $Precio);";
+    $sqlQuery = "call CrearCurso($idUsuario,'$Titulo','$Desc', $Precio, '$Image');";
     $result = mysqli_query($connection->connet, $sqlQuery);
     if ($result) {
         echo("Exito en crear Curso");

@@ -1,20 +1,48 @@
-
-
 <?php
-    include 'conexionPHP.php';
+include 'conexionPHP.php';
+$connection = new Conexion();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+    if(isset($_SESSION["IDUser"])){
+        $Usuario = $connection->BuscarUsuario($_SESSION["IDUser"]);
+    }
+}
+if(isset($Usuario) && $Usuario["TipoUsuario"] == "Admin"){
+    $connection3 = new Conexion();
+    $Categoria = $connection3->TraerCategorias();
+}
 
-    $connection = new Conexion();
-    if (session_status() == PHP_SESSION_NONE) {
-        session_start();
-        if(isset($_SESSION["IDUser"])){
-            $Usuario = $connection->BuscarUsuario($_SESSION["IDUser"]);
+$Conexion = new Conexion();
+$CursoPendiente = $Conexion->TraerCursosPendientes($_SESSION["IDUser"]);
+if(isset($CursoPendiente)){
+    $sizeCursoPendiente = sizeof($CursoPendiente);
+    for($i=0; $i<$sizeCursoPendiente; $i++){
+        switch($CursoPendiente[$i]["Estado"]){
+            case 'Deseado':{
+                $CursoPendiente[$i]["Color"] = 'secondary';
+                break;
+            }
+            case 'Impartiendo':{
+                $CursoPendiente[$i]["Color"] = 'info';
+                break;
+            }
+            case 'Cursando':{
+                $CursoPendiente[$i]["Color"] = 'warning';
+                break;
+            }
+            case 'Cursado':{
+                $CursoPendiente[$i]["Color"] = 'success';
+                break;
+            }
+            default:{
+                $CursoPendiente[$i]["Color"] = 'light';
+                break;
+            }
+
         }
-     }
-     if(isset($Usuario) && $Usuario["TipoUsuario"] == "Admin"){
-        $connection3 = new Conexion();
-        $Categoria = $connection3->TraerCategorias();
-     }
-    
+    }
+
+}
 ?>
 
 
@@ -194,6 +222,24 @@
                                 </div>
                                 <hr>
                                 <div class="row justify-content-center"><!--Tarjeta del curso-->
+                                <?php if(isset($CursoPendiente)){
+                                    for($i=0; $i<$sizeCursoPendiente; $i++){
+                                        echo '
+                                    <div class="col-8 mb-3">
+                                        <div class="card">
+                                            <div class="card-header">'.$CursoPendiente[$i]["Nombre"].'</div>
+                                            <div class="card-body">
+                                                <div class="progress">
+                                                    <div class="progress-bar progress-bar-striped bg-'.$CursoPendiente[$i]["Color"].'" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">';
+                                                    if($CursoPendiente[$i]["Estado"] === 'Deseado') echo $CursoPendiente[$i]["Estado"]; else echo $CursoPendiente[$i]["Avance"]; echo'</div>
+                                                </div>
+                                            </div>
+                                            <a href="curso.php?CursoId='.$CursoPendiente[$i]["IdCurso"].'" class="stretched-link"></a><!--Este link te lleva al curso-->
+                                        </div>
+                                    </div>';}
+                                    }else{
+                                        echo '<h4>Al parecer no tienes cursos pendientes</h4>';
+                                    }?>
                                     <div class="col-8 mb-3">
                                         <div class="card">
                                             <div class="card-header">Clase de Python</div>
@@ -291,7 +337,9 @@
                                             </div>
                                         </div>
                                         <div class="d-grid gap-2 col-6 mx-auto mb-3">
-                                            <button onclick="validarCurso();" type="button" class="btn btn-danger btn-sm">Crear curso</button>
+                                            <button onclick="UploadImage();" type="button" id="btnSubmitCurso" name="btnSubmitCurso" class="btn btn-danger btn-sm">
+                                            
+                                            Crear curso</button>
                                         </div>
                                     </div>
                                 </form>
@@ -546,7 +594,22 @@ function PreviewImage() {
     };
 
 function UploadImage(){
+
     //Get File
+    if(!validarCurso()){
+        return false;
+    }
+
+    var BtnSubmitCurso = document.getElementById("btnSubmitCurso");
+        BtnSubmitCurso.disabled = true;
+        BtnSubmitCurso.innerHTML = "";
+        var spinner = document.createElement("span");
+        spinner.className = "spinner-border spinner-border-sm";
+        spinner.role = "status";
+        spinner.setAttribute("aria-hidden", "true");
+        BtnSubmitCurso.appendChild(spinner);
+        BtnSubmitCurso.innerHTML += " Cargando . . .";
+
     var e = document.getElementById("fileButton2");
     var file = e.files[0];
     console.log(file.name);
@@ -580,14 +643,14 @@ function UploadImage(){
 }
 
 function submitUser(URL){
-    var formUser = document.forms["SignInForm"];
+    var formUser = document.forms["FormCrearCurso"];
     var SN = document.createElement("input"); 
     SN.setAttribute("type", "text"); 
     SN.setAttribute("value", URL); 
     SN.setAttribute("name", "ImagePath");//La estructura tiene el nombre
     formUser.appendChild(SN);
     formUser.submit();
-    alert("se ha registrado exitosamente");
+    alert("Se ha creado el curso correctamente");
     return true;
 }
 </script>
