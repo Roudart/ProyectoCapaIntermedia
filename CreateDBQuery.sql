@@ -374,3 +374,25 @@ BEGIN
 SELECT Calificacion FROM usuariocurso WHERE IdCurso = Curso AND IdUsuario = Usuario LIMIT 1;
 END $$
 DELIMITER ;
+
+DROP PROCEDURE IF EXISTS CrearComentario;
+DELIMITER $$
+CREATE PROCEDURE CrearComentario(Usuario INT, Contenido VARCHAR(256), Curso INT)
+BEGIN
+INSERT INTO resena (IdUsuario, Contenido, IdCurso) VALUES (Usuario, Contenido , Curso);
+SELECT R.IdCurso, R.IdUsuario ,R.Fecha, R.Contenido, CONCAT_WS(" ",U.Nombre, U.ApellidoPaterno, U.ApellidoMaterno) AS Nombre FROM resena AS R
+INNER JOIN usuario AS U ON R.IdUsuario = U.IdUsuario
+ORDER BY R.IdResena DESC LIMIT 1;
+END $$
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS TraerComentarios;
+DELIMITER $$
+CREATE PROCEDURE TraerComentarios(Curso INT)
+BEGIN
+SELECT R.Contenido, R.Fecha, R.IdUsuario, CONCAT_WS(" ", U.Nombre, U.ApellidoPaterno, U.ApellidoMaterno) AS Nombre, U.Imagen FROM resena AS R
+INNER JOIN usuario AS U ON R.IdUsuario = U.IdUsuario 
+WHERE IdCurso = Curso
+ORDER BY Fecha DESC;
+END $$
+DELIMITER ;

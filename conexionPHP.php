@@ -435,4 +435,40 @@ class Conexion
     }
   }
 
+  function CrearComentario($Usuario, $Contenido, $Curso){
+    $sql = "CALL CrearComentario($Usuario, '$Contenido', $Curso);";
+    $result = mysqli_query($this->connet, $sql);
+    if($result){
+      while($newRow = mysqli_fetch_array($result)){
+        $Respuesta = $newRow["Respuesta"];
+      }
+      return $Respuesta;
+    }
+    else {
+      return "Error description: ". $this->connet->error;
+    }
+  }
+
+  function TraerComentarios($Curso){
+    $sql = "CALL TraerComentarios($Curso);";
+    $result = mysqli_query($this->connet, $sql);
+    if($result){
+      $i = 0;
+      while($newRow = mysqli_fetch_array($result)){
+        $Comentarios[$i]["Contenido"] = $newRow["Contenido"];
+        $Comentarios[$i]["Fecha"] = $newRow["Fecha"];
+        $Comentarios[$i]["IdUsuario"] = $newRow["IdUsuario"];
+        $Comentarios[$i]["Nombre"] = $newRow["Nombre"];
+        $Comentarios[$i]["Imagen"] = $newRow["Imagen"];
+        $i++;
+      }
+      if(isset($Comentarios))
+        return $Comentarios;
+      return null;
+    }
+    else {
+      return "Error description: ". $this->connet->error;
+    }
+  }
+
 }
