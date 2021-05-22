@@ -7,6 +7,8 @@ $Calificacion = 0;
 $Tema = $Conexion->TrearTemas($IdCurso);
 $Requisito = $Conexion->TraerRequisitos($IdCurso);
 $Categoria = $Conexion->TraerCategoriasCurso($IdCurso);
+$ConexionComentarios = new Conexion();
+$Comentarios = $ConexionComentarios->TraerComentarios($IdCurso);
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
     if (isset($_SESSION["IDUser"])) {
@@ -327,27 +329,35 @@ if (session_status() == PHP_SESSION_NONE) {
                         </div>
                         <hr>
                         <div class="container-fluid" id="BarraComentarios">
-
+                        <?php if(isset($Comentarios)) {
+                            $sizeComentaios = sizeof($Comentarios);
+                            for($i = 0; $i < $sizeComentaios; $i++){
+                                if($Comentarios[$i]["Imagen"] == null || $Comentarios[$i]["Imagen"] == "")
+                                $Comentarios[$i]["Imagen"] = "https://banner2.kisspng.com/20180615/rtc/kisspng-avatar-user-profile-male-logo-profile-icon-5b238cb002ed52.870627731529056432012.jpg";
+                                echo '                            
                             <div class="row mb-5 shadow-sm" id="ComentarioReseña">
                                 <div class="col">
-                                    <a href="perfil.html">
-                                        <img src="https://banner2.kisspng.com/20180615/rtc/kisspng-avatar-user-profile-male-logo-profile-icon-5b238cb002ed52.870627731529056432012.jpg" class="img rounded-circle img-fluid" alt=". . .">
+                                    <a href="">
+                                        <img src="'.$Comentarios[$i]["Imagen"].'" class="img rounded-circle img-fluid" alt=". . .">
                                     </a>
                                 </div>
                                 <div class="col-11 lh-1">
                                     <div class="col mx-auto">
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vitae commodo dui. Nunc commodo lacus venenatis libero finibus vestibulum. Curabitur ac aliquet nisl. Phasellus enim metus, ultrices non rutrum at, mollis in sapien. Morbi elementum aliquam hendrerit. In enim magna, rhoncus sodales efficitur ac, tempus quis metus. Cras fermentum malesuada ullamcorper.</p>
+                                        <p>'.$Comentarios[$i]["Contenido"].'</p>
                                     </div>
                                     <div class="row mb-3">
                                         <div class="col-sm align-self-start">
-                                            <strong>Diego omar Gallegos Maldoando</strong>
+                                            <strong>'. $Comentarios[$i]["Nombre"] .'</strong>
                                         </div>
                                         <div class="col-sm align-self-end">
-                                            <strong>Fecha</strong>
+                                            <strong>'.$Comentarios[$i]["Fecha"].'</strong>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div>';
+                            }}else{
+                                echo '<h1 id="placeholderNoComments">Al parecer nadie ha comentado</h1>';
+                            }?>
 
                             <script src="Js/Reseña.js"></script>
                         </div>

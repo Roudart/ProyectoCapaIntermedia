@@ -7,10 +7,31 @@ function EnviarComentario(Usuario, Curso){
         return false;
     }
     console.log(reseña);
-    AñadirComentario(reseña);
+    var Create = new FormData();
+    Create.append('Usuario', Usuario);
+    Create.append('Curso',Curso);
+    Create.append('Reseña',reseña);
+    fetch('CrearComentario.php',{method:"POST",body:Create})
+    .then(response => {
+        return response.text();
+    })
+    .then(data => {
+    if(data != null){
+        var pos = data.search("_");
+        var size = data.length;
+        var nombre = data.slice(0, pos);
+        var fecha = data.slice(pos+2, size);
+        console.log(nombre);
+        console.log(fecha);
+        AñadirComentario(reseña, nombre, fecha);
+        document.getElementById("placeholderNoComments").remove();
+    }
+    else
+        console.log("Ha ocurrido un problema");
+})
 }
 
-function AñadirComentario(reseña){
+function AñadirComentario(reseña, nombre, fecha){
     var Comentarios = document.getElementById("BarraComentarios");
 
     var contenedor = document.createElement("div");
@@ -20,7 +41,7 @@ function AñadirComentario(reseña){
     var contenedorFoto = document.createElement("div");
     contenedorFoto.className = "col";
     var foto = document.createElement("a");
-    foto.setAttribute("href", "perfil.php");
+    foto.setAttribute("href", "#");
     var src = document.createElement("img");
     src.setAttribute("src", "https://banner2.kisspng.com/20180615/rtc/kisspng-avatar-user-profile-male-logo-profile-icon-5b238cb002ed52.870627731529056432012.jpg");
     src.setAttribute("alt", ". . .");
@@ -47,10 +68,10 @@ function AñadirComentario(reseña){
     var contenedorNombre = document.createElement("div");
     contenedorNombre.className = "col-sm align-self-start";
     var Nombre = document.createElement("strong");
-    Nombre.innerHTML = "Mariposa";
+    Nombre.innerHTML = nombre;
     var contenedorFecha = document.createElement("div");
     var Fecha = document.createElement("strong");
-    Fecha.innerHTML = "25/07/21";
+    Fecha.innerHTML = fecha;
     contenedorFecha.className = "col-sm align-self-end";
 
     contenedorComentario.appendChild(contenedorInfo);
@@ -60,5 +81,5 @@ function AñadirComentario(reseña){
     contenedorFecha.appendChild(Fecha);
 
 
-    Comentarios.appendChild(contenedor);
+    Comentarios.prepend(contenedor);
 }
