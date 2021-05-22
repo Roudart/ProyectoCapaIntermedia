@@ -35,7 +35,7 @@
                     <div class="row mx-auto">
                         <div class="col-4"></div>
                         <div class="col-4">
-                            <h1 class="text-center" style="font-family: 'Sacramento', cursive;" >Diego Omar Gallegos Maldonado</h1>
+                            <h1 class="text-center mt-3 mb-5" style="font-family: 'Sacramento', cursive;" ></h1>
                             <hr>
                         </div>
                         <div class="col-4"></div>
@@ -46,7 +46,7 @@
                     <div class="row mx-auto">
                         <div class="col-4"></div>
                         <div class="col-4">
-                            <h1 class="text-center" style="font-family: 'Sacramento', cursive;" >Curso intensivo de Python</h1>
+                            <h1 class="text-center mt-3 mb-5" style="font-family: 'Sacramento', cursive;" ></h1>
                             <hr>
                         </div>
                         <div class="col-4"></div>
@@ -58,9 +58,9 @@
                 </div>
                 <div class="row">
                     <div class="col-4 lh-1">
-                        <h1 class="text-center" style="font-family: 'Sacramento', cursive;" >Firma</h1>
+                        <h1 class="text-center mt-3 mb-5" style="font-family: 'Sacramento', cursive;" >Firma</h1>
                         <hr>
-                        <p class="text-center fs-4" style="font-family: 'Sacramento', cursive;" >Diego Omar Gallegos Maldonado</p>
+                        <p class="text-center fs-4" style="font-family: 'Sacramento', cursive;" ></p>
                     </div>
                     <div class="col-4">
                         <div class="col mx-auto">
