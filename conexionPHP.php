@@ -21,7 +21,7 @@ class Conexion
 
   function GreetingsDB()
   {
-    $sqlQuery = "call SaludoDB;";
+    $sqlQuery = "CALL SaludoDB;";
     $result = mysqli_query($this->connet, $sqlQuery);
     if (!$result) {
       echo ("Error description: " . $this->connet->error);
@@ -43,7 +43,7 @@ class Conexion
   function BuscarUsuariosManager()
   {
     $ArregloUsuarios = array();
-    $sqlQuery = "call TraerUsuariosManager;";
+    $sqlQuery = "CALL TraerUsuariosManager;";
     $result = mysqli_query($this->connet, $sqlQuery);
     if (!$result) {
       echo ("Error description: " . $this->connet->error);
@@ -61,7 +61,7 @@ class Conexion
 
   function BuscarUsuario($id)
   {
-    $sql = "call BuscarUsuario($id);";
+    $sql = "CALL BuscarUsuario($id);";
     $result = mysqli_query($this->connet, $sql);
     if (!$result) {
       echo ("Error description: " . $this->connet->error);
@@ -81,7 +81,7 @@ class Conexion
 
   function BuscarFotoUsuario($id)
   {
-    $sql = "call BuscarFotoUsuario($id);";
+    $sql = "CALL BuscarFotoUsuario($id);";
     $result = mysqli_query($this->connet, $sql);
     if (!$result) {
       echo ("Error description: " . $this->connet->error);
@@ -97,7 +97,7 @@ class Conexion
 
   function CrearCategoria($NombreCategoria, $ColorCategoria)
   {
-    $sql = "call CrearCategoria('$NombreCategoria', '$ColorCategoria');";
+    $sql = "CALL CrearCategoria('$NombreCategoria', '$ColorCategoria');";
     $result = mysqli_query($this->connet, $sql);
     if (!$result) {
       echo ("Error description: " . $this->connet->error);
@@ -111,7 +111,7 @@ class Conexion
 
   function TraerCategorias()
   {
-    $sql = "SELECT IdCategoria, Nombre, Color FROM categoria ORDER BY IdCategoria ASC;";
+    $sql = "SELECT IdCategoria, Nombre, Color FROM Categoria ORDER BY IdCategoria ASC;";
     $result = mysqli_query($this->connet, $sql);
     if (!$result) {
       echo ("Error description: " . $this->connet->error);
@@ -130,7 +130,7 @@ class Conexion
 
   function EliminarUsuario($idUser)
   {
-    $sql = "Call DeleteUser('$idUser')";
+    $sql = "CALL DeleteUser('$idUser')";
     $result = mysqli_query($this->connet, $sql);
     if ($result) {
       echo "exito";
@@ -141,7 +141,7 @@ class Conexion
 
   function ActualizarTipoUsuario($idUser, $tipoUser)
   {
-    $sql = "Call CambiarTipoUsuario('$idUser', '$tipoUser')";
+    $sql = "CALL CambiarTipoUsuario('$idUser', '$tipoUser')";
     $result = mysqli_query($this->connet, $sql);
     if ($result) {
       echo "exito";
@@ -156,8 +156,8 @@ class Conexion
     "SELECT C.IdCurso, C.IdMaestro, C.Nombre, C.Descripción, C.Precio, C.Aprobado, C.ImagenURL,
     CONCAT_WS(' ', U.Nombre, U.ApellidoPaterno, U.ApellidoMaterno) AS NombreMaestro, 
     U.CorreoElectronico, U.Imagen 
-    FROM curso as C
-    INNER JOIN usuario as U 
+    FROM Curso as C
+    INNER JOIN Usuario as U 
     ON C.IdMaestro = U.IdUsuario
     WHERE IdCurso = $id";
     $result = mysqli_query($this->connet, $sql);
@@ -181,7 +181,7 @@ class Conexion
   }
 
   function TrearTemas($id){
-    $sql = "SELECT * FROM TEMA WHERE IdCurso = $id;";
+    $sql = "SELECT * FROM Tema WHERE IdCurso = $id;";
     $result = mysqli_query($this->connet, $sql);
     if(!$result){
       echo("Error description: ". $this->connet->error);
@@ -201,7 +201,7 @@ class Conexion
   }
 
   function TraerRequisitos($id){
-    $sql = "SELECT * FROM requisito WHERE IdCurso = $id;";
+    $sql = "SELECT * FROM Requisito WHERE IdCurso = $id;";
     $result = mysqli_query($this->connet, $sql);
     if(!$result){
       echo("Error description: ". $this->connet->error);
@@ -220,8 +220,8 @@ class Conexion
 
   function TraerCategoriasCurso($id){
     $sql = 
-    "SELECT CC.IdCurso, C.IdCategoria, C.Nombre, C.Color FROM categoria as C
-    INNER JOIN cursocategoria as CC
+    "SELECT CC.IdCurso, C.IdCategoria, C.Nombre, C.Color FROM Categoria as C
+    INNER JOIN CursoCategoria as CC
     ON CC.IdCategoria = C.IdCategoria
     WHERE CC.IdCurso = $id;";
     $result = mysqli_query($this->connet, $sql);
@@ -242,7 +242,7 @@ class Conexion
   }
 
   function TraerCursos(){
-    $sql = "SELECT IdCurso, Nombre, Descripción, ImagenURL FROM curso;";
+    $sql = "SELECT IdCurso, Nombre, Descripción, ImagenURL FROM Curso;";
     $result = mysqli_query($this->connet, $sql);
     if(!$result){
       echo("Error description: ". $this->connet->error);
@@ -280,7 +280,7 @@ class Conexion
   }
 
   function TraerCursoNombre($Busqueda){
-    $sql = "SELECT * FROM curso AS C
+    $sql = "SELECT * FROM Curso AS C
     WHERE C.Nombre LIKE '%$Busqueda%'";
     $result = mysqli_query($this->connet, $sql);
     if(!$result){
@@ -383,7 +383,7 @@ class Conexion
   }
 
   function AgregarCursoUsuario($IdCurso, $IdUsuario, $Estado){
-    $sql = "call AgregarCursoUsuario($IdCurso,$IdUsuario,$Estado);";
+    $sql = "CALL AgregarCursoUsuario($IdCurso,$IdUsuario,$Estado);";
     $result = mysqli_query($this->connet, $sql);
     if($result){
       $respuesta = mysqli_fetch_array($result);
@@ -394,7 +394,7 @@ class Conexion
   }
 
   function EstadoCursoUsuario($IdCurso, $IdUsuario){
-    $sql = "SELECT Estado FROM usuariocurso WHERE IdCurso = $IdCurso AND IdUsuario = $IdUsuario;";
+    $sql = "SELECT Estado FROM UsuarioCurso WHERE IdCurso = $IdCurso AND IdUsuario = $IdUsuario;";
     $result = mysqli_query($this->connet, $sql);
     if($result){
       $respuesta = mysqli_fetch_array($result);
@@ -440,7 +440,7 @@ class Conexion
     $result = mysqli_query($this->connet, $sql);
     if($result){
       while($newRow = mysqli_fetch_array($result)){
-        $Respuesta = $newRow["Respuesta"];
+        $Respuesta = $newRow;
       }
       return $Respuesta;
     }
