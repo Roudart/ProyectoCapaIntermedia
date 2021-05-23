@@ -89,37 +89,37 @@ CREATE TABLE IF NOT EXISTS TemaVisto(
 );
 
 
-ALTER TABLE TEMA
+ALTER TABLE Tema
 ADD NumTema INT NOT NULL
 AFTER Descripción;
 
-ALTER TABLE curso
+ALTER TABLE Curso
 ADD Aprobado TINYINT NOT NULL DEFAULT 1
 AFTER Extras;
 
-ALTER TABLE curso
+ALTER TABLE Curso
 ADD IdMaestro INT
 AFTER IdCurso;
 
-ALTER TABLE curso
+ALTER TABLE Curso
 DROP COLUMN Extras;
 
-ALTER TABLE curso
+ALTER TABLE Curso
 DROP COLUMN Requisitos;
 
-ALTER TABLE curso
+ALTER TABLE Curso
 ADD ImagenURL VARCHAR(255) NULL
 AFTER Aprobado;
 
-ALTER TABLE curso
+ALTER TABLE Curso
 ADD FechaCreada DATETIME NOT NULL DEFAULT NOW();
 
-ALTER TABLE usuariocurso
+ALTER TABLE UsuarioCurso
 ADD Calificacion TINYINT NULL;
 
-ALTER TABLE resena
+ALTER TABLE Resena
 ADD IdCurso INT NOT NULL,
-ADD FOREIGN KEY (IdCurso) REFERENCES curso(IdCurso),
+ADD FOREIGN KEY (IdCurso) REFERENCES Curso(IdCurso),
 ADD Fecha DATETIME NOT NULL DEFAULT NOW();
 
 DROP PROCEDURE IF EXISTS SaludoDB;
@@ -170,7 +170,7 @@ DROP PROCEDURE IF EXISTS TraerUsuariosManager;
 DELIMITER $$
 CREATE PROCEDURE TraerUsuariosManager()
 BEGIN
-        SELECT IdUsuario, TipoUsuario, CONCAT_WS(' ', Nombre, ApellidoPaterno, ApellidoMaterno) AS NombreCompleto FROM USUARIO;
+        SELECT IdUsuario, TipoUsuario, CONCAT_WS(' ', Nombre, ApellidoPaterno, ApellidoMaterno) AS NombreCompleto FROM Usuario;
 END $$
 DELIMITER ;
 
@@ -186,7 +186,7 @@ DROP PROCEDURE IF EXISTS CambiarTipoUsuario;
 DELIMITER $$
 CREATE PROCEDURE CambiarTipoUsuario(IN id INT,IN Tipo int) /*(INDICE DE USUARIO, (INT)1 - "ADMIN" (INT)2 - "MAESTRO" (INT)3 - "ESTUDIANTE")*/
 BEGIN
-	    UPDATE usuario SET TipoUsuario = Tipo WHERE IdUsuario = id;
+	    UPDATE Usuario SET TipoUsuario = Tipo WHERE IdUsuario = id;
 END $$
 DELIMITER ;
 
@@ -194,7 +194,7 @@ DROP PROCEDURE IF EXISTS BuscarFotoUsuario;
 DELIMITER $$
 CREATE PROCEDURE BuscarFotoUsuario(id INT)
 BEGIN	
-        SELECT Imagen FROM usuario WHERE IdUsuario = id LIMIT 1;
+        SELECT Imagen FROM Usuario WHERE IdUsuario = id LIMIT 1;
 END $$
 DELIMITER ;
 
@@ -202,7 +202,7 @@ DROP PROCEDURE IF EXISTS CrearCurso;
 DELIMITER $$
 CREATE PROCEDURE CrearCurso(Id INT, NombreCurso VARCHAR(60), Des VARCHAR(256), Costo DECIMAL(15,2), Imagen VARCHAR(256))
 BEGIN
-	INSERT INTO curso (IdMaestro, Nombre, Descripción, Precio, Aprobado, ImagenURL)
+	INSERT INTO Curso (IdMaestro, Nombre, Descripción, Precio, Aprobado, ImagenURL)
     VALUES (Id, NombreCurso, Des, Costo, 0, Imagen); 
     SELECT IdCurso FROM Curso ORDER BY IdCurso DESC LIMIT 1;
 END $$
@@ -230,9 +230,9 @@ DROP PROCEDURE IF EXISTS CrearCategoria;
 DELIMITER $$
 CREATE PROCEDURE CrearCategoria(NombreCategoria VARCHAR(30), ColorCategoria VARCHAR(20))
 BEGIN
-	INSERT INTO categoria (Nombre, Color) 
+	INSERT INTO Categoria (Nombre, Color) 
 	VALUES (NombreCategoria, ColorCategoria);
-    SELECT IdCategoria FROM categoria ORDER BY IdCategoria DESC LIMIT 1;
+    SELECT IdCategoria FROM Categoria ORDER BY IdCategoria DESC LIMIT 1;
 END $$
 DELIMITER ;
 
@@ -241,8 +241,8 @@ DELIMITER $$
 CREATE PROCEDURE AgregarCategoriaCurso(Curso INT, NombreCategoria VARCHAR(30))
 BEGIN
 	DECLARE IdCat INT unsigned;
-    SELECT IdCategoria INTO IdCat FROM categoria WHERE Nombre = NombreCategoria; 
-	INSERT INTO cursocategoria (IdCurso, IdCategoria)
+    SELECT IdCategoria INTO IdCat FROM Categoria WHERE Nombre = NombreCategoria; 
+	INSERT INTO CursoCategoria (IdCurso, IdCategoria)
     VALUES (Curso, IdCat); 
 END $$
 DELIMITER ;
@@ -251,7 +251,7 @@ DROP PROCEDURE IF EXISTS AgregarVistasTema;
 DELIMITER $$
 CREATE PROCEDURE AgregarVistasTema(IdUsuario INT,IdCurso INT, IdTema INT)
 BEGIN
-		INSERT INTO temavisto (IdUsuario, IdCurso, IdTema, Visto) VALUES (IdUsuario, IdCurso, IdTema, 0);
+		INSERT INTO TemaVisto (IdUsuario, IdCurso, IdTema, Visto) VALUES (IdUsuario, IdCurso, IdTema, 0);
 END $$
 DELIMITER ;
 
@@ -265,21 +265,21 @@ BEGIN
     DECLARE EstadoCurso INT;
     DECLARE NumeroTemas INT;
     DECLARE x INT DEFAULT 0;
-	SELECT IdCursoDeseado, IdCurso, IdUsuario, Estado INTO CursoDeseadoId, CursoId, UsuarioId, EstadoCurso FROM usuariocurso WHERE IdCurso = Curso AND IdUsuario = Usuario LIMIT 1;
+	SELECT IdCursoDeseado, IdCurso, IdUsuario, Estado INTO CursoDeseadoId, CursoId, UsuarioId, EstadoCurso FROM UsuarioCurso WHERE IdCurso = Curso AND IdUsuario = Usuario LIMIT 1;
     IF CursoDeseadoId > -1 THEN /* EN CASO DE ENCONTRAR UNA RELACION ENTRE EL ESTUDIANTE Y EL CURSO */
 		IF CursoDeseadoId > -1 AND EstadoCurso = CursoEstado THEN  /* EN CASO DE QUE SE ENCUENTRA UN RESULTADO Y CON EL MISMO ESTADO SE DEBE ELIMINAR*/
-			DELETE FROM usuariocurso WHERE IdCursoDeseado = CursoDeseadoId;
+			DELETE FROM UsuarioCurso WHERE IdCursoDeseado = CursoDeseadoId;
 			SELECT "Eliminado" AS Respuesta;
 		ELSE 
-			UPDATE usuariocurso SET Estado = CursoEstado WHERE IdCursoDeseado = CursoDeseadoId;/* EN CASO DE QUE TENGA OTRO ESTADO AL QUE YA TIENE, SE ACTUALIZA CON NUEVO ESTADO */
+			UPDATE UsuarioCurso SET Estado = CursoEstado WHERE IdCursoDeseado = CursoDeseadoId;/* EN CASO DE QUE TENGA OTRO ESTADO AL QUE YA TIENE, SE ACTUALIZA CON NUEVO ESTADO */
             SELECT "Actualizado" AS Respuesta;
 		END IF;
 		ELSE /* SI NO HAY NINGUN REGISTRO CON TAL RELACIÓN, SE CREA UN NUEVO REGISTRO*/
-        INSERT INTO usuariocurso (IdCurso, IdUsuario, Estado) VALUES (Curso, Usuario, CursoEstado);
+        INSERT INTO UsuarioCurso (IdCurso, IdUsuario, Estado) VALUES (Curso, Usuario, CursoEstado);
         SELECT "Insertado" AS Respuesta;
     END IF;
     IF CursoEstado = 3 THEN /* SI SE VA A CURSAR, HAY QUE CREAR LAS TABLAS DE LOS TEMAS QUE VA A VER */
-		SELECT COUNT(NumTema) INTO NumeroTemas FROM tema WHERE IdCurso = Curso;
+		SELECT COUNT(NumTema) INTO NumeroTemas FROM Tema WHERE IdCurso = Curso;
 		WHILE x < NumeroTemas DO
 			CALL AgregarVistasTema(Usuario, Curso,x+1);
             SET x = x+1;
@@ -292,8 +292,8 @@ DROP PROCEDURE IF EXISTS TraerCursosCategoria;
 DELIMITER $$
 CREATE PROCEDURE TraerCursosCategoria(Categoria INT)
 BEGIN
-	SELECT C.IdCurso, C.Nombre, C.Descripción, C.ImagenURL FROM curso AS C
-    INNER JOIN cursocategoria AS CC
+	SELECT C.IdCurso, C.Nombre, C.Descripción, C.ImagenURL FROM Curso AS C
+    INNER JOIN CursoCategoria AS CC
     ON C.IdCurso = CC.IdCurso
     WHERE CC.IdCategoria = Categoria
     ORDER BY RAND();
@@ -304,10 +304,10 @@ DROP PROCEDURE IF EXISTS TraerCursosPendientes; /* PENDIENTE - INCOMPLETO PERO F
 DELIMITER $$
 CREATE PROCEDURE TraerCursosPendientes(Usuario INT)
 BEGIN
-	SELECT C.IdCurso, C.Nombre, UC.Estado, IF(UC.Estado = 'Deseado',0, 100/COUNT(T.IdTema)) AS Avance FROM usuariocurso AS UC
-	INNER JOIN curso AS C
+	SELECT C.IdCurso, C.Nombre, UC.Estado, IF(UC.Estado = 'Deseado',0, 100/COUNT(T.IdTema)) AS Avance FROM UsuarioCurso AS UC
+	INNER JOIN Curso AS C
 	ON UC.IdCurso = C.IdCurso
-    INNER JOIN tema as T
+    INNER JOIN Tema as T
     ON T.IdCurso = UC.IdCurso
 	WHERE UC.IdUsuario = Usuario
     GROUP BY UC.IdCurso;
@@ -318,8 +318,8 @@ DROP PROCEDURE IF EXISTS MasVendidos;
 DELIMITER $$
 CREATE PROCEDURE MasVendidos()
 BEGIN
-SELECT COUNT(C.IdCurso) AS Compras, C.IdCurso, C.Nombre, C.Descripción, C.Precio, C.ImagenURL, UC.Estado, SUM(C.Precio) AS TotalVentas FROM curso AS C
-INNER JOIN usuariocurso AS UC ON C.IdCurso = UC.IdCurso WHERE UC.Estado != "Deseado" GROUP BY C.IdCurso ORDER BY Compras DESC;
+SELECT COUNT(C.IdCurso) AS Compras, C.IdCurso, C.Nombre, C.Descripción, C.Precio, C.ImagenURL, UC.Estado, SUM(C.Precio) AS TotalVentas FROM Curso AS C
+INNER JOIN UsuarioCurso AS UC ON C.IdCurso = UC.IdCurso WHERE UC.Estado != "Deseado" GROUP BY C.IdCurso ORDER BY Compras DESC;
 END $$
 DELIMITER ;
 
@@ -340,7 +340,7 @@ DATEDIFF(NOW(), FechaCreada) != 0, CONCAT_WS(" ",TIMESTAMPDIFF(DAY, FechaCreada,
         )
     )
 )
-AS Hace FROM curso ORDER BY FechaCreada DESC;
+AS Hace FROM Curso ORDER BY FechaCreada DESC;
 END $$
 DELIMITER ;
 
@@ -348,8 +348,8 @@ DROP PROCEDURE IF EXISTS MejorCalificados;
 DELIMITER $$
 CREATE PROCEDURE MejorCalificados()
 BEGIN
-SELECT C.IdCurso, C.Nombre, C.Descripción, C.Precio, C.ImagenURL, SUM(UC.Calificacion) AS SUMA, COUNT(C.IdCurso) AS CUENTA, CAST(SUM(UC.Calificacion)/COUNT(C.IdCurso) AS DECIMAL(4,1)) AS Promedio FROM curso AS C
-INNER JOIN usuariocurso AS UC ON C.IdCurso = UC.IdCurso
+SELECT C.IdCurso, C.Nombre, C.Descripción, C.Precio, C.ImagenURL, SUM(UC.Calificacion) AS SUMA, COUNT(C.IdCurso) AS CUENTA, CAST(SUM(UC.Calificacion)/COUNT(C.IdCurso) AS DECIMAL(4,1)) AS Promedio FROM Curso AS C
+INNER JOIN UsuarioCurso AS UC ON C.IdCurso = UC.IdCurso
 GROUP BY C.IdCurso
 ORDER BY Promedio DESC;
 END $$
@@ -360,8 +360,8 @@ DELIMITER $$
 CREATE PROCEDURE CalificarCurso(Curso INT, Usuario INT, Rating TINYINT)
 BEGIN
 	DECLARE Existe BOOLEAN;
-	SELECT IdCursoDeseado INTO Existe FROM usuariocurso WHERE IdCurso = Curso AND IdUsuario = Usuario;
-    IF Existe THEN UPDATE usuariocurso SET Calificacion = Rating WHERE IdCurso = Curso AND IdUsuario = Usuario;
+	SELECT IdCursoDeseado INTO Existe FROM UsuarioCurso WHERE IdCurso = Curso AND IdUsuario = Usuario;
+    IF Existe THEN UPDATE UsuarioCurso SET Calificacion = Rating WHERE IdCurso = Curso AND IdUsuario = Usuario;
     ELSE SELECT 'No hay relación' AS Respuesta;
     END IF;
 END $$
@@ -371,7 +371,29 @@ DROP PROCEDURE IF EXISTS CalificacionUsuarioCurso;
 DELIMITER $$
 CREATE PROCEDURE CalificacionUsuarioCurso(Curso INT, Usuario INT)
 BEGIN
-SELECT Calificacion FROM usuariocurso WHERE IdCurso = Curso AND IdUsuario = Usuario LIMIT 1;
+SELECT Calificacion FROM UsuarioCurso WHERE IdCurso = Curso AND IdUsuario = Usuario LIMIT 1;
+END $$
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS CrearComentario;
+DELIMITER $$
+CREATE PROCEDURE CrearComentario(Usuario INT, Contenido VARCHAR(256), Curso INT)
+BEGIN
+INSERT INTO Resena (IdUsuario, Contenido, IdCurso) VALUES (Usuario, Contenido , Curso);
+SELECT R.IdCurso, R.IdUsuario ,R.Fecha, R.Contenido, CONCAT_WS(" ",U.Nombre, U.ApellidoPaterno, U.ApellidoMaterno) AS Nombre FROM Resena AS R
+INNER JOIN Usuario AS U ON R.IdUsuario = U.IdUsuario
+ORDER BY R.IdResena DESC LIMIT 1;
+END $$
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS TraerComentarios;
+DELIMITER $$
+CREATE PROCEDURE TraerComentarios(Curso INT)
+BEGIN
+SELECT R.Contenido, R.Fecha, R.IdUsuario, CONCAT_WS(" ", U.Nombre, U.ApellidoPaterno, U.ApellidoMaterno) AS Nombre, U.Imagen FROM Resena AS R
+INNER JOIN Usuario AS U ON R.IdUsuario = U.IdUsuario 
+WHERE IdCurso = Curso
+ORDER BY Fecha DESC;
 END $$
 DELIMITER ;
 

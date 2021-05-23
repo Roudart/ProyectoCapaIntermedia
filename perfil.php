@@ -243,34 +243,18 @@ if(isset($CursoPendiente)){
                                             </div>
                                             <a href="curso.php?CursoId='.$CursoPendiente[$i]["IdCurso"].'" class="stretched-link"></a><!--Este link te lleva al curso-->
                                         </div>
+                                    </div>
+                                    <div class="col-2" >
+                                        <form action="ImprimirCertificado.php" method="get">
+                                            <input type="text" hidden value="'.$Usuario["Nombre"].' '.$Usuario["ApellidoPaterno"].' '.$Usuario["ApellidoMaterno"].'" name="NombreAlumno">
+                                            <input type="text" hidden value="'.$CursoPendiente[$i]["Nombre"].'" name="NombreCurso"> 
+                                            <button class="btn btn-outline-'.$CursoPendiente[$i]["Color"].' flex-shrink-1 mt-auto">Graduarse</button>
+                                        </form>
                                     </div>';}
                                     }else{
                                         echo '<h4>Al parecer no tienes cursos pendientes</h4>';
                                     }?>
-                                    <div class="col-8 mb-3">
-                                        <div class="card">
-                                            <div class="card-header">Clase de Python</div>
-                                            <div class="card-body">
-                                                <div class="progress">
-                                                    <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
-                                                </div>
-                                            </div>
-                                            <a href="#" class="stretched-link"></a><!--Este link te lleva al curso-->
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row justify-content-center"><!--Tarjeta del curso-->
-                                    <div class="col-8 mb-3">
-                                        <div class="card">
-                                            <div class="card-header">Clase de pallasos</div>
-                                            <div class="card-body">
-                                                <div class="progress">
-                                                    <div class="progress-bar bg-danger" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">75%</div>
-                                                </div>
-                                            </div>
-                                            <a href="#" class="stretched-link"></a><!--Este link te lleva al curso-->
-                                        </div>
-                                    </div>
+
                                 </div>
 
                                 <?php if($Usuario["TipoUsuario"] != "Estudiante") echo '
