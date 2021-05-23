@@ -11,7 +11,7 @@ class Conexion
     $this->serverName     = "localhost";
     $this->dataBase       = "shademydb";
     $this->userName       = "root";
-    $this->password       = "2dumb2live";
+    $this->password       = "m41sql";
     $this->connet = mysqli_connect($this->serverName, $this->userName, $this->password, $this->dataBase);
     if ($this->connet->connect_errno) {
       echo "Failed to connect to MySQL: " . $this->connet->connect_error;
@@ -432,6 +432,62 @@ class Conexion
     }
     else {
       return "Error description: ". $this->connet->error;
+    }
+  }
+
+  function TotalDeTotales(){
+    $sql = "CALL TotalDeTotales();";
+    $result = mysqli_query($this->connet, $sql);
+    if(!$result){
+      echo("Error description bruh: ". $this->connet->error);
+    }else{
+      while($newRow = mysqli_fetch_array($result)){
+        $Respuesta = $newRow;
+      }
+      if(isset($Respuesta)){
+        if($Respuesta != null)
+          return $Respuesta;
+        return null;
+      }
+      return null;
+    }
+  }
+
+  function MonitoreoVentas(){
+    $sql = "CALL MonitoreoVentas();";
+    $result = mysqli_query($this->connet, $sql);
+    if(!$result){
+      echo("Error description: ". $this->connet->error);
+    }else{
+      $Curso = array();
+      $i = 0;
+      while($newRow = mysqli_fetch_array($result)){
+        $Curso[$i]["Compras"] = $newRow["Compras"];
+        $Curso[$i]["IdCurso"] = $newRow["IdCurso"];
+        $Curso[$i]["Nombre"] = $newRow["Nombre"];
+        $Curso[$i]["ImagenURL"] = $newRow["ImagenURL"];
+        $Curso[$i]["Estado"] = $newRow["Estado"];
+        $Curso[$i]["TotalVentas"] = $newRow["TotalVentas"];
+        $i++;
+      }
+      return $Curso;
+    }
+  }
+
+  function PromedioCompletado(){
+    $sql = "CALL PromedioCompletado();";
+    $result = mysqli_query($this->connet, $sql);
+    if(!$result){
+      echo("Error description: ". $this->connet->error);
+    }else{
+      $Curso = array();
+      $i = 0;
+      while($newRow = mysqli_fetch_array($result)){
+        $Curso[$i]["IdCurso"] = $newRow["IdCurso"];
+        $Curso[$i]["TemasCompletados"] = $newRow["TemasCompletados"];
+        $i++;
+      }
+      return $Curso;
     }
   }
 
