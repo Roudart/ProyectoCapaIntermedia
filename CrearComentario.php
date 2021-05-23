@@ -7,6 +7,6 @@ $Curso = $_POST["Curso"];
 $Resena = $_POST["Reseña"];
 $Respuesta = $Conexion->CrearComentario($Usuario, $Resena, $Curso);
 if($Respuesta != null)
-    echo $Respuesta;
+    return $Respuesta;
 echo null;
 ?>

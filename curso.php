@@ -9,6 +9,7 @@ $Requisito = $Conexion->TraerRequisitos($IdCurso);
 $Categoria = $Conexion->TraerCategoriasCurso($IdCurso);
 $ConexionComentarios = new Conexion();
 $Comentarios = $ConexionComentarios->TraerComentarios($IdCurso);
+$Usuario = -1;
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
     if (isset($_SESSION["IDUser"])) {
@@ -17,6 +18,7 @@ if (session_status() == PHP_SESSION_NONE) {
         $EstadoCursoUsuario = $ConexionEstado->EstadoCursoUsuario($IdCurso, $_SESSION["IDUser"]);
         $ConexionCalificacion = new Conexion();
         $Calificacion = $ConexionCalificacion->CalificacionUsuarioCurso($Curso["IdCurso"], $_SESSION["IDUser"]);
+        $Usuario = $_SESSION["IDUser"];
     }
 }
 ?>
@@ -221,13 +223,17 @@ if (session_status() == PHP_SESSION_NONE) {
                             <div class="row">
                                 <div class="col mx-auto">
                                     <h1>Instructor</h1>
-                                    <h5><a href="perfil.html" class="link-success text-decoration-none">
+                                    <h5><a href="#" class="link-success text-decoration-none">
                                             <?php if (isset($Curso)) echo $Curso["NombreMaestro"];
                                             else echo 'Falta el nombre del maestro'; ?></a></h5>
                                     <div class="container-fluid">
                                         <div class="row">
                                             <div class="col-4">
-                                                <a href="perfil.html">
+                                                <a href="#" id="ChatImage" onclick="EnviarAChat();">
+                                                <form action="Chat.php" method="get" id="ChatForms" name="ChatForms">
+                                                <input type="text" hidden name="Alumno" value="<?php echo $Usuario; ?>">
+                                                <input type="text" hidden name="Maestro" value="<?php echo $Curso['IdMaestro']; ?>">
+                                                </form>
                                                     <img src="<?php if (isset($Curso) && isset($Curso["Imagen"]) && $Curso["Imagen"] != null) echo $Curso["Imagen"];
                                                                 else echo 'https://banner2.kisspng.com/20180615/rtc/kisspng-avatar-user-profile-male-logo-profile-icon-5b238cb002ed52.870627731529056432012.jpg'; ?>" class="img rounded-circle img-fluid" alt=". . ." style="max-width: 12vw; max-height: 12vw; min-width: 12vw; min-height:12vw;">
                                                 </a>
@@ -268,7 +274,11 @@ if (session_status() == PHP_SESSION_NONE) {
                             </div>
                         </div>
 
-
+                        <script>
+                            function EnviarAChat() {
+                                document.forms["ChatForms"].submit();
+                            }
+                        </script>
                         <!--Lista izquierda-->
                     </div>
                     <div class="col-sm-4">
@@ -316,7 +326,7 @@ if (session_status() == PHP_SESSION_NONE) {
                                     <form action="" method="post">
                                         <textarea class="form-control" placeholder="Dejanos un comentario" id="commentInput" style="height: 8rem"></textarea>
                                         <?php if (isset($_SESSION["IDUser"])) echo '
-                                        <button class="btn btn-danger btn-lg mt-3" type="button" onclick="EnviarComentario('.$_SESSION["IDUser"].' , '.$Curso["IdCurso"].')">Enviar</button>
+                                        <button class="btn btn-danger btn-lg mt-3" type="button" onclick="EnviarComentario(' . $_SESSION["IDUser"] . ' , ' . $Curso["IdCurso"] . ')">Enviar</button>
                                         ';
                                         else echo '
                                         <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" title="Iniciar sesion para comentar">
@@ -329,35 +339,36 @@ if (session_status() == PHP_SESSION_NONE) {
                         </div>
                         <hr>
                         <div class="container-fluid" id="BarraComentarios">
-                        <?php if(isset($Comentarios)) {
-                            $sizeComentaios = sizeof($Comentarios);
-                            for($i = 0; $i < $sizeComentaios; $i++){
-                                if($Comentarios[$i]["Imagen"] == null || $Comentarios[$i]["Imagen"] == "")
-                                $Comentarios[$i]["Imagen"] = "https://banner2.kisspng.com/20180615/rtc/kisspng-avatar-user-profile-male-logo-profile-icon-5b238cb002ed52.870627731529056432012.jpg";
-                                echo '                            
+                            <?php if (isset($Comentarios) && $Comentarios!= null) {
+                                $sizeComentaios = sizeof($Comentarios);
+                                for ($i = 0; $i < $sizeComentaios; $i++) {
+                                    if ($Comentarios[$i]["Imagen"] == null || $Comentarios[$i]["Imagen"] == "")
+                                        $Comentarios[$i]["Imagen"] = "https://banner2.kisspng.com/20180615/rtc/kisspng-avatar-user-profile-male-logo-profile-icon-5b238cb002ed52.870627731529056432012.jpg";
+                                    echo '                            
                             <div class="row mb-5 shadow-sm" id="ComentarioReseña">
                                 <div class="col">
                                     <a href="">
-                                        <img src="'.$Comentarios[$i]["Imagen"].'" class="img rounded-circle img-fluid" alt=". . .">
+                                        <img src="' . $Comentarios[$i]["Imagen"] . '" class="img rounded-circle img-fluid" alt=". . .">
                                     </a>
                                 </div>
                                 <div class="col-11 lh-1">
                                     <div class="col mx-auto">
-                                        <p>'.$Comentarios[$i]["Contenido"].'</p>
+                                        <p>' . $Comentarios[$i]["Contenido"] . '</p>
                                     </div>
                                     <div class="row mb-3">
                                         <div class="col-sm align-self-start">
-                                            <strong>'. $Comentarios[$i]["Nombre"] .'</strong>
+                                            <strong>' . $Comentarios[$i]["Nombre"] . '</strong>
                                         </div>
                                         <div class="col-sm align-self-end">
-                                            <strong>'.$Comentarios[$i]["Fecha"].'</strong>
+                                            <strong>' . $Comentarios[$i]["Fecha"] . '</strong>
                                         </div>
                                     </div>
                                 </div>
                             </div>';
-                            }}else{
+                                }
+                            } else {
                                 echo '<h1 id="placeholderNoComments">Al parecer nadie ha comentado</h1>';
-                            }?>
+                            } ?>
 
                             <script src="Js/Reseña.js"></script>
                         </div>
