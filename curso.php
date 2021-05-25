@@ -21,6 +21,8 @@ if (session_status() == PHP_SESSION_NONE) {
         $Usuario = $_SESSION["IDUser"];
     }
 }
+$ConexionBusqueda = new Conexion();
+$CursosBuesqueda = $ConexionBusqueda->TraerCursos();
 ?>
 
 
@@ -70,7 +72,7 @@ if (session_status() == PHP_SESSION_NONE) {
                 <div class="navbar-nav mb-2 me-auto mb-lg-0">
                     <!--Le da formato de linea a lo que está dentro-->
                     <a class="nav-link" href="#">Categorias</a>
-                    <form class="navbar-form navbar-left w-auto" action="">
+                    <form class="navbar-form navbar-left" autocomplete="off" action="busquedaCurso.php" method="get">
                         <div class="input-group">
                             <div class="input-group-btn">
                                 <button class="btn btn-default">
@@ -79,7 +81,19 @@ if (session_status() == PHP_SESSION_NONE) {
                                     </svg>
                                 </button>
                             </div>
-                            <input class="form-control rounded-pill" placeholder="¿Buscas algo?" type="text">
+                            <div class="autocomplete" style="width:300px;">
+                                <input id="InputBusquedaCurso" type="text" name="InputBusquedaCurso" class="form-control rounded-pill" placeholder="¿Buscas algo?" list="Cursos">
+                                <datalist id="Cursos">
+                                    <?php if (isset($CursosBuesqueda)) {
+                                        $sizeCursos = sizeof($CursosBuesqueda);
+                                        for ($i = 0; $i < $sizeCursos; $i++) {
+                                            echo '<script></script>';
+                                            $ShowCurso = $CursosBuesqueda[$i]["Nombre"];
+                                            echo '<option value="' . $ShowCurso . '"';
+                                        }
+                                    } ?>
+                                </datalist>
+                            </div>
                         </div>
                     </form>
                 </div>

@@ -23,32 +23,20 @@
         <!-- $$$$$$$$$ Barra de navegación $$$$$$$$$ -->
         <nav class="navbar navbar-expand-lg navbar-light bg-light shadow p-3 mb-5 bg-body rounded"> <!--Le da a la barra de navegacion el formato de expansión (por responsiva) el color, tema, y pone una sombra para diferenciarlo del fondo-->
             <div class="container-fluid"><!--Un contenedor que hace que el contenido ocupe toda la barra (fluido)-->
-                <a class="navbar-brand" href="index.html">Shademy</a><!--El logotipo de la pagina-->
+                <a class="navbar-brand" href="index.php">Shademy</a><!--El logotipo de la pagina-->
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button><!--Este boton se activa cuando la pagina es muy pequeña (responsividad)-->
                 <div class="collapse navbar-collapse" id="navbarSupportedContent"><!--Todo este contenido cambiara al formato responsivo-->
                     <div class="navbar-nav mb-2 me-auto mb-lg-0"><!--Le da formato de linea a lo que está dentro-->
                         <a class="nav-link" href="#">Categorias</a>
-                        <form class="navbar-form navbar-left w-auto" action="">
-                            <div class="input-group">
-                                <div class="input-group-btn">
-                                    <button class="btn btn-default">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-                                          </svg>
-                                    </button>
-                                </div>
-                                <input class="form-control rounded-pill" placeholder="¿Buscas algo?" type="text">
-                            </div>
-                        </form>
                     </div>
                     <div class="navbar-nav mb-2 mb-lg-0">
                         <a class="nav-link" href="#">Clases</a>
                         <a class="nav-link" href="#">Cursos</a>
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                            <a href="iniciarsesion.html"><button class="btn btn-outline-primary">Iniciar sesión</button></a>
-                            <a href="registrarte.html"><button class="btn btn-primary">Registrate</button></a>
+                            <a href="iniciarsesion.php"><button class="btn btn-outline-danger">Iniciar sesión</button></a>
+                            <a href="registrarte.php"><button class="btn btn-danger">Registrate</button></a>
                         </div>
                     </div>
                 </div>
@@ -133,7 +121,7 @@
                         <div class="row mb-3">
                             <div class="col-sm-12">
                                 <h6 class="mx-auto col-6">
-                                    ¿Ya tienes cuenta? <a href="">Inicia sesión</a> 
+                                    ¿Ya tienes cuenta? <a href="iniciarsesion.php">Inicia sesión</a> 
                                 </h6>
                             </div>
                         </div>

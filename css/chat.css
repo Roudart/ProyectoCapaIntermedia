@@ -56,7 +56,7 @@
     z-index: 1; /* Stay on top */
     top: 0;
     left: 0;
-    background-color: rgb(88, 44, 44); /* Black*/
+    background-color: rgb(95, 95, 95); /* Black*/
     overflow-x: hidden; /* Disable horizontal scroll */
     padding-top: 60px; /* Place content 60px from the top */
     transition: 0.5s; /* 0.5 second transition effect to slide in the sidebar */
@@ -67,7 +67,7 @@
     padding: 8px 8px 8px 32px;
     text-decoration: none;
     font-size: 25px;
-    color: #818181;
+    color: #afafaf;
     display: block;
     transition: 0.3s;
   }
@@ -76,6 +76,22 @@
   .sidebar a:hover {
     color: #f1f1f1;
   }
+
+    /* The sidebar links */
+    .sidebar button {
+      padding: auto;
+      margin: 2rem;
+      text-decoration: none;
+      font-size: 25px;
+      color: #afafaf;
+      display: block;
+      transition: 0.3s;
+    }
+    
+    /* When you mouse over the navigation links, change their color */
+    .sidebar button:hover {
+      color: #f1f1f1;
+    }
   
   /* Position and style the close button (top right corner) */
   .sidebar .closebtn {
@@ -90,14 +106,14 @@
   .openbtn {
     font-size: 20px;
     cursor: pointer;
-    background-color: rgb(255, 66, 66);
+    background-color: rgb(0, 0, 0);
     color: white;
     padding: 10px 15px;
     border: none;
   }
   
   .openbtn:hover {
-    background-color: rgb(88, 44, 44);
+    background-color: rgb(68, 68, 68);
   }
   
   /* Style page content - use this if you want to push the page content to the right when you open the side navigation */
@@ -131,3 +147,5 @@
     text-decoration: none;
     font-size: 17px;
   }
+
+  html { scroll-behavior: smooth; } 

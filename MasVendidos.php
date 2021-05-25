@@ -8,7 +8,9 @@ if (session_status() == PHP_SESSION_NONE) {
     }
 }
 $ConexionCursos = new Conexion();
-$Curso = $ConexionCursos->MasVendidos();
+$CursoVendidos = $ConexionCursos->MasVendidos();
+$ConexionBusqueda = new Conexion();
+$Curso = $ConexionBusqueda->MasVendidos();
 ?>
 
 <!DOCTYPE html>
@@ -50,18 +52,30 @@ $Curso = $ConexionCursos->MasVendidos();
                 <div class="collapse navbar-collapse" id="navbarSupportedContent"><!--Todo este contenido cambiara al formato responsivo-->
                     <div class="navbar-nav mb-2 me-auto mb-lg-0"><!--Le da formato de linea a lo que está dentro-->
                         <a class="nav-link" href="#">Categorias</a>
-                        <form class="navbar-form navbar-left w-auto" action="">
-                            <div class="input-group">
-                                <div class="input-group-btn">
-                                    <button class="btn btn-default">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-                                          </svg>
-                                    </button>
-                                </div>
-                                <input class="form-control rounded-pill" placeholder="¿Buscas algo?" type="text">
+                        <form class="navbar-form navbar-left" autocomplete="off" action="busquedaCurso.php" method="get">
+                        <div class="input-group">
+                            <div class="input-group-btn">
+                                <button class="btn btn-default">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                                    </svg>
+                                </button>
                             </div>
-                        </form>
+                            <div class="autocomplete" style="width:300px;">
+                                <input id="InputBusquedaCurso" type="text" name="InputBusquedaCurso" class="form-control rounded-pill" placeholder="¿Buscas algo?" list="Cursos">
+                                <datalist id="Cursos">
+                                    <?php if (isset($Curso)) {
+                                        $sizeCursos = sizeof($Curso);
+                                        for ($i = 0; $i < $sizeCursos; $i++) {
+                                            echo '<script></script>';
+                                            $ShowCurso = $Curso[$i]["Nombre"];
+                                            echo '<option value="' . $ShowCurso . '"';
+                                        }
+                                    } ?>
+                                </datalist>
+                            </div>
+                        </div>
+                    </form>
                     </div>
                     <div class="navbar-nav mb-2 mb-lg-0">
                         <a class="nav-link" href="#">Clases</a>
@@ -98,24 +112,24 @@ $Curso = $ConexionCursos->MasVendidos();
                 <div class="col">
                     <div class="tab-content" id="nav-tabContent">
                         <div class="tab-pane fade show active" id="list-1" role="tabpanel" aria-labelledby="list-1-list">
-                        <?php if (isset($Curso)) {
-                            $sizeCursos = sizeof($Curso);
+                        <?php if (isset($CursoVendidos)) {
+                            $sizeCursos = sizeof($CursoVendidos);
                             for ($i = 0; $i < $sizeCursos; $i++) {
                                 echo
                                 '<form action="curso.php" method="get">
                                 <div class="row shadow-sm rounded mb-5 zoom" id="TarjetaCurso">
                                 <div class="col-2">
-                                    <img src="'; if($Curso[$i]["ImagenURL"] !== null){echo $Curso[$i]["ImagenURL"];}else 
+                                    <img src="'; if($CursoVendidos[$i]["ImagenURL"] !== null){echo $CursoVendidos[$i]["ImagenURL"];}else 
                                     {echo "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.nsha.org%2Fwp-content%2Fuploads%2F2017%2F06%2Fcomputer-coding-600x600.jpg&f=1&nofb=1";} echo '" 
                                     class="img rounded-circle img-fluid" alt="..." style="max-width: 10vw; max-height: 10vw; min-width: 10vw; min-height: 10vw">
                                 </div>
                                 <div class="col-10">
-                                    <h1>' . $Curso[$i]["Nombre"] . '</h1>
-                                    <p>' . $Curso[$i]["Descripción"] . '</p>
-                                    <input type="text" id="CursoId" name="CursoId" value="' . $Curso[$i]["IdCurso"] . '"  hidden>
-                                    <button type="submit" id ="LinkCurso' . $Curso[$i]["IdCurso"] . '" class="btn btn-secondary">Ver mas...</button>
-                                    <span class="w3-badge w3-large w3-green w3-padding">$'.$Curso[$i]["TotalVentas"].'</span>
-                                    <span class="w3-badge w3-large w3-green w3-padding">'.$Curso[$i]["Compras"].' compras</span>
+                                    <h1>' . $CursoVendidos[$i]["Nombre"] . '</h1>
+                                    <p>' . $CursoVendidos[$i]["Descripción"] . '</p>
+                                    <input type="text" id="CursoId" name="CursoId" value="' . $CursoVendidos[$i]["IdCurso"] . '"  hidden>
+                                    <button type="submit" id ="LinkCurso' . $CursoVendidos[$i]["IdCurso"] . '" class="btn btn-secondary">Ver mas...</button>
+                                    <span class="w3-badge w3-large w3-green w3-padding">$'.$CursoVendidos[$i]["TotalVentas"].'</span>
+                                    <span class="w3-badge w3-large w3-green w3-padding">'.$CursoVendidos[$i]["Compras"].' compras</span>
                                 </div>
                             </div>
                             </form>

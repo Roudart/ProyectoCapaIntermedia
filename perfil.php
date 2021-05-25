@@ -1,10 +1,13 @@
 <?php
 include 'conexionPHP.php';
 $connection = new Conexion();
+$connection2 = new Conexion();
+$ConexionContacts = new Conexion();
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
     if(isset($_SESSION["IDUser"])){
         $Usuario = $connection->BuscarUsuario($_SESSION["IDUser"]);
+        $Contactos = $ConexionContacts->TraerCompañeros($_SESSION["IDUser"]);
     }
 }
 if(isset($Usuario) && $Usuario["TipoUsuario"] == "Admin"){
@@ -101,10 +104,24 @@ if(isset($CursoPendiente)){
                 <div class="navbar-nav mb-2 mb-lg-0">
                     <a class="nav-link" href="#">Clases</a>
                     <a class="nav-link" href="#">Cursos</a>
-                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                        <a href="iniciarsesion.html"><button class="btn btn-outline-primary">Iniciar sesión</button></a>
-                        <a href="registrarte.html"><button class="btn btn-primary">Registrate</button></a>
-                    </div>
+                    <?php if (!isset($_SESSION["IDUser"])) {
+                        echo
+                        '<div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="iniciarsesion.php"><button class="btn btn-outline-danger">Iniciar sesión</button></a>
+                        <a href="registrarte.php"><button class="btn btn-danger">Registrate</button></a>
+                    </div>';
+                    } else {
+                        echo
+                        '<div class="dropdown">
+                        <a class="navbar-brand" data-bs-toggle="dropdown" role="button" id="dropDownSesion" href="#" onclick=""  width="32px" height="45px" style="margin-left: 7px; margin-right: 0px" >  
+                            <img src="' . $connection2->BuscarFotoUsuario($_SESSION["IDUser"]) . '" alt ="profilepic" class="perfile" style= "width:40px; height:40px; border-radius:40px; border:1px solid #666;">
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropDownSesion">
+                            <a class="dropdown-item" href="perfil.php">Perfil</a>
+                            <a class="dropdown-item" href="cerrarSesion.php" id="cerrarsesion">Cerrar Sesión</a>
+                        </div>
+                    </div>';
+                    } ?>
                 </div>
             </div>
         </div>
@@ -130,10 +147,9 @@ if(isset($CursoPendiente)){
 
                                 <?php if($Usuario["TipoUsuario"] == "Admin") echo '
                                 <a class="list-group-item list-group-item-action list-group-item-light" id="list-categorias-list" data-bs-toggle="list" href="#list-categorias" role="tab" aria-controls="categorias">Crear categorias</a>
-
                                 <a class="list-group-item list-group-item-action list-group-item-light" id="list-manager-list" data-bs-toggle="list" href="#list-manager" role="tab" aria-controls="manager">Manejar Usuarios</a>';
                                 ?>
-
+                                <a class="list-group-item list-group-item-action list-group-item-light" id="list-chat-list" data-bs-toggle="list" href="#list-chat" role="tab" aria-controls="chat">Chat</a>
                                 <a class="list-group-item list-group-item-action list-group-item-light" id="list-close-list" data-bs-toggle="list" href="#list-close" role="tab" aria-controls="closeuser">Cerrar cuenta</a>
                             </div>
                         </div>
@@ -212,7 +228,7 @@ if(isset($CursoPendiente)){
                             </form>
                         </div>
 
-                        <div class="tab-pane fade" id="list-bootcamp" role="tabpanel" aria-labelledby="list-bootcamp-list"><!--El item del boton de la lista -- BOOTCAMP -->
+                        <div class="tab-pane fade" id="list-bootcamp" role="tabpanel" aria-labelledby="list-bootcamp-list"><!--El item del boton de la lista -- CURSOS -->
                             <div class="row align-items-start">
                                 <div class="row justify-content-center">
                                     <div class="col-10">
@@ -308,7 +324,7 @@ if(isset($CursoPendiente)){
                                                         echo '<option>'.$Categoria[$i]["Nombre"].'</option>';
                                                     }
                                                 }
-                                            echo '</select>
+                                            if($Usuario["TipoUsuario"] != "Estudiante") echo '</select>
                                         </div>
                                         <div class="row justify-content-center">
                                             <div class="col-4 mb-3">
@@ -440,7 +456,32 @@ if(isset($CursoPendiente)){
                         </div>
 
 
-
+                        
+                        <div class="tab-pane fade" id="list-chat" role="tabpanel" aria-labelledby="list-chat-list"><!--El item del boton de la lista -- CHAT -->
+                            <div class="row align-items-start">
+                                <div class="row justify-content-center">
+                                    <div class="col-10">
+                                        <h4 class="text-center">Chat</h4>
+                                        <p class="text-center">Compañeros y maestros de tus cursos</p>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row justify-content-center">
+                                    <div class="col-8">
+                                        <div class="list-group">
+                                        <?php if($Contactos !== null && isset($Contactos))
+                                        {
+                                            $sizeContactos = sizeof($Contactos);
+                                            for($i = 0; $i < $sizeContactos; $i++)
+                                                echo '<a href="Chat.php?Alumno='.$_SESSION["IDUser"].'&Maestro='.$Contactos[$i]["IdUsuario"].'" class="list-group-item list-group-item-action">'.$Contactos[$i]["NombreCompleto"].'</a>';
+                                            }else{
+                                                echo "<h1>Al parecer no tienes amigos. Registrate en algun curso.</h1>";
+                                            }?>
+                                        </div> 
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="tab-pane fade" id="list-close" role="tabpanel" aria-labelledby="list-close-list"><!--El item del boton de la lista -- CLOSE -->
                             <div class="row align-items-start">
                                 <div class="row justify-content-center">

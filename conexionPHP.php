@@ -471,4 +471,25 @@ class Conexion
     }
   }
 
+  function TraerCompañeros($IdUsuario){
+    $sql = "CALL TraerCompañeros($IdUsuario);";
+    $result = mysqli_query($this->connet, $sql);
+    if($result){
+      $i = 0;
+      while($newRow = mysqli_fetch_array($result)){
+        $Contactos[$i]["IdUsuario"] = $newRow["Idusuario"];
+        $Contactos[$i]["Estado"] = $newRow["Estado"];
+        $Contactos[$i]["NombreCompleto"] = $newRow["NombreCompleto"];
+        $Contactos[$i]["CorreoElectronico"] = $newRow["CorreoElectronico"];
+        $i++;
+      }
+      if(isset($Contactos))
+        return $Contactos;
+      return null;
+    }
+    else {
+      return "Error description: ". $this->connet->error;
+    }
+  }
+
 }
