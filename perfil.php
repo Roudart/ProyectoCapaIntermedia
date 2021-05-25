@@ -13,6 +13,11 @@ if (session_status() == PHP_SESSION_NONE) {
 if(isset($Usuario) && $Usuario["TipoUsuario"] == "Admin"){
     $connection3 = new Conexion();
     $Categoria = $connection3->TraerCategorias();
+    $vendidos = $connection3->MonitoreoVentas();
+    $connection4 = new Conexion();
+    $TotalTotal = $connection4->TotalDeTotales();
+    $connection5 = new Conexion();
+    $PromedioGen = $connection5->PromedioCompletado();
 }
 
 $Conexion = new Conexion();
@@ -147,6 +152,11 @@ if(isset($CursoPendiente)){
 
                                 <?php if($Usuario["TipoUsuario"] == "Admin") echo '
                                 <a class="list-group-item list-group-item-action list-group-item-light" id="list-categorias-list" data-bs-toggle="list" href="#list-categorias" role="tab" aria-controls="categorias">Crear categorias</a>
+
+
+                                <a class="list-group-item list-group-item-action list-group-item-light" id="list-ventas-list" data-bs-toggle="list" href="#list-ventas" role="tab" aria-controls="ventas">Monitoreo Ventas</a>
+
+
                                 <a class="list-group-item list-group-item-action list-group-item-light" id="list-manager-list" data-bs-toggle="list" href="#list-manager" role="tab" aria-controls="manager">Manejar Usuarios</a>';
                                 ?>
                                 <a class="list-group-item list-group-item-action list-group-item-light" id="list-chat-list" data-bs-toggle="list" href="#list-chat" role="tab" aria-controls="chat">Chat</a>
@@ -392,6 +402,61 @@ if(isset($CursoPendiente)){
                                 </div>
                             </div>
                         </div>
+
+                         <!--VENTAS
+                         
+                         VENTAS-->
+
+                        <div class="tab-pane fade" id="list-ventas" role="tabpanel" aria-labelledby="list-ventas-list"> <!--El item del boton de la lista -- ventas -->
+                            <div class="row align-item-start">
+                                <div class="row justify-content-center">
+                                    <div class="col-10 mt-3">
+                                        <h4 class="text-center">Administrador</h4>
+                                        <p class="text-center">infromación de ventas</p>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row justify-content-center">
+                                    <div class="col-8 mb-3">
+                                        <div class="row justify-content-center" id="VentaNuevaDiv" name="VentaNuevaDiv">
+                                            <?php 
+                                                if(isset($vendidos) && $vendidos != null){
+                                                    $sizeVendidos = sizeof($vendidos);
+                                                    for($i=0; $i<$sizeVendidos; $i++){
+                                                        echo '<div class="row justify-content-center" id="TarjetaUsuario'.$vendidos[$i]["IdCurso"].'"><!--Tarjeta del usuario-->
+                                        <div class="col-8 mb-3">
+                                            <div class="card">
+                                                <div class="card-header">'.$vendidos[$i]["Nombre"].'</div>
+                                                <div class="card-body">
+                                                    <div class="row mb-5">
+                                                        <p style="text-align:left">Veces comprado: '.$vendidos[$i]["Compras"].'</p>
+                                                        <p style="text-align:left">Total del curso: $'.$vendidos[$i]["TotalVentas"].'</p>
+                                                        <p style="text-align:left">Progreso del curso: %'.$PromedioGen[$i]["TemasCompletados"] * 100 .'</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>';
+                                                    }
+                                                }?>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row justify-content-center">
+                                    <div class="col-8 mb-3"> <!--$$$$$$$$$$  TOTAL TOTAL   $$$$$$$$$-->
+                                            <div class="row justity-content-center">
+                                                <label for="InputCategoria" class="form-label">
+                                                <?="<h4>El total es: $ {$TotalTotal[0]}</h4>"?>
+                                                </label>
+                                            </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--VENTAS 
+                        
+                        VENTAS-->
 
                         <div class="tab-pane fade" id="list-manager" role="tabpanel" aria-labelledby="list-manager-list"><!--El item del boton de la lista -- Manager -->
                             <div class="row align-items-start">

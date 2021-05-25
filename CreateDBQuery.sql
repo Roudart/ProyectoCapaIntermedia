@@ -410,3 +410,35 @@ WHERE U.Idusuario != Usuario
 GROUP BY UC.IdUsuario;
 END $$
 DELIMITER ;
+
+DROP PROCEDURE IF EXISTS TotalDeTotales;
+DELIMITER $$
+CREATE PROCEDURE TotalDeTotales()
+BEGIN
+SELECT SUM(C.Precio) AS TotalVentas FROM Curso AS C
+INNER JOIN UsuarioCurso AS UC ON C.IdCurso = UC.IdCurso 
+WHERE UC.Estado != "Deseado";
+END $$
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS PromedioCompletado;
+DELIMITER $$
+CREATE PROCEDURE PromedioCompletado()
+BEGIN
+SELECT T.IdCurso, AVG(T.Visto) AS TemasCompletados FROM TemaVisto AS T
+INNER JOIN UsuarioCurso AS UC ON T.IdCurso = UC.IdCurso
+WHERE UC.Estado != "Deseado" GROUP BY T.IdCurso ORDER BY T.IdCurso;
+END $$
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS MonitoreoVentas;
+DELIMITER $$
+CREATE PROCEDURE MonitoreoVentas()
+BEGIN
+SELECT COUNT(C.IdCurso) AS Compras, C.IdCurso, C.Nombre, C.ImagenURL, 
+UC.Estado, SUM(C.Precio) AS TotalVentas FROM Curso AS C
+INNER JOIN UsuarioCurso AS UC ON C.IdCurso = UC.IdCurso 
+WHERE UC.Estado != "Deseado" GROUP BY C.IdCurso ORDER BY C.IdCurso;
+END $$
+DELIMITER ;
+
