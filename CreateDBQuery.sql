@@ -397,6 +397,20 @@ ORDER BY Fecha DESC;
 END $$
 DELIMITER ;
 
+DROP PROCEDURE IF EXISTS TraerCompañeros;
+DELIMITER $$
+CREATE PROCEDURE TraerCompañeros(Usuario INT)
+BEGIN
+SELECT U.Idusuario, UC.Estado, CONCAT_WS(" ", U.Nombre, U.ApellidoPaterno, U.ApellidoMaterno) AS NombreCompleto, U.CorreoElectronico FROM UsuarioCurso AS UC
+INNER JOIN (SELECT UC.IdCurso FROM UsuarioCurso AS UC
+WHERE UC.IdUsuario = Usuario AND UC.Estado != "Deseado") AS UC1
+ON UC1.IdCurso = UC.IdCurso
+INNER JOIN Usuario AS U ON U.IdUsuario = UC.Idusuario
+WHERE U.Idusuario != Usuario
+GROUP BY UC.IdUsuario;
+END $$
+DELIMITER ;
+
 DROP PROCEDURE IF EXISTS TotalDeTotales;
 DELIMITER $$
 CREATE PROCEDURE TotalDeTotales()
@@ -427,3 +441,4 @@ INNER JOIN UsuarioCurso AS UC ON C.IdCurso = UC.IdCurso
 WHERE UC.Estado != "Deseado" GROUP BY C.IdCurso ORDER BY C.IdCurso;
 END $$
 DELIMITER ;
+
