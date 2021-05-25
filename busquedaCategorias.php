@@ -107,7 +107,7 @@ $Curso = $connection->TraerCursos();
     </nav>
     <!-- $$$$$$$$$ Barra de navegación $$$$$$$$$ -->
 
-    <h1 class="text-center">Resultados...</h1>
+    <h1 class="text-center">Resultados para <?php $echo?>...</h1>
     <div class="container mt-5">
         <div class="row">
             <div class="col">

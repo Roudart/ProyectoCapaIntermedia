@@ -488,6 +488,8 @@ class Conexion
         $i++;
       }
       return $Curso;
+    }
+  }
       
   function CrearComentario($Usuario, $Contenido, $Curso){
     $sql = "CALL CrearComentario($Usuario, '$Contenido', $Curso);";
